@@ -20,7 +20,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-public class QuoteUpdateTask extends AsyncTask<Stock, Integer, Boolean> {
+public class RadarUpdateTask extends AsyncTask<Stock, Integer, Boolean> {
     private static final String TAG = "QuoteUpdateTask";
     private PortfolioActivity activity;
     private int total = 0;
@@ -30,7 +30,7 @@ public class QuoteUpdateTask extends AsyncTask<Stock, Integer, Boolean> {
         ERROR_NO_NET, ERROR_DOWNLOAD, ERROR_PARSE, ERROR_UNKNOWN
     }
     
-    public QuoteUpdateTask(PortfolioActivity activity) {
+    public RadarUpdateTask(PortfolioActivity activity) {
         this.activity = activity;
     }
 
@@ -42,7 +42,7 @@ public class QuoteUpdateTask extends AsyncTask<Stock, Integer, Boolean> {
         }
         
         total = stocks.length;
-        QuoteFetcher fetcher = QuoteFetcherFactory.getQuoteFetcher();
+        RadarFetcher fetcher = RadarFetcherFactory.getRadarFetcher();
         fetcher.getClient().getConnectionManager().closeExpiredConnections(); // close previously opened conn
         fetcher.getClient().getConnectionManager().closeIdleConnections(30, TimeUnit.SECONDS);
 
@@ -91,9 +91,9 @@ public class QuoteUpdateTask extends AsyncTask<Stock, Integer, Boolean> {
 
     class UpdateSubTask implements Callable<StockDetail> {
         Stock stock;
-        QuoteFetcher fetcher;
+        RadarFetcher fetcher;
 
-        public UpdateSubTask(QuoteFetcher fetcher, Stock s) {
+        public UpdateSubTask(RadarFetcher fetcher, Stock s) {
             this.fetcher = fetcher;
             this.stock = s;
         }

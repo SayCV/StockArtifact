@@ -6,7 +6,7 @@ import com.example.saycv.stockartifact.model.StockDetail;
 import com.example.saycv.stockartifact.service.exception.DownloadException;
 import com.example.saycv.stockartifact.service.exception.ParseException;
 
-public interface QuoteFetcher {
+public interface RadarFetcher {
     HttpClient getClient();
     
     String getUrl(String quote);
