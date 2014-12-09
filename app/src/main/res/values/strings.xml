@@ -5,4 +5,56 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="msg_stock_radar">
+        实时追踪股市中大资金的动向，大资金流入流出的明细，可以从中挖掘今日股市热点.\n
+        每个交易日每隔10秒更新一次！买卖动向如下:
+    </string>
+
+    <string name="msg_add_stock">To add a stock to portfolio, press Menu &gt; Add.</string>
+    <string name="msg_loading">Loading ...</string>
+
+    <string name="about_title">About</string>
+    <string name="disclaimer_label">Disclaimer</string>
+    <string name="msg_disclaimer">The information display in this application are retrieve from third party sources. \n\nWe do not guarantee its accuracy and reliability and accept no liability (whether in tort or contract or otherwise) for any loss or damage arising from any inaccuracy or omission or from any decision, action or non-action based on or in reliance upon information shown.\n\nAny information obtained through the use of the application is done at your own discretion and risk and that you will be solely responsible for any damage to your computer system or other access device or loss of data that results from the use of any service. You agree that you must evaluate, and bear all risks associated with, the use of any service, including any reliance on the accuracy, completeness, or usefulness of such inforamtion.</string>
+    <string name="msg_about">Created by siuying (http://twitter.com/siuying)\n\nInformation from HKEX (http://www.hkex.com.hk) and Money 18 (http://money18.on.cc). \n\nAgile Stock use following opensource libraries:\n * HtmlCleaner\n * XStream\n * Apache Commons IO\n * Apache Commons Lang</string>
+    <string name="retry_label">Retry</string>
+    <string name="ok_label">OK</string>
+    <string name="cancel_label">Cancel</string>
+
+    <string name="refresh_label">Refresh</string>
+    <string name="add_label">Add</string>
+    <string name="setting_label">Setting</string>
+    <string name="new_portfolio_label">My Portfolio</string>
+
+    <string name="action_open">More Detail ...</string>
+    <string name="action_delete">Delete</string>
+    <string name="add_stock">Add Stock to portfolio</string>
+    <string name="add_stock_detail">Please enter a Hong Kong Stock Quote (e.g. 00001)</string>
+
+    <string name="msg_hsi">Hang Seng Index</string>
+    <string name="msg_val_stock">Validating stock quote ...</string>
+    <string name="msg_error_download">Download Error</string>
+    <string name="msg_error_download_details">An error occurred while downloading file. Please make sure you have internet connection and try again.</string>
+    <string name="msg_error_unexpected">Stock Not Found</string>
+    <string name="msg_error_unexpected_details">Cannot find stock with input quote. Please make sure you have enter correct number.</string>
+    <string name="msg_error_stock">Unexpected Error</string>
+    <string name="msg_error_stock_details">Cannot parse stock data from source! </string>
+    <string name="msg_stock_existed">Stock already existed in portfolio</string>
+    <string name="msg_stock_added">Stock added into portfolio</string>
+    <string name="msg_download_cancelled">Download cancelled</string>
+    <string name="msg_no_network">No working network connect is detected. Make sure the network is active and try again.</string>
+    <string name="msg_error_unexpect">Unexpected Error</string>
+    <string name="msg_error_unexpect_details">Sorry we encountered an unexpected error, please try again later.</string>
+
+    <string name="setting_auto_refresh">Auto Refresh</string>
+    <string name="time_1m">1 minutes</string>
+    <string name="time_5m">5 minutes</string>
+    <string name="time_15m">15 minutes</string>
+    <string name="setting_auto_refresh_time">Update Interval</string>
+    <string name="setting_auto_refresh_time_summary">Longer values save your battery.</string>
+
+    <string name="tab_stock">Portfolio</string>
+    <string name="tab_index">Index</string>
+    <string name="tab_quick">Quick Quote</string>
+
 </resources>

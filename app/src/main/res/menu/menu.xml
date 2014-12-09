@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:alphabeticShortcut="R"
+		android:title="@string/refresh_label" 
+		android:id="@+id/refresh">
+	</item>
+	
+	<item android:alphabeticShortcut="A"
+		android:title="@string/add_label" 
+		android:id="@+id/add">
+	</item>
+	
+	<item android:alphabeticShortcut="B"
+		android:title="@string/about_title" 
+		android:id="@+id/about">
+	</item>
+	
+	
+<!--
+	<item android:alphabeticShortcut="S"
+		android:title="@string/setting_label" 
+		android:id="@+id/setting">
+	</item>
+-->
+</menu>
