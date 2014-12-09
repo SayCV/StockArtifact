@@ -1,15 +1,16 @@
 package com.example.saycv.stockartifact.service.fetcher;
 
-import org.apache.http.client.HttpClient;
-
-import com.example.saycv.stockartifact.model.StockDetail;
+import com.example.saycv.stockartifact.model.Index;
 import com.example.saycv.stockartifact.service.exception.DownloadException;
 import com.example.saycv.stockartifact.service.exception.ParseException;
 
-public interface RadarFetcher {
-    HttpClient getClient();
-    
-    String getUrl(String quote);
+import java.util.List;
 
-    StockDetail fetch(String quote) throws DownloadException, ParseException;
+/**
+ * Return list of stock indexes
+ * @author siuying
+ *
+ */
+public interface RadarFetcher {
+    List<Index> fetch() throws DownloadException, ParseException;
 }
