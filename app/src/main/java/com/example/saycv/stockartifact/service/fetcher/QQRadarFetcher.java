@@ -118,7 +118,7 @@ public class QQRadarFetcher extends BaseRadarFetcher {
             start = -1;//content.indexOf('{', end);
         }
 
-        String[] stocks = radarData.split("^");
+        String[] stocks = radarData.split("\\^");
         int index = 0;
         int nbrStocks = stocks.length/6;
         for(int nbr = 0; nbr<nbrStocks; nbr++) {
