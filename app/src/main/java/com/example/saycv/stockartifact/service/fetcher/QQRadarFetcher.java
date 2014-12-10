@@ -123,12 +123,12 @@ public class QQRadarFetcher extends BaseRadarFetcher {
         int nbrStocks = stocks.length/6;
         for(int nbr = 0; nbr<nbrStocks; nbr++) {
             String[] stock = stocks[nbr].split("~");
-            String time = stocks[0];
-            String code = stocks[1];
-            String name = stocks[2];
-            String price = stocks[3];
-            String type = stocks[4];
-            String volume = stocks[5];
+            String time = stock[0];
+            String code = stock[1];
+            String name = stock[2];
+            String price = stock[3];
+            String type = stock[4];
+            String volume = stock[5];
 
 
             Radar radar = new Radar();
