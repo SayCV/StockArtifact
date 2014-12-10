@@ -118,16 +118,17 @@ public class QQRadarFetcher extends BaseRadarFetcher {
             start = -1;//content.indexOf('{', end);
         }
 
-        String[] stocks = radarData.split("~");
+        String[] stocks = radarData.split("^");
         int index = 0;
-        int number = stocks.length/6;
-        for(int loop = 0; loop<number; loop++) {
-            String time = stocks[index++];
-            String code = stocks[index++];
-            String name = stocks[index++];
-            String price = stocks[index++];
-            String type = stocks[index++];
-            String volume = stocks[index++];
+        int nbrStocks = stocks.length/6;
+        for(int nbr = 0; nbr<nbrStocks; nbr++) {
+            String[] stock = stocks[nbr].split("~");
+            String time = stocks[0];
+            String code = stocks[1];
+            String name = stocks[2];
+            String price = stocks[3];
+            String type = stocks[4];
+            String volume = stocks[5];
 
 
             Radar radar = new Radar();
@@ -141,7 +142,7 @@ public class QQRadarFetcher extends BaseRadarFetcher {
 
             radars.add(radar);
         }
-        Log.i(TAG, "Radar update success, number of results ..." + number);
+        Log.i(TAG, "Radar update success, number of results ..." + nbrStocks);
         return radars;
     }
 
