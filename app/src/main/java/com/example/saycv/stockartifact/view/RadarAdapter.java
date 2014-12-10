@@ -30,7 +30,7 @@ public class RadarAdapter extends ArrayAdapter<Radar> {
             v = (View) vi.inflate(R.layout.index_item, null);
         }
 
-        Log.d(TAG, "prepare view for indexes");
+        Log.d(TAG, "prepare view for Radar");
         // prepare views
         TextView name = (TextView) v.findViewById(R.id.name);       
         TextView price = (TextView) v.findViewById(R.id.price);

@@ -46,4 +46,5 @@
         android:layout_below="@+id/include_radar_item"
         android:layout_centerHorizontal="true" />
 
+
 </RelativeLayout>

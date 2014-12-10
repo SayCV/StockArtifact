@@ -3,6 +3,7 @@ package com.example.saycv.stockartifact;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,10 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.example.saycv.stockartifact.service.fetcher.RadarUpdateTask;
+import com.example.saycv.stockartifact.view.RadarAdapter;
 
 
 public class MainActivity extends Activity {
@@ -58,6 +62,7 @@ public class MainActivity extends Activity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
+        private RadarAdapter adapter;
 
         public PlaceholderFragment() {
         }
@@ -76,6 +81,18 @@ public class MainActivity extends Activity {
             RelativeLayout szCompositeIndexLayoutView = (RelativeLayout) view.findViewById(R.id.include_compositeindex_item_sz);
             TextView tv = (TextView)szCompositeIndexLayoutView.findViewById(R.id.name);
             tv.setText(R.string.compositeindex_sz_name);
+
+            ListView lv = (ListView)view.findViewById(R.id.listView);
+            adapter = new RadarAdapter(view.getContext());
+            lv.setAdapter(adapter);
+
+            TextView empty = (TextView) view.findViewById(android.R.id.empty);
+            empty.setText(R.string.msg_loading);
+
+            Log.i(TAG, "start index activity");
+            RadarUpdateTask task = new RadarUpdateTask((RadarActivity)view.getContext());
+            task.execute();
+
         }
     }
 }
