@@ -1,4 +1,4 @@
-<RelativeLayout android:id="@+id/RelativeLayout01"
+<RelativeLayout android:id="@+id/RadarItemRelativeLayout01"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -7,7 +7,7 @@
     android:padding="4sp">
 
 
-    <LinearLayout android:id="@+id/radar_item"
+    <LinearLayout android:id="@+id/RadarItemLinearLayout01"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

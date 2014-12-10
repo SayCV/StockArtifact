@@ -22,10 +22,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.text.format.Time;
+import android.util.Log;
 
 public class QQRadarFetcher extends BaseRadarFetcher {
+    public static final String TAG = "QQRadarFetcher";
     private static final String DATE_FORMAT = "yyyy/MM/dd HH:mm";
     private Context context;
+    private boolean initDone = false;
 
     public QQRadarFetcher(Context context) {
         this.context = context;
@@ -34,14 +38,45 @@ public class QQRadarFetcher extends BaseRadarFetcher {
     @Override
     public List<Radar> fetch() throws DownloadException, ParseException {
         List<Radar> radar = new ArrayList<Radar>();
-        radar.addAll(getChinaRadar());
+        Date currentDate = new Date(System.currentTimeMillis());
+        Time currentTime = new Time();
+        currentTime.setToNow();
+
+        Calendar cal = Calendar.getInstance();
+        int millisecond = cal.get(Calendar.MILLISECOND);
+        int second = cal.get(Calendar.SECOND);
+        int minute = cal.get(Calendar.MINUTE);
+        //12 hour format
+        int hour = cal.get(Calendar.HOUR);
+        //24 hour format
+        int hourofday = cal.get(Calendar.HOUR_OF_DAY);
+
+        int dayofyear = cal.get(Calendar.DAY_OF_YEAR);
+        int year = cal.get(Calendar.YEAR);
+        int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
+        int dayofmonth = cal.get(Calendar.DAY_OF_MONTH);
+
+        boolean debug = true;
+        if(debug || ( (hourofday == 9 && minute >=24) || hourofday > 9 && hour <15) || (hourofday == 15 && minute <= 1)) {
+           if(initDone==false) {
+               Log.d(TAG, "get all begin");
+               radar.addAll(getChinaRadar());
+               Log.d(TAG, "get all end");
+               initDone = true;
+           }
+            Log.d(TAG, "get latest");
+            radar.addAll(getChinaRadar());
+        } else {
+            Log.d(TAG, "get all");
+            radar.addAll(getChinaRadar());
+        }
         return radar;
     }
 
 
 
     private String getChinaRadarURL() {
-        return "http://money18.on.cc/js/daily/worldidx/worldidx_b.js";
+        return "http://stock.gtimg.cn/data/index.php?appn=radar&t=all&d=09001515";
     }
 
     private JSONObject preprocessJson(String content) throws JSONException {
@@ -52,12 +87,13 @@ public class QQRadarFetcher extends BaseRadarFetcher {
     }
 
     private List<Radar> getChinaRadar()  throws ParseException, DownloadException {
+
         try {
             HttpGet req = new HttpGet(getChinaRadarURL());
-            req.setHeader("Referer", "http://money18.on.cc/");
+            //req.setHeader("Referer", "http://stock.gtimg.cn");
 
             HttpResponse resp = getClient().execute(req);
-            String content = EntityUtils.toString(resp.getEntity(), "Big5");
+            String content = EntityUtils.toString(resp.getEntity(), "GB2312");
             return getChinaRadarFromJson(content);
         } catch (org.apache.http.ParseException pe) {
             throw new ParseException("error parsing http data", pe);
@@ -69,19 +105,29 @@ public class QQRadarFetcher extends BaseRadarFetcher {
     }
 
     private List<Radar> getChinaRadarFromJson(String content) throws JSONException {
-        List<Radar> indexes = new ArrayList<Radar>();
+        List<Radar> radars = new ArrayList<Radar>();
+
+        String radarData = null;
         int start = content.indexOf('{');
         while (start > 0) {
             int end = content.indexOf(";", start);
             String result = StringUtils.substring(content, start, end);
             JSONObject json = new JSONObject(result);
-            String time = json.getString("Name");
-            String code = json.getString("Point");
-            String name = json.getString("Name");
+            radarData = json.getString("data");
+            Log.d(TAG, radarData);
+            start = -1;//content.indexOf('{', end);
+        }
 
-            String price = json.getString("Name");
-            String type = json.getString("Name");
-            String volume = json.getString("Name");
+        String[] stocks = radarData.split("^");
+        int index = 0;
+        int number = stocks.length/6;
+        for(int loop = 0; loop<number; loop++) {
+            String time = stocks[index++];
+            String code = stocks[index++];
+            String name = stocks[index++];
+            String price = stocks[index++];
+            String type = stocks[index++];
+            String volume = stocks[index++];
 
 
             Radar radar = new Radar();
@@ -93,13 +139,10 @@ public class QQRadarFetcher extends BaseRadarFetcher {
             radar.setType(type);
             radar.setVolume(volume);
 
-
-
-
-            indexes.add(radar);
-            start = content.indexOf('{', end);
+            radars.add(radar);
         }
-        return indexes;
+        Log.i(TAG, "Radar update success, number of results ..." + number);
+        return radars;
     }
 
     /**

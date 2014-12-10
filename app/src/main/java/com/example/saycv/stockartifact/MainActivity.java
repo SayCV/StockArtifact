@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.view.Window;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
@@ -23,10 +24,18 @@ import com.example.saycv.stockartifact.view.RadarAdapter;
 
 public class MainActivity extends Activity {
     public static final String TAG = "MainActivity";
+    public static RadarAdapter adapter;
+
+    public RadarAdapter getRadarAdapter() {
+        return adapter;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
@@ -62,7 +71,7 @@ public class MainActivity extends Activity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-        private RadarAdapter adapter;
+
 
         public PlaceholderFragment() {
         }
@@ -86,11 +95,8 @@ public class MainActivity extends Activity {
             adapter = new RadarAdapter(view.getContext());
             lv.setAdapter(adapter);
 
-            TextView empty = (TextView) view.findViewById(android.R.id.empty);
-            empty.setText(R.string.msg_loading);
-
-            Log.i(TAG, "start index activity");
-            RadarUpdateTask task = new RadarUpdateTask((RadarActivity)view.getContext());
+            Log.i(TAG, "start radar activity");
+            RadarUpdateTask task = new RadarUpdateTask((Activity)view.getContext());
             task.execute();
 
         }
