@@ -5,6 +5,16 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="compositeindex_sh_name">上证指数</string>
+    <string name="compositeindex_sz_name">深圳指数</string>
+
+    <string name="radar_title_time">时间</string>
+    <string name="radar_title_code">股票代码</string>
+    <string name="radar_title_name">股票简称</string>
+    <string name="radar_title_price">异动价格</string>
+    <string name="radar_title_type">异动类型</string>
+    <string name="radar_title_volume">异动信息</string>
+
     <string name="msg_stock_radar">
         实时追踪股市中大资金的动向，大资金流入流出的明细，可以从中挖掘今日股市热点.\n
         每个交易日每隔10秒更新一次！买卖动向如下:

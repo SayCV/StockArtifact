@@ -11,7 +11,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
-    public static final String TAG = "IndexesUpdateTask";
+    public static final String TAG = "RadarUpdateTask";
     private IndexActivity activity;
     private List<Index> results;
 

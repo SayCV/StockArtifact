@@ -2,7 +2,7 @@ package com.example.saycv.stockartifact.service.fetcher;
 
 import static com.example.saycv.stockartifact.service.fetcher.Utils.rounded;
 import com.example.saycv.stockartifact.R;
-import com.example.saycv.stockartifact.model.Index;
+import com.example.saycv.stockartifact.model.Radar;
 import com.example.saycv.stockartifact.service.exception.DownloadException;
 import com.example.saycv.stockartifact.service.exception.ParseException;
 
@@ -32,55 +32,15 @@ public class QQRadarFetcher extends BaseRadarFetcher {
     }
 
     @Override
-    public List<Index> fetch() throws DownloadException, ParseException {
-        List<Index> indexes = new ArrayList<Index>();
-        indexes.add(getHsi());
-        indexes.addAll(getWorldIndexes());
-        return indexes;
+    public List<Radar> fetch() throws DownloadException, ParseException {
+        List<Radar> radar = new ArrayList<Radar>();
+        radar.addAll(getChinaRadar());
+        return radar;
     }
 
-    private Index getHsi() throws ParseException, DownloadException {
-        try {
-            Index hsi = new Index();
-            HttpGet req = new HttpGet(getHSIURL());
-            req.setHeader("Referer", "http://money18.on.cc/");
 
-            HttpResponse resp = getClient().execute(req);
-            String content = EntityUtils.toString(resp.getEntity());
-            JSONObject json = preprocessJson(content);
 
-            SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
-            Date updateTime = formatter.parse(json.getString("ltt"));
-            Calendar updatedAt = Calendar.getInstance();
-            updatedAt.setTime(updateTime);
-            hsi.setUpdatedAt(updatedAt);
-
-            double value = json.getDouble("value");
-            double change = json.getDouble("difference");
-            double changePercent = change * 100.0 / value;
-
-            hsi.setName(getContext().getString(R.string.msg_hsi));
-            hsi.setValue(new BigDecimal(json.getString("value")));
-            hsi.setChange(new BigDecimal(rounded(change, 1000.0)));
-            hsi.setChangePercent(new BigDecimal(rounded(changePercent, 100.0)));
-
-            return hsi;
-        } catch (org.apache.http.ParseException pe) {
-            throw new ParseException("error parsing http data", pe);
-        } catch (JSONException je) {
-            throw new ParseException("error parsing http data", je);
-        } catch (IOException ie) {
-            throw new DownloadException("error parsing http data", ie);
-        } catch (java.text.ParseException e) {
-            throw new ParseException("error parsing json data", e);
-        }
-    }
-
-    private String getHSIURL() {
-        return "http://money18.on.cc/js/real/index/HSI_r.js";
-    }
-
-    private String getWorldIndexURL() {
+    private String getChinaRadarURL() {
         return "http://money18.on.cc/js/daily/worldidx/worldidx_b.js";
     }
 
@@ -91,14 +51,14 @@ public class QQRadarFetcher extends BaseRadarFetcher {
         return json;
     }
 
-    private List<Index> getWorldIndexes()  throws ParseException, DownloadException {
+    private List<Radar> getChinaRadar()  throws ParseException, DownloadException {
         try {
-            HttpGet req = new HttpGet(getWorldIndexURL());
+            HttpGet req = new HttpGet(getChinaRadarURL());
             req.setHeader("Referer", "http://money18.on.cc/");
 
             HttpResponse resp = getClient().execute(req);
             String content = EntityUtils.toString(resp.getEntity(), "Big5");
-            return getWorldIndexesFromJson(content);
+            return getChinaRadarFromJson(content);
         } catch (org.apache.http.ParseException pe) {
             throw new ParseException("error parsing http data", pe);
         } catch (JSONException je) {
@@ -108,29 +68,35 @@ public class QQRadarFetcher extends BaseRadarFetcher {
         }
     }
 
-    private List<Index> getWorldIndexesFromJson(String content) throws JSONException {
-        List<Index> indexes = new ArrayList<Index>();
+    private List<Radar> getChinaRadarFromJson(String content) throws JSONException {
+        List<Radar> indexes = new ArrayList<Radar>();
         int start = content.indexOf('{');
         while (start > 0) {
             int end = content.indexOf(";", start);
             String result = StringUtils.substring(content, start, end);
             JSONObject json = new JSONObject(result);
+            String time = json.getString("Name");
+            String code = json.getString("Point");
             String name = json.getString("Name");
-            String value = json.getString("Point");
-            String diff = json.getString("Difference");
 
-            Index index = new Index();
-            index.setName(name);
-            index.setValue(new BigDecimal(value));
+            String price = json.getString("Name");
+            String type = json.getString("Name");
+            String volume = json.getString("Name");
 
-            if (diff != null && !StringUtils.equalsIgnoreCase(diff, "null")) {
-                index.setChange(new BigDecimal(diff));
 
-                double changePercent = index.getValue().doubleValue() / (index.getValue().doubleValue() - index.getChange().doubleValue()) - 1;
-                index.setChangePercent(new BigDecimal(changePercent));
-            }
+            Radar radar = new Radar();
+            radar.setCode(time);
+            radar.setCode(code);
+            radar.setName(name);
 
-            indexes.add(index);
+            radar.setPrice(price);
+            radar.setType(type);
+            radar.setVolume(volume);
+
+
+
+
+            indexes.add(radar);
             start = content.indexOf('{', end);
         }
         return indexes;

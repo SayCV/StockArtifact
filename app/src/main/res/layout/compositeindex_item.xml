@@ -45,20 +45,24 @@
 
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/normal" android:shadowColor="#88444444"
         android:text="昨收" android:id="@+id/yesterday_quote_name"
         android:layout_below="@+id/name"></TextView>
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/normal" android:shadowColor="#88444444"
         android:text="今收" android:id="@+id/today_quote_name"
         android:layout_below="@+id/yesterday_quote_name"></TextView>
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/normal" android:shadowColor="#88444444"
         android:text="9999.99" android:id="@+id/yesterday_quote_price"
         android:paddingLeft="10sp"
         android:layout_toRightOf="@+id/yesterday_quote_name"
         android:layout_below="@+id/name"></TextView>
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/normal" android:shadowColor="#88444444"
         android:text="9999.99" android:id="@+id/today_quote_price"
         android:paddingLeft="10sp"
         android:layout_toRightOf="@+id/today_quote_name"
@@ -66,37 +70,45 @@
 
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/normal" android:shadowColor="#88444444"
         android:text="最高" android:id="@+id/today_quote_high_name"
         android:paddingLeft="40sp"
         android:layout_toRightOf="@+id/yesterday_quote_price"
         android:layout_below="@+id/name"></TextView>
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/normal" android:shadowColor="#88444444"
         android:text="最低" android:id="@+id/today_quote_low_name"
         android:paddingLeft="40sp"
         android:layout_toRightOf="@+id/yesterday_quote_price"
         android:layout_below="@+id/today_quote_high_name"></TextView>
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/normal" android:shadowColor="#88444444"
         android:text="9999.99" android:id="@+id/today_quote_high_price"
         android:paddingLeft="10sp"
         android:layout_toRightOf="@+id/today_quote_high_name"
         android:layout_below="@+id/name"></TextView>
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/normal" android:shadowColor="#88444444"
         android:text="9999.99" android:id="@+id/today_quote_low_price"
         android:paddingLeft="10sp"
         android:layout_toRightOf="@+id/today_quote_low_name"
         android:layout_below="@+id/today_quote_high_price"></TextView>
 
     <TextView android:layout_height="wrap_content"
+        android:textColor="@color/normal" android:shadowColor="#88444444"
         android:gravity="right" android:id="@+id/amplitude_name" android:text="振幅"
         android:paddingRight="10sp"
         android:layout_toRightOf="@+id/today_quote_high_price" android:layout_width="180sp"
-        android:layout_below="@+id/name"></TextView>
+        android:layout_below="@+id/name"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"></TextView>
     <TextView android:layout_height="wrap_content" android:id="@+id/amplitude_value"
         android:gravity="right" android:text="+9.99%"
         android:layout_width="wrap_content"
+        android:textColor="@color/normal" android:shadowColor="#88444444"
         android:layout_below="@+id/amplitude_name"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"></TextView>

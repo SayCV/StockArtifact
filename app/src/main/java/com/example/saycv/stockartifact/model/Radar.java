@@ -4,27 +4,20 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 
 public class Radar {
-    private String name;
+    private String time;
     private String code;
-    private String type;
-    
-    private BigDecimal price;
-    private BigDecimal volume;
-    private Calendar updatedAt;
-    
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
+    private String name;
 
-    /**
-     * @param name
-     *            the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
+    private String type;
+    private String price;
+    private String volume;
+
+
+    public String getTime() {
+        return time;
+    }
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getCode() {
@@ -34,6 +27,13 @@ public class Radar {
         this.code = code;
     }
 
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getType() {
         return type;
     }
@@ -41,33 +41,18 @@ public class Radar {
         this.type = type;
     }
 
-    /**
-     * @return the volume
-     */
-    public BigDecimal getVolume() {
-        return volume;
-    }
-
-    /**
-     * @param volume
-     *            the change to set
-     */
-    public void setVolume(BigDecimal volume) {
-        this.volume = volume;
-    }
-
-    /**
-     * @return the price
-     */
-    public BigDecimal getPrice() {
+    public String getPrice() {
         return price;
     }
-
-    /**
-     * @param price the value to set
-     */
-    public void setPrice(BigDecimal price) {
+    public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getVolume() {
+        return volume;
+    }
+    public void setVolume(String volume) {
+        this.volume = volume;
     }
 
     /* (non-Javadoc)
@@ -77,23 +62,7 @@ public class Radar {
     public String toString() {
         return String.format(
                 "Index [time=%s, code=%s, name=%s, price=%s, type=%s, volume=%s]",
-                updatedAt, code, name, price, type, volume );
+                time, code, name, price, type, volume );
     }
-
-    /**
-     * @return the updatedAt
-     */
-    public Calendar getUpdatedAt() {
-        return updatedAt;
-    }
-
-    /**
-     * @param updatedAt the updatedAt to set
-     */
-    public void setUpdatedAt(Calendar updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-    
-    
 
 }

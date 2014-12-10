@@ -1,6 +1,6 @@
 package com.example.saycv.stockartifact.service.fetcher;
 
-import com.example.saycv.stockartifact.model.Index;
+import com.example.saycv.stockartifact.model.Radar;
 import com.example.saycv.stockartifact.service.exception.DownloadException;
 import com.example.saycv.stockartifact.service.exception.ParseException;
 
@@ -12,5 +12,5 @@ import java.util.List;
  *
  */
 public interface RadarFetcher {
-    List<Index> fetch() throws DownloadException, ParseException;
+    List<Radar> fetch() throws DownloadException, ParseException;
 }
