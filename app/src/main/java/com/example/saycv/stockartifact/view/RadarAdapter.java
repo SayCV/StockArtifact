@@ -29,7 +29,7 @@ public class RadarAdapter extends ArrayAdapter<Radar> {
         if (v == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = (View) vi.inflate(R.layout.radar_item, null);
-            if (v != null) { v.getLayoutParams().height = 22;}
+            if (v.getLayoutParams() != null) { v.getLayoutParams().height = 22;}
         }
 
         Log.d(TAG, "prepare view for Radar");
