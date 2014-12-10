@@ -114,7 +114,7 @@ public class QQRadarFetcher extends BaseRadarFetcher {
             String result = StringUtils.substring(content, start, end);
             JSONObject json = new JSONObject(result);
             radarData = json.getString("data");
-            Log.d(TAG, radarData);
+            //Log.d(TAG, radarData);
             start = -1;//content.indexOf('{', end);
         }
 
@@ -131,7 +131,7 @@ public class QQRadarFetcher extends BaseRadarFetcher {
 
 
             Radar radar = new Radar();
-            radar.setCode(time);
+            radar.setTime(time);
             radar.setCode(code);
             radar.setName(name);
 
