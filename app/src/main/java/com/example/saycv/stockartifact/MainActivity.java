@@ -29,10 +29,6 @@ public class MainActivity extends Activity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-
-        Log.i(TAG, "start index activity");
-        RadarUpdateTask task = new RadarUpdateTask(this);
-        task.execute();
     }
 
 

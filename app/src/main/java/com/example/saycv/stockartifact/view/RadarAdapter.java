@@ -1,7 +1,7 @@
 package com.example.saycv.stockartifact.view;
 
 import com.example.saycv.stockartifact.R;
-import com.example.saycv.stockartifact.model.Index;
+import com.example.saycv.stockartifact.model.Radar;
 import com.example.saycv.utils.PriceFormatter;
 import android.content.Context;
 import android.graphics.Color;
@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class RadarAdapter extends ArrayAdapter<Index> {
+public class RadarAdapter extends ArrayAdapter<Radar> {
     private static final String TAG = "RadarAdapter";
     private java.text.DateFormat formatter;
 
@@ -39,44 +39,7 @@ public class RadarAdapter extends ArrayAdapter<Index> {
         TextView time = (TextView) v.findViewById(R.id.time);
         
         // set data
-        Index index = getItem(position);
-        if (index != null) {
-            volume.setText("");
-            name.setText(index.getName());
-            price.setText(PriceFormatter.forPrice(index.getValue().doubleValue()));
 
-            if (index.getUpdatedAt() != null) {
-                time.setText(formatter.format(index.getUpdatedAt().getTime()));
-            } else {
-                time.setText("");
-            }
-            
-            if (index.getChange() != null) {
-                change.setText(String.format("%s (%s)", 
-                		PriceFormatter.forPrice(index.getChange().doubleValue()), 
-                		PriceFormatter.forPercent(index.getChangePercent().doubleValue())));
-            } else {
-                change.setText("---- (---)");
-            }
-            
-            if (index.getChange() != null && index.getChange().floatValue() > 0) {
-                price.setTextColor(Color.rgb(0, 213, 65));
-                change.setTextColor(Color.rgb(0, 213, 65));
-            } else if (index.getChange() != null && index.getChange().floatValue() < 0) {
-                price.setTextColor(Color.rgb(238, 30, 0));
-                change.setTextColor(Color.rgb(238, 30, 0));
-            } else {
-                price.setTextColor(Color.WHITE);
-                change.setTextColor(Color.WHITE);
-            }
-
-        } else {
-            time.setText("");
-            volume.setText("---");
-            name.setText("");
-            price.setText("----");
-            change.setText("---- (---)");
-        }
         return v;
     }
 }
