@@ -16,6 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".IndexActivity"></activity>
+				<activity android:name=".PortfolioActivity"></activity>
+				<activity android:name=".QuickStockActivity"></activity>
+				<activity android:name=".SettingsActivity"></activity>
     </application>
-
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.INTERNET" />
 </manifest>
