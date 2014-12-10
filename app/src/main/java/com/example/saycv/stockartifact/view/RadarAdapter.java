@@ -51,8 +51,7 @@ public class RadarAdapter extends ArrayAdapter<Radar> {
             price.setText(index.getPrice());
             volume.setText(index.getVolume());
 
-
-            if(type.equals("大买单") || type.equals("封涨停板") || type.equals("快速上涨")) {
+            if(index.getType().equals("大买单") || index.getType().equals("封涨停板") || index.getType().equals("快速上涨")) {
                 time.setTextColor(Color.rgb(255, 0, 0));
                 code.setTextColor(Color.rgb(255, 0, 0));
                 name.setTextColor(Color.rgb(255, 0, 0));
