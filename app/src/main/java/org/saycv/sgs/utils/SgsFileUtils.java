@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2013, sayDroid.
+ * Copyright (C) 2013, saycv.
  *
- * Copyright 2013 The sayDroid Project
+ * Copyright 2013 The saycv Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 
-package org.saydroid.sgs.utils;
+package org.saycv.sgs.utils;
 
-import org.saydroid.logger.Log;
+import org.saycv.logger.Log;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -20,9 +20,9 @@ package org.saycv.sgs.services;
 
 import java.util.List;
 
-import org.saydroid.sgs.model.SgsHistoryEvent;
-import org.saydroid.sgs.utils.SgsObservableList;
-import org.saydroid.sgs.utils.SgsPredicate;
+import org.saycv.sgs.model.SgsHistoryEvent;
+import org.saycv.sgs.utils.SgsObservableList;
+import org.saycv.sgs.utils.SgsPredicate;
 
 
 /**@page SgsHistoryService_page History Service

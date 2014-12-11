@@ -44,7 +44,7 @@ import org.saycv.logger.Log;
  * 
  * <h1>Foreword</h1>
  * <b>android-sgs-stack</b> is a <a href="http://en.wikipedia.org/wiki/Next_generation_network">NGN</a> (Next Generation Network) stack for Android 2.x (or later) devices. <br />
- * The Stack is based on <a href="http://saydroid.org">saydroid</a> framework. <a href="http://saydroid.org">saydroid</a> is the world's most advanced open source 
+ * The Stack is based on <a href="http://saycv.org">saycv</a> framework. <a href="http://saycv.org">saycv</a> is the world's most advanced open source 
  * 3GPP IMS/RCS framework for both embedded and desktop systems. <br />
  * The main purpose is to provide an open source stack for the developers to build their own VoIP applications. <br />
  * This framework offers a unique set of features ranging from audio/video calls, content sharing, messaging, conferencing, enhanced address book to social presence.
@@ -132,7 +132,7 @@ import org.saycv.logger.Log;
  * 		- Location: < set any path ><br />
  * 		- Build Target: <b>Android 2.0</b> (at least)<br />
  * 		- Application name: <b>myFirstApp</b><br />
- * 		- Package name: <b>org.saydroid.test</b><br />
+ * 		- Package name: <b>org.saycv.test</b><br />
  * 		- Check <b>"Create Activity"</b> and name it <b>"Main"</b><br />
  * 
  * @image html sgs_eclipse_newproj.png "Create your first NGN application"
@@ -201,14 +201,14 @@ import org.saycv.logger.Log;
  * The stack offers three levels of programming: <b>Low</b>, <b>Medium</b> and <b>High</b>.<br />
  * Before building and running your project, you should take a look at the section @ref anchor_Setting_Up_NGN_project "explaining how to setup a NGN project".
  * <h2>Low level</h2>
- * This level allow you to directly have access to saydroid functions through JNI.
+ * This level allow you to directly have access to saycv functions through JNI.
  * This level is the most flexible one but is out of scoop because it's too difficult to manage. <br />
- * All functions used in this level are in one single package: <b>org.saydroid.tinyWRAP</b><br />
+ * All functions used in this level are in one single package: <b>org.saycv.tinyWRAP</b><br />
  * For example, the code below shows how to register to a SIP/IMS server:
  * @code
- * final String realm = "sip:saydroid.org";
+ * final String realm = "sip:saycv.org";
  * final String privateIdentity = "001";
- * final String publicIdentity = "sip:001@saydroid.org";
+ * final String publicIdentity = "sip:001@saycv.org";
  * final String password = "my secret";
  * final String proxyHost = "192.168.0.1";
  * RegistrationSession registrationSession;

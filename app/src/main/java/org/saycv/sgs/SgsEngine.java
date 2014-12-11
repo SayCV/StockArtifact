@@ -18,31 +18,31 @@
 
 package org.saycv.sgs;
 
-import org.saydroid.sgs.media.SgsProxyPluginMgr;
-import org.saydroid.sgs.services.ISgsConfigurationService;
-import org.saydroid.sgs.services.ISgsContactService;
-import org.saydroid.sgs.services.ISgsHistoryService;
-import org.saydroid.sgs.services.ISgsHttpClientService;
-import org.saydroid.sgs.services.ISgsNetworkService;
-import org.saydroid.sgs.services.ISgsSipService;
-import org.saydroid.sgs.services.ISgsSoundService;
-import org.saydroid.sgs.services.ISgsStorageService;
-import org.saydroid.sgs.services.impl.SgsConfigurationService;
-import org.saydroid.sgs.services.impl.SgsContactService;
-import org.saydroid.sgs.services.impl.SgsHistoryService;
-import org.saydroid.sgs.services.impl.SgsHttpClientService;
-import org.saydroid.sgs.services.impl.SgsNetworkService;
-import org.saydroid.sgs.services.impl.SgsSipService;
-import org.saydroid.sgs.services.impl.SgsSoundService;
-import org.saydroid.sgs.services.impl.SgsStorageService;
-import org.saydroid.sgs.utils.SgsConfigurationEntry;
+import org.saycv.sgs.media.SgsProxyPluginMgr;
+import org.saycv.sgs.services.ISgsConfigurationService;
+import org.saycv.sgs.services.ISgsContactService;
+import org.saycv.sgs.services.ISgsHistoryService;
+import org.saycv.sgs.services.ISgsHttpClientService;
+import org.saycv.sgs.services.ISgsNetworkService;
+import org.saycv.sgs.services.ISgsSipService;
+import org.saycv.sgs.services.ISgsSoundService;
+import org.saycv.sgs.services.ISgsStorageService;
+import org.saycv.sgs.services.impl.SgsConfigurationService;
+import org.saycv.sgs.services.impl.SgsContactService;
+import org.saycv.sgs.services.impl.SgsHistoryService;
+import org.saycv.sgs.services.impl.SgsHttpClientService;
+import org.saycv.sgs.services.impl.SgsNetworkService;
+import org.saycv.sgs.services.impl.SgsSipService;
+import org.saycv.sgs.services.impl.SgsSoundService;
+import org.saycv.sgs.services.impl.SgsStorageService;
+import org.saycv.sgs.utils.SgsConfigurationEntry;
 
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Vibrator;
-import org.saydroid.logger.Log;
+import org.saycv.logger.Log;
 
 /**
  * Next Generation Network Engine.

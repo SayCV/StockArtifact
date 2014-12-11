@@ -29,13 +29,13 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
-import org.saydroid.sgs.SgsApplication;
-import org.saydroid.sgs.SgsEngine;
-import org.saydroid.sgs.model.SgsAccessPoint;
-import org.saydroid.sgs.services.ISgsNetworkService;
-import org.saydroid.sgs.utils.SgsConfigurationEntry;
-import org.saydroid.sgs.utils.SgsObservableList;
-import org.saydroid.sgs.utils.SgsStringUtils;
+import org.saycv.sgs.SgsApplication;
+import org.saycv.sgs.SgsEngine;
+import org.saycv.sgs.model.SgsAccessPoint;
+import org.saycv.sgs.services.ISgsNetworkService;
+import org.saycv.sgs.utils.SgsConfigurationEntry;
+import org.saycv.sgs.utils.SgsObservableList;
+import org.saycv.sgs.utils.SgsStringUtils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

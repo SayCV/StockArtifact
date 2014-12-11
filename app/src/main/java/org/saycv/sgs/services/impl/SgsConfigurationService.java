@@ -18,9 +18,9 @@
 
 package org.saycv.sgs.services.impl;
 
-import org.saydroid.sgs.SgsApplication;
-import org.saydroid.sgs.services.ISgsConfigurationService;
-import org.saydroid.sgs.utils.SgsConfigurationEntry;
+import org.saycv.sgs.SgsApplication;
+import org.saycv.sgs.services.ISgsConfigurationService;
+import org.saycv.sgs.utils.SgsConfigurationEntry;
 
 import android.content.Context;
 import android.content.SharedPreferences;

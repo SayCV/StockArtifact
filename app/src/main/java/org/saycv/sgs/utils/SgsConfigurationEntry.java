@@ -2,7 +2,7 @@
 *  Copyright (C) 2011, Doubango Telecom.
 *  Copyright (C) 2011, Philippe Verney <verney(dot)philippe(AT)gmail(dot)com>
 *
-* Contact: Mamadou Diop <diopmamadou(at)saydroid(dot)org>
+* Contact: Mamadou Diop <diopmamadou(at)saycv(dot)org>
 *	
 * This file is part of imsdroid Project (http://code.google.com/p/imsdroid)
 *
@@ -18,16 +18,16 @@
 * with this program; if not, write to the Free Software Foundation, Inc., 
 * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-package org.saydroid.sgs.utils;
+package org.saycv.sgs.utils;
 
-import org.saydroid.sgs.sip.SgsPresenceStatus;
-import org.saydroid.tinyWRAP.tdav_codec_id_t;
-import org.saydroid.tinyWRAP.tmedia_bandwidth_level_t;
-import org.saydroid.tinyWRAP.tmedia_pref_video_size_t;
-import org.saydroid.tinyWRAP.tmedia_profile_t;
-import org.saydroid.tinyWRAP.tmedia_qos_strength_t;
-import org.saydroid.tinyWRAP.tmedia_qos_stype_t;
-import org.saydroid.tinyWRAP.tmedia_srtp_mode_t;
+import org.saycv.sgs.sip.SgsPresenceStatus;
+import org.saycv.tinyWRAP.tdav_codec_id_t;
+import org.saycv.tinyWRAP.tmedia_bandwidth_level_t;
+import org.saycv.tinyWRAP.tmedia_pref_video_size_t;
+import org.saycv.tinyWRAP.tmedia_profile_t;
+import org.saycv.tinyWRAP.tmedia_qos_strength_t;
+import org.saycv.tinyWRAP.tmedia_qos_stype_t;
+import org.saycv.tinyWRAP.tmedia_srtp_mode_t;
 
 
 public class SgsConfigurationEntry {
@@ -174,14 +174,14 @@ public class SgsConfigurationEntry {
     public static final boolean DEFAULT_GENERAL_DSO = true;
 	
 	//	Identity
-	public static final String DEFAULT_IDENTITY_DISPLAY_NAME = "sayDroid";
-	public static final String DEFAULT_IDENTITY_IMPU = "sip:sayDroid@saydroid.org";
-	public static final String DEFAULT_IDENTITY_IMPI = "sayDroid";
+	public static final String DEFAULT_IDENTITY_DISPLAY_NAME = "saycv";
+	public static final String DEFAULT_IDENTITY_IMPU = "sip:saycv@saycv.org";
+	public static final String DEFAULT_IDENTITY_IMPI = "saycv";
 	public static final String DEFAULT_IDENTITY_PASSWORD = null;
 	
 	// Network
 	public static final int DEFAULT_NETWORK_REGISTRATION_TIMEOUT = 1700;
-	public static final String DEFAULT_NETWORK_REALM = "saydroid.org";
+	public static final String DEFAULT_NETWORK_REALM = "saycv.org";
 	public static final boolean DEFAULT_NETWORK_USE_WIFI = false;
 	public static final boolean DEFAULT_NETWORK_USE_3G = true;
     public static final boolean DEFAULT_NETWORK_USE_FAKED_3G = true;
@@ -253,14 +253,14 @@ public class SgsConfigurationEntry {
 	
 	// XCAP
 	public static final boolean DEFAULT_XCAP_ENABLED = false;
-	public static final String DEFAULT_XCAP_ROOT = "http://saydroid.org:8080/services";
-	public static final String DEFAULT_XCAP_USERNAME = "sip:johndoe@saydroid.org";
+	public static final String DEFAULT_XCAP_ROOT = "http://saycv.org:8080/services";
+	public static final String DEFAULT_XCAP_USERNAME = "sip:johndoe@saycv.org";
 	public static final String DEFAULT_XCAP_PASSWORD = null;
 	
 	// RCS (Rich Communication Suite)
 	public static final String DEFAULT_RCS_AVATAR_PATH = "";
 	public static final boolean DEFAULT_RCS_USE_BINARY_SM = false; 
-	public static final String DEFAULT_RCS_CONF_FACT = "sip:Conference-Factory@saydroid.org";
+	public static final String DEFAULT_RCS_CONF_FACT = "sip:Conference-Factory@saycv.org";
 	public static final String DEFAULT_RCS_FREE_TEXT = "Hello world";
 	public static final boolean DEFAULT_RCS_HACK_SMS = false;
 	public static final boolean DEFAULT_RCS_USE_MSRP_FAILURE = true;
@@ -271,7 +271,7 @@ public class SgsConfigurationEntry {
 	public static final boolean DEFAULT_RCS_USE_PARTIAL_PUB = false;
 	public static final boolean DEFAULT_RCS_USE_PRESENCE = false;
 	public static final boolean DEFAULT_RCS_USE_RLS = false;
-	public static final String DEFAULT_RCS_SMSC = "sip:+331000000000@saydroid.org";
+	public static final String DEFAULT_RCS_SMSC = "sip:+331000000000@saycv.org";
 	public static final SgsPresenceStatus DEFAULT_RCS_STATUS = SgsPresenceStatus.Online;
 	
 }

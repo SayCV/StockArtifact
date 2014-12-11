@@ -18,9 +18,9 @@
 
 package org.saycv.sgs.utils;
 
-import org.saydroid.sgs.SgsEngine;
-import org.saydroid.sgs.model.SgsContact;
-import org.saydroid.tinyWRAP.SipUri;
+import org.saycv.sgs.SgsEngine;
+import org.saycv.sgs.model.SgsContact;
+import org.saycv.tinyWRAP.SipUri;
 
 //FIXME: THIS IS THE WORST CLASS YOU WILL FIND IN THE PROJECT ;)
 public class SgsUriUtils {
@@ -85,7 +85,7 @@ public class SgsUriUtils {
 				if(realm.contains(":")){
 					realm = realm.substring(realm.indexOf(":")+1);
 				}
-				// FIXME: Should be done by saydroid
+				// FIXME: Should be done by saycv
 				return String.format("sip:%s@%s", 
 						uri.replace("(", "").replace(")", "").replace("-", "").replace("#", "%23"), 
 						realm);

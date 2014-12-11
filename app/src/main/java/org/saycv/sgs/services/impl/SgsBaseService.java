@@ -18,7 +18,7 @@
 
 package org.saycv.sgs.services.impl;
 
-import org.saydroid.sgs.services.ISgsBaseService;
+import org.saycv.sgs.services.ISgsBaseService;
 
 /**@page SgsBaseService_page Base Service
  * All NGN services inherits from this class.

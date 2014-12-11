@@ -39,5 +39,5 @@ public class SgsContentType {
 	
 	public final static String JSON = "application/json";
 	
-	public final static String DOUBANGO_DEVICE_INFO = "saydroid/device-info";
+	public final static String DOUBANGO_DEVICE_INFO = "saycv/device-info";
 }

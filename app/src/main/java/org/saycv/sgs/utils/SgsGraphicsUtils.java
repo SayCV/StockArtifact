@@ -18,7 +18,7 @@
 
 package org.saycv.sgs.utils;
 
-import org.saydroid.sgs.SgsApplication;
+import org.saycv.sgs.SgsApplication;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;

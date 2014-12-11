@@ -1,7 +1,7 @@
 /* Copyright (C) 2010-2011, Mamadou Diop.
 *  Copyright (C) 2011, Doubango Telecom.
 *
-* Contact: Mamadou Diop <diopmamadou(at)saydroid(dot)org>
+* Contact: Mamadou Diop <diopmamadou(at)saycv(dot)org>
 *	
 * This file is part of imsdroid Project (http://code.google.com/p/imsdroid)
 *
@@ -17,19 +17,19 @@
 * with this program; if not, write to the Free Software Foundation, Inc., 
 * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-package org.saydroid.sgs.services.impl;
+package org.saycv.sgs.services.impl;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.saydroid.logger.Log;
-import org.saydroid.sgs.SgsEngine;
-import org.saydroid.sgs.model.SgsHistoryEvent;
-import org.saydroid.sgs.model.SgsHistoryList;
-import org.saydroid.sgs.services.ISgsHistoryService;
-import org.saydroid.sgs.utils.SgsObservableList;
-import org.saydroid.sgs.utils.SgsPredicate;
+import org.saycv.logger.Log;
+import org.saycv.sgs.SgsEngine;
+import org.saycv.sgs.model.SgsHistoryEvent;
+import org.saycv.sgs.model.SgsHistoryList;
+import org.saycv.sgs.services.ISgsHistoryService;
+import org.saycv.sgs.utils.SgsObservableList;
+import org.saycv.sgs.utils.SgsPredicate;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 

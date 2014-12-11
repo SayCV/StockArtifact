@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2013, sayDroid.
+ * Copyright (C) 2013, saycv.
  *
- * Copyright 2013 The sayDroid Project
+ * Copyright 2013 The saycv Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.saydroid.sgs.utils;
+package org.saycv.sgs.utils;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -24,8 +24,8 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
-import org.saydroid.logger.Log;
-import org.saydroid.sgs.SgsApplication;
+import org.saycv.logger.Log;
+import org.saycv.sgs.SgsApplication;
 
 import java.util.ArrayList;
 import java.util.List;

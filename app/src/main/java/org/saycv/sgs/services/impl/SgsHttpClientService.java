@@ -31,7 +31,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-import org.saydroid.sgs.services.ISgsHttpClientService;
+import org.saycv.sgs.services.ISgsHttpClientService;
 
 import android.util.Log;
 

@@ -18,9 +18,9 @@
 
 package org.saycv.sgs.services;
 
-import org.saydroid.sgs.model.SgsAccessPoint;
-import org.saydroid.sgs.services.impl.SgsNetworkService.DNS_TYPE;
-import org.saydroid.sgs.utils.SgsObservableList;
+import org.saycv.sgs.model.SgsAccessPoint;
+import org.saycv.sgs.services.impl.SgsNetworkService.DNS_TYPE;
+import org.saycv.sgs.utils.SgsObservableList;
 
 public interface ISgsNetworkService extends ISgsBaseService{
 	String getDnsServer(DNS_TYPE type);
