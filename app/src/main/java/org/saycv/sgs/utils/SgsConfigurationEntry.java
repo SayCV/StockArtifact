@@ -17,8 +17,6 @@
  */
 package org.saycv.sgs.utils;
 
-import org.saycv.sgs.sip.SgsPresenceStatus;
-
 
 public class SgsConfigurationEntry {
 	private static final String TAG = SgsConfigurationEntry.class.getCanonicalName();

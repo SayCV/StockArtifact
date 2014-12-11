@@ -21,21 +21,18 @@ package org.saycv.sgs.services.impl;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
-import org.saydroid.sgs.SgsApplication;
-import org.saydroid.sgs.SgsEngine;
+import org.saycv.sgs.SgsApplication;
+import org.saycv.sgs.SgsEngine;
 
-import org.saydroid.sgs.events.SgsRegistrationEventArgs;
-import org.saydroid.sgs.events.SgsRegistrationEventTypes;
+import org.saycv.sgs.model.SgsDeviceInfo.Orientation;
+import org.saycv.sgs.services.ISgsSgsService;
+import org.saycv.sgs.services.ISgsConfigurationService;
+import org.saycv.sgs.services.ISgsNetworkService;
 
-import org.saydroid.sgs.model.SgsDeviceInfo.Orientation;
-import org.saydroid.sgs.services.ISgsConfigurationService;
-import org.saydroid.sgs.services.ISgsNetworkService;
-
-import org.saydroid.sgs.utils.SgsConfigurationEntry;
-import org.saydroid.sgs.utils.SgsContentType;
-import org.saydroid.sgs.utils.SgsDateTimeUtils;
-import org.saydroid.sgs.utils.SgsStringUtils;
-import org.saydroid.sgs.utils.SgsUriUtils;
+import org.saycv.sgs.utils.SgsConfigurationEntry;
+import org.saycv.sgs.utils.SgsContentType;
+import org.saycv.sgs.utils.SgsDateTimeUtils;
+import org.saycv.sgs.utils.SgsStringUtils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -45,97 +42,78 @@ import android.util.Log;
 import android.widget.Toast;
 
 
-public class SgsSgsService extends SgsBaseService 
-implements ISgsSgsService {
-	private final static String TAG = SgsSgsService.class.getCanonicalName();
-	
-	private final ISgsConfigurationService mConfigurationService;
-	private final ISgsNetworkService mNetworkService;
-	
-	public SgsSgsService() {
-		super();
-		
-		mConfigurationService = SgsEngine.getInstance().getConfigurationService();
-		mNetworkService = SgsEngine.getInstance().getNetworkService();
-	}
-	
-	@Override
-	public boolean start() {
-		Log.d(TAG, "starting...");
-		return true;
-	}
+public class SgsSgsService extends SgsBaseService
+        implements ISgsSgsService {
+    private final static String TAG = SgsSgsService.class.getCanonicalName();
 
-	@Override
-	public boolean stop() {
-		Log.d(TAG, "stopping...");
-		return true;
-	}
+    private final ISgsConfigurationService mConfigurationService;
+    private final ISgsNetworkService mNetworkService;
 
-	@Override
-	public String getDefaultIdentity() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public SgsSgsService() {
+        super();
 
-	@Override
-	public void setDefaultIdentity(String identity) {
-		// TODO Auto-generated method stub
-	}
+        mConfigurationService = SgsEngine.getInstance().getConfigurationService();
+        mNetworkService = SgsEngine.getInstance().getNetworkService();
+    }
 
-	@Override
-	public boolean isRegistered() {
-		if (mRegSession != null) {
-			return mRegSession.isConnected();
-		}
-		return false;
-	}
-	
-	@Override
-	public ConnectionState getRegistrationState(){
-		return ConnectionState.NONE;
-	}
+    @Override
+    public boolean start() {
+        Log.d(TAG, "starting...");
+        return true;
+    }
 
-	@Override
-	public boolean register(Context context) {
-		Log.d(TAG,"register()");
-		return true;
-	}
+    @Override
+    public boolean stop() {
+        Log.d(TAG, "stopping...");
+        return true;
+    }
 
-	@Override
-	public boolean unRegister() {
-		if (isRegistered()) {
-			new Thread(new Runnable(){
-				@Override
-				public void run() {
-					
-				}
-			}).start();
-		}
-		return true;
-	}
+    @Override
+    public String getDefaultIdentity() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public boolean PresencePublish() {
-		return false;
-	}
+    @Override
+    public void setDefaultIdentity(String identity) {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	public boolean PresencePublish(SgsPresenceStatus status) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	private void broadcastRegistrationEvent(SgsRegistrationEventArgs args){
-		final Intent intent = new Intent(SgsRegistrationEventArgs.ACTION_REGISTRATION_EVENT);
-		intent.putExtra(SgsRegistrationEventArgs.EXTRA_EMBEDDED, args);
-		SgsApplication.getContext().sendBroadcast(intent);
-	}
-	
-	
-	
-		
-		@Override
-		public int OnDialogEvent(DialogEvent e){
-			return 0;
-		}
+    @Override
+    public boolean isRegistered() {
+        return false;
+    }
+
+    @Override
+    public boolean register(Context context) {
+        Log.d(TAG,"register()");
+        return true;
+    }
+
+    @Override
+    public boolean unRegister() {
+        if (isRegistered()) {
+            new Thread(new Runnable(){
+                @Override
+                public void run() {
+
+                }
+            }).start();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean PresencePublish() {
+        return false;
+    }
+
+//	private void broadcastRegistrationEvent(SgsRegistrationEventArgs args){
+//		final Intent intent = new Intent(SgsRegistrationEventArgs.ACTION_REGISTRATION_EVENT);
+//		intent.putExtra(SgsRegistrationEventArgs.EXTRA_EMBEDDED, args);
+//		SgsApplication.getContext().sendBroadcast(intent);
+//	}
+
+
+
 }

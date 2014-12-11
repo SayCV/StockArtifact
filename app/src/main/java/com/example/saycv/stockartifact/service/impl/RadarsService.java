@@ -1,9 +1,12 @@
 package com.example.saycv.stockartifact.service.impl;
 
 import android.content.Context;
+import android.content.Intent;
 
+import com.example.saycv.stockartifact.events.RadarsEventArgs;
 import com.example.saycv.stockartifact.service.IRadarsService;
 
+import org.saycv.sgs.SgsApplication;
 import org.saycv.sgs.services.ISgsBaseService;
 
 import org.saycv.logger.Log;
@@ -40,5 +43,16 @@ public class RadarsService extends SgsBaseService
     public void setDefaultIdentity(String identity) {
         // TODO Auto-generated method stub
 
+    }
+
+    public void broadcastRadarsEvent(RadarsEventArgs args, String date){
+        final Intent intent = new Intent(RadarsEventArgs.ACTION_RADARS_EVENT);
+        /*intent.putExtra(TrafficCountEventArgs.EXTRA_DATA_COUNT_TOTAL_UPLOAD, dataCount.totalUpload);
+        intent.putExtra(TrafficCountEventArgs.EXTRA_DATA_COUNT_TOTAL_DOWNLOAD, dataCount.totalDownload);
+        intent.putExtra(TrafficCountEventArgs.EXTRA_DATA_COUNT_UPLOAD_RATE, dataCount.uploadRate);
+        intent.putExtra(TrafficCountEventArgs.EXTRA_DATA_COUNT_DOWNLOAD_RATE, dataCount.downloadRate);*/
+        intent.putExtra(RadarsEventArgs.EXTRA_DATE, date);
+        intent.putExtra(RadarsEventArgs.EXTRA_EMBEDDED, args);
+        SgsApplication.getContext().sendBroadcast(intent);
     }
 }

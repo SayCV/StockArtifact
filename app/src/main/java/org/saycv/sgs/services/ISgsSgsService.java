@@ -30,11 +30,6 @@ public interface ISgsSgsService extends ISgsBaseService {
      * @return
      */
     boolean isRegistered();
-    /**
-     * Gets the registration state
-     * @return the registration state
-     */
-    ConnectionState getRegistrationState();
 
     /**
      * Sends a Sip REGISTER request to the Proxy-CSCF
@@ -51,5 +46,4 @@ public interface ISgsSgsService extends ISgsBaseService {
     boolean unRegister();
 
     boolean PresencePublish();
-    boolean PresencePublish(SgsPresenceStatus status);
 }

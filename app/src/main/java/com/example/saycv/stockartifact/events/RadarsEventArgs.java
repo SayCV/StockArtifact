@@ -28,8 +28,8 @@ import java.io.Serializable;
 /**
  * Base class for all events
  */
-public abstract class RadarsEventArgs extends SgsEventArgs {
-	public static final String EXTRA_EMBEDDED = "EXTRA_" + RadarsEventArgs.class.getCanonicalName();
+public class RadarsEventArgs extends SgsEventArgs {
+    private final static String TAG = RadarsEventArgs.class.getCanonicalName();
 	
 	private RadarsEventTypes mEventType;
 	private String mRadarsData;
@@ -37,6 +37,7 @@ public abstract class RadarsEventArgs extends SgsEventArgs {
 	public static final String ACTION_RADARS_EVENT = TAG + ".ACTION_RADARS_EVENT";
 
 	public static final String EXTRA_EMBEDDED = SgsEventArgs.EXTRA_EMBEDDED;
+    public static final String EXTRA_DATE = TAG + "date";
 	
 	public RadarsEventArgs(RadarsEventTypes type, String radarsData){
 		super();
@@ -44,7 +45,7 @@ public abstract class RadarsEventArgs extends SgsEventArgs {
 		mRadarsData = radarsData;
 	}
 
-	 protected RadarsEventArgs(Parcel in) {
+    public RadarsEventArgs(Parcel in) {
 	      super(in);
 	 }
 	 

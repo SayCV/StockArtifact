@@ -22,11 +22,13 @@ import org.saycv.sgs.services.ISgsConfigurationService;
 import org.saycv.sgs.services.ISgsHistoryService;
 import org.saycv.sgs.services.ISgsHttpClientService;
 import org.saycv.sgs.services.ISgsNetworkService;
+import org.saycv.sgs.services.ISgsSgsService;
 import org.saycv.sgs.services.ISgsStorageService;
 import org.saycv.sgs.services.impl.SgsConfigurationService;
 import org.saycv.sgs.services.impl.SgsHistoryService;
 import org.saycv.sgs.services.impl.SgsHttpClientService;
 import org.saycv.sgs.services.impl.SgsNetworkService;
+import org.saycv.sgs.services.impl.SgsSgsService;
 import org.saycv.sgs.services.impl.SgsStorageService;
 import org.saycv.sgs.utils.SgsConfigurationEntry;
 
@@ -52,7 +54,8 @@ public class SgsEngine {
 	
 	protected final NotificationManager mNotifManager;
 	protected final Vibrator mVibrator;
-	
+
+    protected ISgsSgsService mSgsService;
 	protected ISgsConfigurationService mConfigurationService;
 	protected ISgsStorageService mStorageService;
 	protected ISgsNetworkService mNetworkService;
@@ -185,7 +188,14 @@ public class SgsEngine {
 	public Activity getMainActivity(){
 		return mMainActivity;
 	}
-	
+
+    public ISgsSgsService getSgsService(){
+        if(mSgsService == null){
+            mSgsService = new SgsSgsService();
+        }
+        return mSgsService;
+    }
+
 	/**
 	 * Gets the configuration service.
 	 * @return the configuration service.

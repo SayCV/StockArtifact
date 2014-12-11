@@ -21,7 +21,6 @@ package org.saycv.sgs.model;
 import java.util.Date;
 
 import org.saycv.sgs.media.SgsMediaType;
-import org.saycv.sgs.utils.SgsUriUtils;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
@@ -110,9 +109,6 @@ public abstract class SgsHistoryEvent  implements Comparable<SgsHistoryEvent> {
 	}
 	
 	public String getDisplayName(){
-		if(mDisplayName == null){
-			mDisplayName = SgsUriUtils.getDisplayName(getRemoteParty());
-		}
 		return mDisplayName;
 	}
 	

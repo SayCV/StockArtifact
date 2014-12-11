@@ -390,7 +390,7 @@ public class SgsNetworkService  extends SgsBaseService implements ISgsNetworkSer
 			} else {
 				Log.d(SgsNetworkService.TAG, "WiFi not enabled");
 			}
-		} else if (use3G
+		} else if (useMobile
 				&& (netType == ConnectivityManager.TYPE_MOBILE || netType == ConnectivityManager_TYPE_WIMAX)) {
 			if ((netSubType >= TelephonyManager.NETWORK_TYPE_UMTS)
 					|| // HACK
@@ -506,7 +506,7 @@ public class SgsNetworkService  extends SgsBaseService implements ISgsNetworkSer
 				final WifiInfo wInfo = mWifiManager.getConnectionInfo();
 				if(wInfo != null){
 					if(!SgsStringUtils.equals(mConnetedSSID, wInfo.getSSID(), false)){
-						triggerSipRegistration();
+                        triggerSgsRegistration();
 					}
 					mConnetedSSID = wInfo.getSSID();
 				}
