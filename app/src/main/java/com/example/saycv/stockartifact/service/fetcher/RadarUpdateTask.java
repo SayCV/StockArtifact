@@ -42,13 +42,6 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
 		            RadarFetcher fetcher = RadarFetcherFactory.getRadarFetcher(activity);
 		            results = fetcher.fetch();
 		            
-            		// Taking a nap - 10s
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-
         return Boolean.TRUE;
     }
 
