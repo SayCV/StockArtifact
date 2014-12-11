@@ -32,7 +32,22 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     protected Boolean doInBackground(Void ... ignored) {
         Log.i(TAG, "running Radar update in background");
 
-				setRadarsUpdateThreadClassEnabled(true);
+				//setRadarsUpdateThreadClassEnabled(true);
+				if (!NetworkDetector.hasValidNetwork(activity)) {
+		                error = Error.ERROR_NO_NET;
+		                return Boolean.FALSE;
+		            }
+		
+		            Log.i(TAG, "start fetcher");
+		            RadarFetcher fetcher = RadarFetcherFactory.getRadarFetcher(activity);
+		            results = fetcher.fetch();
+		            
+            		// Taking a nap - 10s
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
 
         return Boolean.TRUE;
     }
