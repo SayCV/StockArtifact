@@ -18,12 +18,12 @@
 
 package org.saycv.sgs.events;
 
-public enum TetheringErrorsEventTypes{
+public enum RadarsErrorsEventTypes{
     SGS_ERROR_NO_ERROR(0),
     SGS_ERROR_UNKNOWN_ERROR(1);
 
     private final int value;
-    private TetheringErrorsEventTypes(int value){
+    private RadarsErrorsEventTypes(int value){
         this.value = value;
     }
 

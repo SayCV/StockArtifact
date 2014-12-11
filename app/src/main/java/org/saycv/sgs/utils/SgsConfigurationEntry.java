@@ -53,4 +53,15 @@ public class SgsConfigurationEntry {
 	public static final String IDENTITY_PASSWORD = "IDENTITY_PASSWORD." + TAG;
 	
 	// Network
+	public static final String NETWORK_USE_WIFI = "NETWORK_USE_WIFI." + TAG;
+	public static final String NETWORK_USE_MOBILE = "NETWORK_USE_MOBILE." + TAG;
+	
+	//
+	//	Default values
+	//
+	// Network
+	public static final int DEFAULT_NETWORK_REGISTRATION_TIMEOUT = 1700;
+	public static final String DEFAULT_NETWORK_REALM = "sayCV.org";
+	public static final boolean DEFAULT_NETWORK_USE_WIFI = false;
+	public static final boolean DEFAULT_NETWORK_USE_MOBILE = false;
 }

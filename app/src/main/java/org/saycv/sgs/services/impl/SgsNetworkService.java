@@ -368,8 +368,8 @@ public class SgsNetworkService  extends SgsBaseService implements ISgsNetworkSer
 
 		boolean useWifi = SgsEngine.getInstance().getConfigurationService().getBoolean(SgsConfigurationEntry.NETWORK_USE_WIFI, 
 				SgsConfigurationEntry.DEFAULT_NETWORK_USE_WIFI);
-		boolean use3G = SgsEngine.getInstance().getConfigurationService().getBoolean(SgsConfigurationEntry.NETWORK_USE_3G,
-				SgsConfigurationEntry.DEFAULT_NETWORK_USE_3G);
+		boolean useMobile = SgsEngine.getInstance().getConfigurationService().getBoolean(SgsConfigurationEntry.NETWORK_USE_MOBILE,
+				SgsConfigurationEntry.DEFAULT_NETWORK_USE_MOBILE);
 
 		if (useWifi && (netType == ConnectivityManager.TYPE_WIFI)) {
 			if (mWifiManager != null && mWifiManager.isWifiEnabled()) {
@@ -582,32 +582,12 @@ public class SgsNetworkService  extends SgsBaseService implements ISgsNetworkSer
 			}
 		}
 		
-		if(bAtLeastOneConnected || !SgsEngine.getInstance().getSipService().isRegistered()){
-			triggerSipRegistration();
+		if(bAtLeastOneConnected || !SgsEngine.getInstance().getSgsService().isRegistered()){
+			triggerSgsRegistration();
 		}
 		
 	}
 	
-	private void triggerSipRegistration(){
-//		new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//				Log.d(TAG, "Network connection chaged: restart the stack");
-//				final ISipService sipService = ServiceManager.getSipService();
-//				final ConnectionState registrationState = sipService.getRegistrationState();
-//				switch(registrationState){
-//					case NONE:
-//					case TERMINATED:
-//						sipService.register(null);
-//						break;
-//					case CONNECTING:
-//					case TERMINATING:
-//					case CONNECTED:
-//						sipService.unRegister();
-//						sipService.register(null);
-//						break;
-//				}
-//			}
-//		}).start();
+	private void triggerSgsRegistration(){
 	}
 }
