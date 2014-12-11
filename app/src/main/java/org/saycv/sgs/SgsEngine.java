@@ -18,22 +18,15 @@
 
 package org.saycv.sgs;
 
-import org.saycv.sgs.media.SgsProxyPluginMgr;
 import org.saycv.sgs.services.ISgsConfigurationService;
-import org.saycv.sgs.services.ISgsContactService;
 import org.saycv.sgs.services.ISgsHistoryService;
 import org.saycv.sgs.services.ISgsHttpClientService;
 import org.saycv.sgs.services.ISgsNetworkService;
-import org.saycv.sgs.services.ISgsSipService;
-import org.saycv.sgs.services.ISgsSoundService;
 import org.saycv.sgs.services.ISgsStorageService;
 import org.saycv.sgs.services.impl.SgsConfigurationService;
-import org.saycv.sgs.services.impl.SgsContactService;
 import org.saycv.sgs.services.impl.SgsHistoryService;
 import org.saycv.sgs.services.impl.SgsHttpClientService;
 import org.saycv.sgs.services.impl.SgsNetworkService;
-import org.saycv.sgs.services.impl.SgsSipService;
-import org.saycv.sgs.services.impl.SgsSoundService;
 import org.saycv.sgs.services.impl.SgsStorageService;
 import org.saycv.sgs.utils.SgsConfigurationEntry;
 
@@ -64,10 +57,7 @@ public class SgsEngine {
 	protected ISgsStorageService mStorageService;
 	protected ISgsNetworkService mNetworkService;
 	protected ISgsHttpClientService mHttpClientService;
-	protected ISgsContactService mContactService;
 	protected ISgsHistoryService mHistoryService;
-	protected ISgsSipService mSipService;
-	protected ISgsSoundService mSoundService;
 	
 	public static void initialize(){
 
@@ -121,13 +111,9 @@ public class SgsEngine {
 		success &= getNetworkService().start();
 		success &= getHttpClientService().start();
 		success &= getHistoryService().start();
-        //success &= getContactService().start();
-        //success &= getSipService().start();
-        //success &= getSoundService().start();
 		
 		if(success) {
 			success &= getHistoryService().load();
-			/* success &=*/ //getContactService().load();
 			
 			SgsApplication.getContext().startService(
 					new Intent(SgsApplication.getContext(), getNativeServiceClass()));
@@ -154,9 +140,6 @@ public class SgsEngine {
         success &= getHttpClientService().stop();
         success &= getHistoryService().stop();
         success &= getStorageService().stop();
-        //success &= getContactService().stop();
-        //success &= getSipService().stop();
-        //success &= getSoundService().stop();
         success &= getNetworkService().stop();
 		
 		if(!success){
@@ -248,17 +231,6 @@ public class SgsEngine {
 	}
 	
 	/**
-	 * Gets the contact service
-	 * @return the contact service
-	 */
-	public ISgsContactService getContactService(){
-		if(mContactService == null){
-			mContactService = new SgsContactService();
-		}
-		return mContactService;
-	}
-	
-	/**
 	 * Gets the history service
 	 * @return the history service
 	 */
@@ -267,28 +239,6 @@ public class SgsEngine {
 			mHistoryService = new SgsHistoryService();
 		}
 		return mHistoryService;
-	}
-	
-	/**
-	 * Gets the SIP service
-	 * @return the sip service
-	 */
-	public ISgsSipService getSipService(){
-		if(mSipService == null){
-			mSipService = new SgsSipService();
-		}
-		return mSipService;
-	}
-	
-	/**
-	 * Gets the sound service
-	 * @return the sound service
-	 */
-	public ISgsSoundService getSoundService(){
-		if(mSoundService == null){
-			mSoundService = new SgsSoundService();
-		}
-		return mSoundService;
 	}
 	
 	/**
