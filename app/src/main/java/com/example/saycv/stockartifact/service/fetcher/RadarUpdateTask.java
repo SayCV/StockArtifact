@@ -17,6 +17,8 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     private MainActivity activity;
     private List<Radar> results;
 
+		private Thread mRadarsUpdateThread = null;
+		
     private Error error;
     enum Error {
         ERROR_NO_NET, ERROR_DOWNLOAD, ERROR_PARSE, ERROR_UNKNOWN
@@ -30,23 +32,7 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     protected Boolean doInBackground(Void ... ignored) {
         Log.i(TAG, "running Radar update in background");
 
-//        while(Boolean.TRUE) {
-
-//            try {
-//                Thread.sleep(10000);//delay 10s
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-
-            if (!NetworkDetector.hasValidNetwork(activity)) {
-                error = Error.ERROR_NO_NET;
-                return Boolean.FALSE;
-            }
-
-            Log.i(TAG, "start fetcher");
-            RadarFetcher fetcher = RadarFetcherFactory.getRadarFetcher(activity);
-            results = fetcher.fetch();
-//        }
+				setRadarsUpdateThreadClassEnabled(true);
 
         return Boolean.TRUE;
     }
@@ -82,5 +68,44 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
         } else {
             Log.i(TAG, "update failure");
         }
+    }
+    
+    public void setRadarsUpdateThreadClassEnabled(boolean enabled) {
+        if (enabled == true) {
+            if (this.mRadarsUpdateThread == null || this.mRadarsUpdateThread.isAlive() == false) {
+                this.mRadarsUpdateThread = new Thread(new RadarsUpdateThreadClass());
+                this.mRadarsUpdateThread.start();
+            }
+        } else {
+            if (this.mRadarsUpdateThread != null)
+                this.mRadarsUpdateThread.interrupt();
+        }
+    }
+    
+    class RadarsUpdateThreadClass implements Runnable {
+
+        public RadarsUpdateThreadClass() {
+        }
+        //@Override
+        public void run() {
+            while (!Thread.currentThread().isInterrupted()) {
+            		if (!NetworkDetector.hasValidNetwork(activity)) {
+		                error = Error.ERROR_NO_NET;
+		                return ;
+		            }
+		
+		            Log.i(TAG, "start fetcher");
+		            RadarFetcher fetcher = RadarFetcherFactory.getRadarFetcher(activity);
+		            results = fetcher.fetch();
+		            
+            		// Taking a nap - 10s
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+          
     }
 }
