@@ -62,7 +62,7 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     protected void onPostExecute(Boolean result) {
         activity.setProgressBarVisibility(false);
         activity.setProgressBarIndeterminateVisibility(false);
-        if (result) {
+        if (result && results != null) {
             Log.i(TAG, "update success, number of results ..." + results.size());
             updateRadars(results);
         } else {
@@ -97,6 +97,7 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
 		            Log.i(TAG, "start fetcher");
 		            RadarFetcher fetcher = RadarFetcherFactory.getRadarFetcher(activity);
 		            results = fetcher.fetch();
+		            updateRadars(results);
 		            
             		// Taking a nap - 10s
                 try {

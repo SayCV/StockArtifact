@@ -63,9 +63,10 @@ public class QQRadarFetcher extends BaseRadarFetcher {
                radar.addAll(getChinaRadar());
                Log.d(TAG, "get all end");
                initDone = true;
-           }
+           } else {
             Log.d(TAG, "get latest");
             radar.addAll(getChinaRadar());
+           }
         } else {
             Log.d(TAG, "get all");
             radar.addAll(getChinaRadar());
