@@ -100,7 +100,7 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
 
                 //Only the original thread that created a view hierarchy can touch its views
                 //updateRadars(results);
-                activity.
+                //activity.
 
                 // Taking a nap - 10s
                 try {
