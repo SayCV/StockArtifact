@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.os.Handler;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -26,6 +27,19 @@ public class MainActivity extends Activity {
     public static final String TAG = "MainActivity";
     public static RadarAdapter adapter;
 
+		private Handler mHandler;
+    private final Engine mEngine;
+    private final IRadarsService mRadarsService;
+
+    public MainActivity(){
+        super();
+
+        // Sets main activity (should be done before starting services)
+        mEngine = (Engine)Engine.getInstance();
+        mEngine.setMainActivity(this);
+        mRadarsService = ((Engine)Engine.getInstance()).getRadarsService();
+    }
+    
     public RadarAdapter getRadarAdapter() {
         return adapter;
     }
@@ -37,6 +51,8 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         setContentView(R.layout.activity_main);
+        mHandler = new Handler();
+        
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
