@@ -57,6 +57,15 @@ public class SgsConfigurationEntry {
 	//
 	//	Default values
 	//
+
+    // General
+    public static final boolean DEFAULT_GENERAL_STARTUP_CHECK = true;
+    public static final boolean DEFAULT_GENERAL_SHOW_WELCOME_SCREEN = true;
+    public static final boolean DEFAULT_GENERAL_FULL_SCREEN_VIDEO = true;
+    public static final boolean DEFAULT_GENERAL_INTERCEPT_OUTGOING_CALLS = true;
+    public static final boolean DEFAULT_GENERAL_USE_FFC = true;
+    public static final boolean DEFAULT_GENERAL_AUTOSTART = true;
+
 	// Network
 	public static final int DEFAULT_NETWORK_REGISTRATION_TIMEOUT = 1700;
 	public static final String DEFAULT_NETWORK_REALM = "sayCV.org";

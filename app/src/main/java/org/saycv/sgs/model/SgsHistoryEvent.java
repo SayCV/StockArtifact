@@ -31,7 +31,9 @@ public abstract class SgsHistoryEvent  implements Comparable<SgsHistoryEvent> {
 		Outgoing,
 		Incoming,
 		Missed,
-		Failed
+		Failed,
+        RADARS_ALL,
+        RADARS_LATEST
 	}
 	
 	// For performance reasons, do not use Date() class

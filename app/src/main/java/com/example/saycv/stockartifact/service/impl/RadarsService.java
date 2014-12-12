@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.example.saycv.stockartifact.events.RadarsEventArgs;
 import com.example.saycv.stockartifact.service.IRadarsService;
+import com.example.saycv.stockartifact.service.fetcher.RadarUpdateTask;
 
 import org.saycv.sgs.SgsApplication;
 import org.saycv.sgs.services.ISgsBaseService;
@@ -15,6 +16,8 @@ import org.saycv.sgs.services.impl.SgsBaseService;
 public class RadarsService extends SgsBaseService
         implements IRadarsService {
     private final static String TAG = RadarsService.class.getCanonicalName();
+
+    private RadarUpdateTask mRadarUpdateTask;
 
     public RadarsService() {
         super();
@@ -44,6 +47,9 @@ public class RadarsService extends SgsBaseService
         // TODO Auto-generated method stub
 
     }
+
+    public void setDefaultTask(RadarUpdateTask task) {  mRadarUpdateTask = task; }
+    public RadarUpdateTask getDefaultTask() { return mRadarUpdateTask; }
 
     public void broadcastRadarsEvent(RadarsEventArgs args, String date){
         final Intent intent = new Intent(RadarsEventArgs.ACTION_RADARS_EVENT);

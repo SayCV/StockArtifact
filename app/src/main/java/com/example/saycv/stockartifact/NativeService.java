@@ -12,10 +12,14 @@ import android.view.WindowManager;
 
 import com.example.saycv.stockartifact.events.RadarsEventArgs;
 import com.example.saycv.stockartifact.events.RadarsEventTypes;
+import com.example.saycv.stockartifact.model.HistoryRadarsEvent;
+import com.example.saycv.stockartifact.service.impl.RadarsService;
 
 import org.saycv.logger.Log;
 import org.saycv.sgs.SgsNativeService;
 import org.saycv.sgs.events.SgsEventArgs;
+import org.saycv.sgs.model.SgsHistoryEvent;
+import org.saycv.sgs.utils.SgsDateTimeUtils;
 import org.saycv.sgs.utils.SgsStringUtils;
 
 public class NativeService extends SgsNativeService {
@@ -69,7 +73,34 @@ public class NativeService extends SgsNativeService {
                         return;
                     }
                     String dateString = intent.getStringExtra(RadarsEventArgs.EXTRA_DATE);
-
+                    String remoteParty = intent.getStringExtra(RadarsEventArgs.EXTRA_REMOTE_PARTY);
+                    if(SgsStringUtils.isNullOrEmpty(remoteParty)){
+                        remoteParty = SgsStringUtils.nullValue();
+                    }
+                    remoteParty = "RadarsEvent";//SgsUriUtils.getUserName(remoteParty);
+                    HistoryRadarsEvent event;
+                    switch((type = args.getEventType())){
+                        case RADARS_EVENT_1:
+                            event = new HistoryRadarsEvent(remoteParty, SgsHistoryEvent.StatusType.RADARS_ALL);
+                            /*event.setContent(new String("Start Tethering -- TotalUpload: " +
+                                    Long.toString(args.getTotalUpload()) + ", TotalDownload: " + Long.toString(args.getTotalDownload())));
+                            */
+                            //Log.d(TAG, "Traffic Count getTotalUpload = " + args.getTotalUpload());
+                            //Log.d(TAG, "Traffic Count getTotalDownload = " + args.getTotalDownload());
+                            //Log.d(TAG, "Traffic Count Rx End date = " + dateString);
+                            event.setRadarsData(args.getRadarsData());
+                            event.setStartTime(SgsDateTimeUtils.parseDate(dateString).getTime());
+                            if(mEngine.getHistoryService().getEvents().size() != 0 && mEngine.getHistoryService().getEvents().get(0).compareTo(event) == 0 ) {
+                                Log.d(TAG, "Found Redundant Traffic Count Event, will avoid this");
+                                break;
+                            }
+                            mEngine.getHistoryService().addEvent(event);
+                            ((RadarsService) mEngine.getRadarsService()).getDefaultTask().updateRadars(args.getRadarsData());
+                            break;
+                        default:
+                            Log.d(TAG, "Invalid event args.getEventType().");
+                            break;
+                    }
 
                 }
 			}
@@ -82,7 +113,7 @@ public class NativeService extends SgsNativeService {
 			Bundle bundle = intent.getExtras();
 			if (bundle != null && bundle.getBoolean("autostarted")) {
 				if (mEngine.start()) {
-					//mEngine.getTetheringService().register(null);
+					//mEngine.getRadarsService().register(null);
 				}
 			}
 		}

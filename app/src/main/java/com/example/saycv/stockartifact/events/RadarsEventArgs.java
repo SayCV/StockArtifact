@@ -21,9 +21,12 @@ package com.example.saycv.stockartifact.events;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.saycv.stockartifact.model.Radar;
+
 import org.saycv.sgs.events.SgsEventArgs;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Base class for all events
@@ -32,17 +35,18 @@ public class RadarsEventArgs extends SgsEventArgs {
     private final static String TAG = RadarsEventArgs.class.getCanonicalName();
 	
 	private RadarsEventTypes mEventType;
-	private String mRadarsData;
+    private List<Radar> mRadarsData;
 	
 	public static final String ACTION_RADARS_EVENT = TAG + ".ACTION_RADARS_EVENT";
 
 	public static final String EXTRA_EMBEDDED = SgsEventArgs.EXTRA_EMBEDDED;
+    public static final String EXTRA_REMOTE_PARTY = TAG + "from";
     public static final String EXTRA_DATE = TAG + "date";
 	
-	public RadarsEventArgs(RadarsEventTypes type, String radarsData){
+	public RadarsEventArgs(RadarsEventTypes type, List<Radar> radarsData){
 		super();
 		mEventType  = type;
-		mRadarsData = radarsData;
+        mRadarsData = radarsData;
 	}
 
     public RadarsEventArgs(Parcel in) {
@@ -60,17 +64,17 @@ public class RadarsEventArgs extends SgsEventArgs {
     };
 
     public RadarsEventTypes getEventType() { return mEventType; }
-    public String getRadarsData() { return mRadarsData; }
+    public List<Radar> getRadarsData() { return mRadarsData; }
     
     @Override
 	protected void readFromParcel(Parcel in) {
 		mEventType = Enum.valueOf(RadarsEventTypes.class, in.readString());
-		mRadarsData = in.readString();
+        in.readList(mRadarsData, Radar.class.getClassLoader());
 	}
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(mEventType.toString());
-		dest.writeString(mRadarsData);
+        dest.writeList(mRadarsData);
 	}
 }

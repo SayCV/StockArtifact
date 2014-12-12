@@ -19,7 +19,9 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.example.saycv.stockartifact.service.IRadarsService;
 import com.example.saycv.stockartifact.service.fetcher.RadarUpdateTask;
+import com.example.saycv.stockartifact.service.impl.RadarsService;
 import com.example.saycv.stockartifact.view.RadarAdapter;
 
 
@@ -27,9 +29,11 @@ public class MainActivity extends Activity {
     public static final String TAG = "MainActivity";
     public static RadarAdapter adapter;
 
-		private Handler mHandler;
+    private Handler mHandler;
     private final Engine mEngine;
     private final IRadarsService mRadarsService;
+
+
 
     public MainActivity(){
         super();
@@ -39,7 +43,7 @@ public class MainActivity extends Activity {
         mEngine.setMainActivity(this);
         mRadarsService = ((Engine)Engine.getInstance()).getRadarsService();
     }
-    
+
     public RadarAdapter getRadarAdapter() {
         return adapter;
     }
@@ -52,10 +56,10 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
         mHandler = new Handler();
-        
+
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new PlaceholderFragment(mEngine))
                     .commit();
         }
     }
@@ -88,8 +92,13 @@ public class MainActivity extends Activity {
      */
     public static class PlaceholderFragment extends Fragment {
 
-
+        private Engine mEngine;
         public PlaceholderFragment() {
+        }
+
+        public PlaceholderFragment(Engine engine) {
+            super();
+            mEngine = engine;
         }
 
         @Override
@@ -114,7 +123,7 @@ public class MainActivity extends Activity {
             Log.i(TAG, "start radar activity");
             RadarUpdateTask task = new RadarUpdateTask((Activity)view.getContext());
             task.execute();
-
+            ((RadarsService) ((Engine)Engine.getInstance()).getRadarsService()).setDefaultTask(task);
         }
     }
 }
