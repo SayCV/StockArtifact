@@ -1,116 +1,192 @@
-<RelativeLayout android:id="@+id/RelativeLayout01"
-    android:layout_width="fill_parent" android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:background="@drawable/item" android:padding="4sp">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/item"
+    android:padding="4sp">
 
-    <TextView android:id="@+id/name"
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="120sp"
         android:layout_height="wrap_content"
-        android:lines="1" android:shadowRadius="1" android:shadowDx="1"
-        android:shadowDy="1" android:shadowColor="#88444444" android:textSize="22sp"
-        android:textColor="#FFFFFF" android:maxLines="1" android:minLines="1"
-        android:marqueeRepeatLimit="marquee_forever" android:text="上证指数"
-        android:ellipsize="marquee" android:singleLine="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/quote"
+        android:ellipsize="marquee"
+        android:lines="1"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxLines="1"
+        android:minLines="1"
+        android:shadowColor="#88444444"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:singleLine="true"
+        android:text="上证指数"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"></TextView>
+
+    <TextView
+        android:id="@+id/quote"
         android:layout_width="120sp"
-        android:layout_alignTop="@+id/quote"></TextView>
-    <TextView android:id="@+id/quote" android:layout_height="wrap_content"
-        android:text="0000.00"
-        android:paddingRight="5sp" android:paddingLeft="10sp"
-        android:shadowColor="#88444444" android:shadowDx="1" android:shadowDy="1"
-        android:shadowRadius="1" android:textSize="24sp" android:textColor="#FFFFFF"
-        android:layout_width="120sp" android:lines="1"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/name"></TextView>
-    <TextView android:id="@+id/change" android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/name"
+        android:lines="1"
+        android:paddingLeft="10sp"
+        android:paddingRight="5sp"
+        android:shadowColor="#88444444"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:text="0000.00"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"></TextView>
+
+    <TextView
+        android:id="@+id/change"
+        android:layout_width="120sp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:gravity="right"
-        android:paddingLeft="5sp" android:textStyle="bold"
-        android:textColor="@color/normal" android:shadowColor="#88444444"
-        android:shadowDx="1" android:shadowDy="1" android:shadowRadius="1"
-        android:textSize="12sp"
+        android:lines="1"
+        android:paddingLeft="5sp"
+        android:shadowColor="#88444444"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
         android:text="+999.99"
-        android:layout_width="120sp"
-        android:lines="1"
-        android:layout_alignParentRight="true"></TextView>
-    <TextView android:id="@+id/change2" android:layout_height="wrap_content"
-        android:gravity="right"
-        android:paddingLeft="5sp" android:textStyle="bold"
-        android:textColor="@color/normal" android:shadowColor="#88444444"
-        android:shadowDx="1" android:shadowDy="1" android:shadowRadius="1"
+        android:textColor="@color/normal"
         android:textSize="12sp"
-        android:text="+9.99%"
+        android:textStyle="bold"></TextView>
+
+    <TextView
+        android:id="@+id/change2"
         android:layout_width="120sp"
-        android:lines="1"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/quote"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"></TextView>
+        android:gravity="right"
+        android:lines="1"
+        android:paddingLeft="5sp"
+        android:shadowColor="#88444444"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:text="+9.99%"
+        android:textColor="@color/normal"
+        android:textSize="12sp"
+        android:textStyle="bold"></TextView>
 
-    <TextView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/normal" android:shadowColor="#88444444"
-        android:text="昨收" android:id="@+id/yesterday_quote_name"
-        android:layout_below="@+id/name"></TextView>
-    <TextView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/normal" android:shadowColor="#88444444"
-        android:text="今收" android:id="@+id/today_quote_name"
-        android:layout_below="@+id/yesterday_quote_name"></TextView>
-    <TextView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/normal" android:shadowColor="#88444444"
-        android:text="9999.99" android:id="@+id/yesterday_quote_price"
-        android:paddingLeft="10sp"
-        android:layout_toRightOf="@+id/yesterday_quote_name"
-        android:layout_below="@+id/name"></TextView>
-    <TextView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/normal" android:shadowColor="#88444444"
-        android:text="9999.99" android:id="@+id/today_quote_price"
-        android:paddingLeft="10sp"
-        android:layout_toRightOf="@+id/today_quote_name"
-        android:layout_below="@+id/yesterday_quote_price"></TextView>
-
-    <TextView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/normal" android:shadowColor="#88444444"
-        android:text="最高" android:id="@+id/today_quote_high_name"
-        android:paddingLeft="40sp"
-        android:layout_toRightOf="@+id/yesterday_quote_price"
-        android:layout_below="@+id/name"></TextView>
-    <TextView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/normal" android:shadowColor="#88444444"
-        android:text="最低" android:id="@+id/today_quote_low_name"
-        android:paddingLeft="40sp"
-        android:layout_toRightOf="@+id/yesterday_quote_price"
-        android:layout_below="@+id/today_quote_high_name"></TextView>
-    <TextView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/normal" android:shadowColor="#88444444"
-        android:text="9999.99" android:id="@+id/today_quote_high_price"
-        android:paddingLeft="10sp"
-        android:layout_toRightOf="@+id/today_quote_high_name"
-        android:layout_below="@+id/name"></TextView>
-    <TextView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/normal" android:shadowColor="#88444444"
-        android:text="9999.99" android:id="@+id/today_quote_low_price"
-        android:paddingLeft="10sp"
-        android:layout_toRightOf="@+id/today_quote_low_name"
-        android:layout_below="@+id/today_quote_high_price"></TextView>
-
-    <TextView android:layout_height="wrap_content"
-        android:textColor="@color/normal" android:shadowColor="#88444444"
-        android:gravity="right" android:id="@+id/amplitude_name" android:text="振幅"
-        android:paddingRight="10sp"
-        android:layout_toRightOf="@+id/today_quote_high_price" android:layout_width="180sp"
-        android:layout_below="@+id/name"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"></TextView>
-    <TextView android:layout_height="wrap_content" android:id="@+id/amplitude_value"
-        android:gravity="right" android:text="+9.99%"
+    <TextView
+        android:id="@+id/yesterday_quote_name"
         android:layout_width="wrap_content"
-        android:textColor="@color/normal" android:shadowColor="#88444444"
-        android:layout_below="@+id/amplitude_name"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:shadowColor="#88444444"
+        android:text="昨收"
+        android:textColor="@color/normal"></TextView>
+
+    <TextView
+        android:id="@+id/today_quote_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/yesterday_quote_name"
+        android:shadowColor="#88444444"
+        android:text="今收"
+        android:textColor="@color/normal"></TextView>
+
+    <TextView
+        android:id="@+id/yesterday_quote_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_toRightOf="@+id/yesterday_quote_name"
+        android:paddingLeft="10sp"
+        android:shadowColor="#88444444"
+        android:text="9999.99"
+        android:textColor="@color/normal"></TextView>
+
+    <TextView
+        android:id="@+id/today_quote_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/yesterday_quote_price"
+        android:layout_toRightOf="@+id/today_quote_name"
+        android:paddingLeft="10sp"
+        android:shadowColor="#88444444"
+        android:text="9999.99"
+        android:textColor="@color/normal"></TextView>
+
+    <TextView
+        android:id="@+id/today_quote_high_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_toRightOf="@+id/yesterday_quote_price"
+        android:paddingLeft="40sp"
+        android:shadowColor="#88444444"
+        android:text="最高"
+        android:textColor="@color/normal"></TextView>
+
+    <TextView
+        android:id="@+id/today_quote_low_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/today_quote_high_name"
+        android:layout_toRightOf="@+id/yesterday_quote_price"
+        android:paddingLeft="40sp"
+        android:shadowColor="#88444444"
+        android:text="最低"
+        android:textColor="@color/normal"></TextView>
+
+    <TextView
+        android:id="@+id/today_quote_high_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_toRightOf="@+id/today_quote_high_name"
+        android:paddingLeft="10sp"
+        android:shadowColor="#88444444"
+        android:text="9999.99"
+        android:textColor="@color/normal"></TextView>
+
+    <TextView
+        android:id="@+id/today_quote_low_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/today_quote_high_price"
+        android:layout_toRightOf="@+id/today_quote_low_name"
+        android:paddingLeft="10sp"
+        android:shadowColor="#88444444"
+        android:text="9999.99"
+        android:textColor="@color/normal"></TextView>
+
+    <TextView
+        android:id="@+id/amplitude_name"
+        android:layout_width="180sp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"></TextView>
+        android:layout_below="@+id/name"
+        android:layout_toRightOf="@+id/today_quote_high_price"
+        android:gravity="right"
+        android:paddingRight="10sp"
+        android:shadowColor="#88444444"
+        android:text="振幅"
+        android:textColor="@color/normal"></TextView>
+
+    <TextView
+        android:id="@+id/amplitude_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/amplitude_name"
+        android:gravity="right"
+        android:shadowColor="#88444444"
+        android:text="+9.99%"
+        android:textColor="@color/normal"></TextView>
 
 </RelativeLayout>

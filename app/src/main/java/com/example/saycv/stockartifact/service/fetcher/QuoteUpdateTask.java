@@ -1,5 +1,9 @@
 package com.example.saycv.stockartifact.service.fetcher;
 
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.example.saycv.stockartifact.PortfolioActivity;
 import com.example.saycv.stockartifact.R;
 import com.example.saycv.stockartifact.StockApplication;
@@ -16,31 +20,24 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
-
 public class QuoteUpdateTask extends AsyncTask<Stock, Integer, Boolean> {
     private static final String TAG = "QuoteUpdateTask";
     private PortfolioActivity activity;
     private int total = 0;
     private int current = 0;
     private Error error;
-    enum Error {
-        ERROR_NO_NET, ERROR_DOWNLOAD, ERROR_PARSE, ERROR_UNKNOWN
-    }
-    
+
     public QuoteUpdateTask(PortfolioActivity activity) {
         this.activity = activity;
     }
 
     @Override
-    protected Boolean doInBackground(Stock... stocks) {        
+    protected Boolean doInBackground(Stock... stocks) {
         if (!NetworkDetector.hasValidNetwork(activity)) {
             error = Error.ERROR_NO_NET;
             return Boolean.FALSE;
         }
-        
+
         total = stocks.length;
         QuoteFetcher fetcher = QuoteFetcherFactory.getQuoteFetcher();
         fetcher.getClient().getConnectionManager().closeExpiredConnections(); // close previously opened conn
@@ -49,12 +46,12 @@ public class QuoteUpdateTask extends AsyncTask<Stock, Integer, Boolean> {
         ExecutorService executor = StockApplication.getExecutor();
         try {
             ArrayList<Future<StockDetail>> results = new ArrayList<Future<StockDetail>>();
-            for(Stock s : stocks) {
+            for (Stock s : stocks) {
                 UpdateSubTask task = new UpdateSubTask(fetcher, s);
                 results.add(executor.submit(task));
             }
-            
-            for(Future<StockDetail> r : results) {
+
+            for (Future<StockDetail> r : results) {
                 try {
                     r.get();
                 } catch (ExecutionException e) {
@@ -86,30 +83,12 @@ public class QuoteUpdateTask extends AsyncTask<Stock, Integer, Boolean> {
             Log.e(TAG, "unexpected error while update stock quote", re);
             error = Error.ERROR_UNKNOWN;
             return Boolean.FALSE;
-        } 
-    }
-
-    class UpdateSubTask implements Callable<StockDetail> {
-        Stock stock;
-        QuoteFetcher fetcher;
-
-        public UpdateSubTask(QuoteFetcher fetcher, Stock s) {
-            this.fetcher = fetcher;
-            this.stock = s;
-        }
-
-        @Override
-        public StockDetail call() throws Exception {
-            StockDetail detail = fetcher.fetch(stock.getQuote());
-            stock.setDetail(detail);
-            publishProgress(++current);
-            return detail;
         }
     }
 
     @Override
     protected void onCancelled() {
-        activity.getParent().setProgressBarVisibility(false);        
+        activity.getParent().setProgressBarVisibility(false);
         Toast.makeText(activity, R.string.msg_download_cancelled, Toast.LENGTH_SHORT);
     }
 
@@ -119,20 +98,20 @@ public class QuoteUpdateTask extends AsyncTask<Stock, Integer, Boolean> {
             activity.getAdapter().notifyDataSetChanged();
         } else {
             switch (error) {
-            case ERROR_NO_NET:
-                Toast.makeText(activity, R.string.msg_no_network, Toast.LENGTH_LONG).show();
-                break;
-            case ERROR_DOWNLOAD:
-                activity.showDialog(PortfolioActivity.DIALOG_ERR_DOWNLOAD_UPDATE);
-                break;
-            case ERROR_PARSE:
-                activity.showDialog(PortfolioActivity.DIALOG_ERR_QUOTE_UPDATE);
-                break;
-            case ERROR_UNKNOWN:
-                activity.showDialog(PortfolioActivity.DIALOG_ERR_UNEXPECTED);
-                break;
-            default:
-                break;
+                case ERROR_NO_NET:
+                    Toast.makeText(activity, R.string.msg_no_network, Toast.LENGTH_LONG).show();
+                    break;
+                case ERROR_DOWNLOAD:
+                    activity.showDialog(PortfolioActivity.DIALOG_ERR_DOWNLOAD_UPDATE);
+                    break;
+                case ERROR_PARSE:
+                    activity.showDialog(PortfolioActivity.DIALOG_ERR_QUOTE_UPDATE);
+                    break;
+                case ERROR_UNKNOWN:
+                    activity.showDialog(PortfolioActivity.DIALOG_ERR_UNEXPECTED);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -151,5 +130,27 @@ public class QuoteUpdateTask extends AsyncTask<Stock, Integer, Boolean> {
         Log.i(TAG, "downloaded " + values[0] + "/" + total + ", " + progress);
         activity.getParent().setProgress((int) progress);
         activity.getAdapter().notifyDataSetChanged();
+    }
+
+    enum Error {
+        ERROR_NO_NET, ERROR_DOWNLOAD, ERROR_PARSE, ERROR_UNKNOWN
+    }
+
+    class UpdateSubTask implements Callable<StockDetail> {
+        Stock stock;
+        QuoteFetcher fetcher;
+
+        public UpdateSubTask(QuoteFetcher fetcher, Stock s) {
+            this.fetcher = fetcher;
+            this.stock = s;
+        }
+
+        @Override
+        public StockDetail call() throws Exception {
+            StockDetail detail = fetcher.fetch(stock.getQuote());
+            stock.setDetail(detail);
+            publishProgress(++current);
+            return detail;
+        }
     }
 }

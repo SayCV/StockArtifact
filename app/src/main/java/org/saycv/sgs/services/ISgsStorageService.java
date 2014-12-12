@@ -19,6 +19,7 @@
 package org.saycv.sgs.services;
 
 public interface ISgsStorageService extends ISgsBaseService {
-	String getCurrentDir();
-	String getContentShareDir();
+    String getCurrentDir();
+
+    String getContentShareDir();
 }

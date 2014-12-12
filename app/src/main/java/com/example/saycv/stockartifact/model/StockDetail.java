@@ -24,8 +24,7 @@ public class StockDetail implements Serializable {
     }
 
     /**
-     * @param price
-     *            the price to set
+     * @param price the price to set
      */
     public void setPrice(BigDecimal price) {
         this.price = price;
@@ -39,8 +38,7 @@ public class StockDetail implements Serializable {
     }
 
     /**
-     * @param changePrice
-     *            the changePrice to set
+     * @param changePrice the changePrice to set
      */
     public void setChangePrice(BigDecimal changePrice) {
         this.changePrice = changePrice;
@@ -54,8 +52,7 @@ public class StockDetail implements Serializable {
     }
 
     /**
-     * @param changePricePercent
-     *            the changePricePercent to set
+     * @param changePricePercent the changePricePercent to set
      */
     public void setChangePricePercent(BigDecimal changePricePercent) {
         this.changePricePercent = changePricePercent;
@@ -69,8 +66,7 @@ public class StockDetail implements Serializable {
     }
 
     /**
-     * @param volume
-     *            the volume to set
+     * @param volume the volume to set
      */
     public void setVolume(String volume) {
         this.volume = volume;
@@ -84,8 +80,7 @@ public class StockDetail implements Serializable {
     }
 
     /**
-     * @param dayHigh
-     *            the dayHigh to set
+     * @param dayHigh the dayHigh to set
      */
     public void setDayHigh(BigDecimal dayHigh) {
         this.dayHigh = dayHigh;
@@ -99,8 +94,7 @@ public class StockDetail implements Serializable {
     }
 
     /**
-     * @param dayLow
-     *            the dayLow to set
+     * @param dayLow the dayLow to set
      */
     public void setDayLow(BigDecimal dayLow) {
         this.dayLow = dayLow;
@@ -114,8 +108,7 @@ public class StockDetail implements Serializable {
     }
 
     /**
-     * @param updatedAt
-     *            the updatedAt to set
+     * @param updatedAt the updatedAt to set
      */
     public void setUpdatedAt(Calendar updatedAt) {
         this.updatedAt = updatedAt;

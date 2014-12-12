@@ -23,7 +23,6 @@ import android.app.Activity;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.android.LogcatAppender;
@@ -39,21 +38,16 @@ import ch.qos.logback.core.FileAppender;
  */
 public final class LogConfiguration {
     protected static LogConfiguration sInstance = null;
-
+    private static LoggerContext mLoggerContext = null;
+    private static ch.qos.logback.classic.Logger mLoggerRoot = null;
+    private static org.slf4j.Logger mLogger = null;
+    private static Activity mMainActivity = null;
+    private static String mLoggerName = "ROOT";
+    private static String mLogFileName = "sgsLog.log";
     // private String mFilePattern = "%d - [%p::%c::%C] - %m%n";
     // private String mLogCatPattern = "%m%n";
     private String mFilePattern = "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n";
     private String mLogcatPattern = "[%thread] %msg%n";
-
-    private static LoggerContext mLoggerContext = null;
-    private static ch.qos.logback.classic.Logger mLoggerRoot = null;
-    private static org.slf4j.Logger mLogger = null;
-
-    private static Activity mMainActivity = null;
-
-    private static String mLoggerName = "ROOT";
-    private static String mLogFileName = "sgsLog.log";
-
     private int mMaxBackupSize = 5;
     private long mMaxFileSize = 512 * 1024;
 
@@ -62,13 +56,6 @@ public final class LogConfiguration {
     private boolean mUseFileAppender = true;
     private boolean mResetConfiguration = true;
     private boolean mInternalDebugging = false;
-
-    public static LogConfiguration getInstance(){
-        if(sInstance == null){
-            sInstance = new LogConfiguration();
-        }
-        return sInstance;
-    }
 
     public LogConfiguration() {
     }
@@ -83,7 +70,7 @@ public final class LogConfiguration {
 
     /**
      * @param loggerName Name of the logger
-     * @param fileName Name of the log file
+     * @param fileName   Name of the log file
      */
     public LogConfiguration(final String loggerName, final String fileName) {
         this(loggerName);
@@ -91,8 +78,8 @@ public final class LogConfiguration {
     }
 
     /**
-     * @param loggerName Name of the logger
-     * @param fileName Name of the log file
+     * @param loggerName  Name of the logger
+     * @param fileName    Name of the log file
      * @param filePattern Log pattern for the file appender
      */
     public LogConfiguration(final String loggerName, final String fileName, final String filePattern) {
@@ -101,11 +88,11 @@ public final class LogConfiguration {
     }
 
     /**
-     * @param loggerName Name of the logger
-     * @param fileName Name of the log file
+     * @param loggerName    Name of the logger
+     * @param fileName      Name of the log file
      * @param maxBackupSize Maximum number of backed up log files
-     * @param maxFileSize Maximum size of log file until rolling
-     * @param filePattern  Log pattern for the file appender
+     * @param maxFileSize   Maximum size of log file until rolling
+     * @param filePattern   Log pattern for the file appender
      */
     public LogConfiguration(final String loggerName, final String fileName,
                             final int maxBackupSize, final long maxFileSize, final String filePattern) {
@@ -114,32 +101,39 @@ public final class LogConfiguration {
         setMaxFileSize(maxFileSize);
     }
 
+    public static LogConfiguration getInstance() {
+        if (sInstance == null) {
+            sInstance = new LogConfiguration();
+        }
+        return sInstance;
+    }
+
     public void configure() {
         mLogger = LoggerFactory.getLogger(getLoggerName());
         mLoggerRoot = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(mLogger.ROOT_LOGGER_NAME);
-        mLoggerContext = (LoggerContext)LoggerFactory.getILoggerFactory();
+        mLoggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
         // reset the default context (which may already have been initialized)
         // since we want to reconfigure it
-        if(isResetConfiguration()) {
+        if (isResetConfiguration()) {
             getLoggerContext().reset();
 
             File logFile = new File(getFileName());
             if (logFile.exists() == true) {
-                if(logFile.length() > 20 * 1024) // 20KB
-                logFile.delete();
+                if (logFile.length() > 20 * 1024) // 20KB
+                    logFile.delete();
             }
         }
 
         // setInternalDebugging(isInternalDebugging());
 
         // setup FileAppender
-        if(isUseFileAppender()) {
+        if (isUseFileAppender()) {
             configureFileAppender();
         }
 
         // setup LogcatAppender
-        if(isUseLogcatAppender()) {
+        if (isUseLogcatAppender()) {
             configureLogcatAppender();
         }
     }
@@ -199,11 +193,17 @@ public final class LogConfiguration {
         this.mLogcatPattern = logCatPattern;
     }
 
-    public void setLoggerName(final String loggerName) { mLoggerName = loggerName; }
-    public String getLoggerName() { return mLoggerName; }
+    public String getLoggerName() {
+        return mLoggerName;
+    }
+
+    public void setLoggerName(final String loggerName) {
+        mLoggerName = loggerName;
+    }
 
     /**
      * Returns the name of the log file
+     *
      * @return the name of the log file
      */
     public String getFileName() {
@@ -212,6 +212,7 @@ public final class LogConfiguration {
 
     /**
      * Sets the name of the log file
+     *
      * @param fileName Name of the log file
      */
     public void setFileName(final String fileName) {
@@ -220,6 +221,7 @@ public final class LogConfiguration {
 
     /**
      * Returns the maximum number of backed up log files
+     *
      * @return Maximum number of backed up log files
      */
     public int getMaxBackupSize() {
@@ -228,6 +230,7 @@ public final class LogConfiguration {
 
     /**
      * Sets the maximum number of backed up log files
+     *
      * @param maxBackupSize Maximum number of backed up log files
      */
     public void setMaxBackupSize(final int maxBackupSize) {
@@ -236,6 +239,7 @@ public final class LogConfiguration {
 
     /**
      * Returns the maximum size of log file until rolling
+     *
      * @return Maximum size of log file until rolling
      */
     public long getMaxFileSize() {
@@ -244,6 +248,7 @@ public final class LogConfiguration {
 
     /**
      * Sets the maximum size of log file until rolling
+     *
      * @param maxFileSize Maximum size of log file until rolling
      */
     public void setMaxFileSize(final long maxFileSize) {
@@ -260,6 +265,7 @@ public final class LogConfiguration {
 
     /**
      * Returns true, if FileAppender is used for logging
+     *
      * @return True, if FileAppender is used for logging
      */
     public boolean isUseFileAppender() {
@@ -275,6 +281,7 @@ public final class LogConfiguration {
 
     /**
      * Returns true, if LogcatAppender should be used
+     *
      * @return True, if LogcatAppender should be used
      */
     public boolean isUseLogcatAppender() {
@@ -283,29 +290,31 @@ public final class LogConfiguration {
 
     /**
      * If set to true, LogcatAppender will be used for logging
+     *
      * @param useLogcatAppender If true, LogcatAppender will be used for logging
      */
     public void setUseLogcatAppender(final boolean useLogcatAppender) {
         this.mUseLogcatAppender = useLogcatAppender;
     }
 
-    public void setResetConfiguration(boolean resetConfiguration) {
-        this.mResetConfiguration = resetConfiguration;
-    }
-
     /**
      * Resets the log4j configuration before applying this configuration. Default is true.
+     *
      * @return True, if the log4j configuration should be reset before applying this configuration.
      */
     public boolean isResetConfiguration() {
         return mResetConfiguration;
     }
 
-    public void setInternalDebugging(boolean internalDebugging) {
-        this.mInternalDebugging = internalDebugging;
+    public void setResetConfiguration(boolean resetConfiguration) {
+        this.mResetConfiguration = resetConfiguration;
     }
 
     public boolean isInternalDebugging() {
         return mInternalDebugging;
+    }
+
+    public void setInternalDebugging(boolean internalDebugging) {
+        this.mInternalDebugging = internalDebugging;
     }
 }

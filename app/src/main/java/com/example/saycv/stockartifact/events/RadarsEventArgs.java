@@ -25,34 +25,13 @@ import com.example.saycv.stockartifact.model.Radar;
 
 import org.saycv.sgs.events.SgsEventArgs;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * Base class for all events
  */
 public class RadarsEventArgs extends SgsEventArgs {
-    private final static String TAG = RadarsEventArgs.class.getCanonicalName();
-	
-	private RadarsEventTypes mEventType;
-    private List<Radar> mRadarsData;
-	
-	public static final String ACTION_RADARS_EVENT = TAG + ".ACTION_RADARS_EVENT";
-
-	public static final String EXTRA_EMBEDDED = SgsEventArgs.EXTRA_EMBEDDED;
-    public static final String EXTRA_REMOTE_PARTY = TAG + "from";
-    public static final String EXTRA_DATE = TAG + "date";
-	
-	public RadarsEventArgs(RadarsEventTypes type, List<Radar> radarsData){
-		super();
-		mEventType  = type;
-        mRadarsData = radarsData;
-	}
-
-    public RadarsEventArgs(Parcel in) {
-	      super(in);
-	 }
-	 
+    public static final String EXTRA_EMBEDDED = SgsEventArgs.EXTRA_EMBEDDED;
     public static final Parcelable.Creator<RadarsEventArgs> CREATOR = new Parcelable.Creator<RadarsEventArgs>() {
         public RadarsEventArgs createFromParcel(Parcel in) {
             return new RadarsEventArgs(in);
@@ -62,19 +41,40 @@ public class RadarsEventArgs extends SgsEventArgs {
             return new RadarsEventArgs[size];
         }
     };
+    private final static String TAG = RadarsEventArgs.class.getCanonicalName();
+    public static final String ACTION_RADARS_EVENT = TAG + ".ACTION_RADARS_EVENT";
+    public static final String EXTRA_REMOTE_PARTY = TAG + "from";
+    public static final String EXTRA_DATE = TAG + "date";
+    private RadarsEventTypes mEventType;
+    private List<Radar> mRadarsData;
 
-    public RadarsEventTypes getEventType() { return mEventType; }
-    public List<Radar> getRadarsData() { return mRadarsData; }
-    
+    public RadarsEventArgs(RadarsEventTypes type, List<Radar> radarsData) {
+        super();
+        mEventType = type;
+        mRadarsData = radarsData;
+    }
+
+    public RadarsEventArgs(Parcel in) {
+        super(in);
+    }
+
+    public RadarsEventTypes getEventType() {
+        return mEventType;
+    }
+
+    public List<Radar> getRadarsData() {
+        return mRadarsData;
+    }
+
     @Override
-	protected void readFromParcel(Parcel in) {
-		mEventType = Enum.valueOf(RadarsEventTypes.class, in.readString());
+    protected void readFromParcel(Parcel in) {
+        mEventType = Enum.valueOf(RadarsEventTypes.class, in.readString());
         in.readList(mRadarsData, Radar.class.getClassLoader());
-	}
+    }
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(mEventType.toString());
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mEventType.toString());
         dest.writeList(mRadarsData);
-	}
+    }
 }

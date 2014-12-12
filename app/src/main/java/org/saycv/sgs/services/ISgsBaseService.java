@@ -19,6 +19,7 @@
 package org.saycv.sgs.services;
 
 public interface ISgsBaseService {
-	boolean start();
-	boolean stop();
+    boolean start();
+
+    boolean stop();
 }

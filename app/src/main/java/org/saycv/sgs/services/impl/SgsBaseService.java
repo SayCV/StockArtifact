@@ -28,5 +28,5 @@ import org.saycv.sgs.services.ISgsBaseService;
  * Base class for all services
  */
 public abstract class SgsBaseService implements ISgsBaseService {
-	
+
 }

@@ -18,31 +18,33 @@
 
 package org.saycv.sgs.media;
 
-import android.net.TrafficStats;
-
 public enum SgsMediaType {
-	None,
-	Audio,
-	Video,
-	AudioVideo,
-	SMS,
-	Chat,
-	FileTransfer,
+    None,
+    Audio,
+    Video,
+    AudioVideo,
+    SMS,
+    Chat,
+    FileTransfer,
     Radars;
-	
-	public static boolean isAudioVideoType(SgsMediaType type){
-		return type == Audio || type == AudioVideo || type == Video;
-	}
-	public static boolean isFileTransfer(SgsMediaType type){
-		return type == FileTransfer;
-	}
-	public static boolean isChat(SgsMediaType type){
-		return type == Chat;
-	}
-	public static boolean isMsrpType(SgsMediaType type){
-		return isFileTransfer(type) || isChat(type);
-	}
-    public static boolean isRadarsType(SgsMediaType type){
+
+    public static boolean isAudioVideoType(SgsMediaType type) {
+        return type == Audio || type == AudioVideo || type == Video;
+    }
+
+    public static boolean isFileTransfer(SgsMediaType type) {
+        return type == FileTransfer;
+    }
+
+    public static boolean isChat(SgsMediaType type) {
+        return type == Chat;
+    }
+
+    public static boolean isMsrpType(SgsMediaType type) {
+        return isFileTransfer(type) || isChat(type);
+    }
+
+    public static boolean isRadarsType(SgsMediaType type) {
         return type == Radars;
     }
 }

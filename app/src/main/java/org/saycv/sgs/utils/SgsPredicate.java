@@ -19,6 +19,6 @@
 package org.saycv.sgs.utils;
 
 public interface SgsPredicate<T> {
-	boolean apply(T item);
+    boolean apply(T item);
 }
 

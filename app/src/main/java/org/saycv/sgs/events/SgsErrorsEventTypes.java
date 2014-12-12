@@ -18,12 +18,13 @@
 
 package org.saycv.sgs.events;
 
-public enum SgsErrorsEventTypes{
+public enum SgsErrorsEventTypes {
     SGS_ERROR_NO_ERROR(0),
     SGS_ERROR_UNKNOWN_ERROR(1);
 
     private final int value;
-    private SgsErrorsEventTypes(int value){
+
+    private SgsErrorsEventTypes(int value) {
         this.value = value;
     }
 

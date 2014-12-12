@@ -18,10 +18,10 @@
 
 package org.saycv.sgs.services.impl;
 
+import android.util.Log;
+
 import org.saycv.sgs.SgsApplication;
 import org.saycv.sgs.services.ISgsStorageService;
-
-import android.util.Log;
 
 /**@page SgsStorageService_page Storage Service
  * This service is used to manage storage functions.
@@ -30,36 +30,36 @@ import android.util.Log;
 /**
  * Storage service.
  */
-public class SgsStorageService  extends SgsBaseService implements ISgsStorageService{
-	private final static String TAG = SgsStorageService.class.getCanonicalName();
-	
-	private final String mCurrentDir;
-	private final String mContentShareDir;
-	
-	public SgsStorageService(){
-		mCurrentDir = String.format("/data/data/%s", SgsApplication.getContext().getPackageName());
-		mContentShareDir = "/sdcard/sgsCommon";
-	}
-	
-	@Override
-	public boolean start() {
-		Log.d(TAG, "starting...");
-		return true;
-	}
-	
-	@Override
-	public boolean stop() {
-		Log.d(TAG, "stopping...");
-		return true;
-	}
-	
-	@Override
-	public String getCurrentDir(){
-		return this.mCurrentDir;
-	}
-	
-	@Override
-	public String getContentShareDir(){
-		return this.mContentShareDir;
-	}
+public class SgsStorageService extends SgsBaseService implements ISgsStorageService {
+    private final static String TAG = SgsStorageService.class.getCanonicalName();
+
+    private final String mCurrentDir;
+    private final String mContentShareDir;
+
+    public SgsStorageService() {
+        mCurrentDir = String.format("/data/data/%s", SgsApplication.getContext().getPackageName());
+        mContentShareDir = "/sdcard/sgsCommon";
+    }
+
+    @Override
+    public boolean start() {
+        Log.d(TAG, "starting...");
+        return true;
+    }
+
+    @Override
+    public boolean stop() {
+        Log.d(TAG, "stopping...");
+        return true;
+    }
+
+    @Override
+    public String getCurrentDir() {
+        return this.mCurrentDir;
+    }
+
+    @Override
+    public String getContentShareDir() {
+        return this.mContentShareDir;
+    }
 }

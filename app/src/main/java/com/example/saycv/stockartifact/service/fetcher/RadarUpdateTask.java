@@ -1,8 +1,11 @@
 package com.example.saycv.stockartifact.service.fetcher;
 
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.util.Log;
+
 import com.example.saycv.stockartifact.Engine;
 import com.example.saycv.stockartifact.MainActivity;
-import com.example.saycv.stockartifact.RadarActivity;
 import com.example.saycv.stockartifact.events.RadarsEventArgs;
 import com.example.saycv.stockartifact.events.RadarsEventTypes;
 import com.example.saycv.stockartifact.model.Radar;
@@ -10,13 +13,9 @@ import com.example.saycv.stockartifact.service.impl.RadarsService;
 import com.example.saycv.stockartifact.view.RadarAdapter;
 import com.example.saycv.utils.NetworkDetector;
 
-import java.util.List;
-
-import android.app.Activity;
-import android.os.AsyncTask;
-import android.util.Log;
-
 import org.saycv.sgs.utils.SgsDateTimeUtils;
+
+import java.util.List;
 
 public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     public static final String TAG = "RadarUpdateTask";
@@ -25,16 +24,13 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
 
     private Thread mRadarsUpdateThread = null;
     private Error error;
-    enum Error {
-        ERROR_NO_NET, ERROR_DOWNLOAD, ERROR_PARSE, ERROR_UNKNOWN
-    }
 
     public RadarUpdateTask(Activity activity) {
         this.activity = (MainActivity) activity;
     }
 
     @Override
-    protected Boolean doInBackground(Void ... ignored) {
+    protected Boolean doInBackground(Void... ignored) {
         Log.i(TAG, "running Radar update in background");
 
         setRadarsUpdateThreadClassEnabled(true);
@@ -45,7 +41,7 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     public void updateRadars(List<Radar> radar) {
         RadarAdapter adapter = activity.getRadarAdapter();
         adapter.clear();
-        for(Radar i : radar) {
+        for (Radar i : radar) {
             adapter.add(i);
         }
         adapter.notifyDataSetChanged();
@@ -87,16 +83,21 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
         }
     }
 
+    enum Error {
+        ERROR_NO_NET, ERROR_DOWNLOAD, ERROR_PARSE, ERROR_UNKNOWN
+    }
+
     class RadarsUpdateThreadClass implements Runnable {
 
         public RadarsUpdateThreadClass() {
         }
+
         //@Override
         public void run() {
             while (!Thread.currentThread().isInterrupted()) {
                 if (!NetworkDetector.hasValidNetwork(activity)) {
                     error = Error.ERROR_NO_NET;
-                    return ;
+                    return;
                 }
 
                 Log.i(TAG, "start fetcher");
@@ -105,7 +106,7 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
 
                 //Only the original thread that created a view hierarchy can touch its views
                 //updateRadars(results);
-                ((RadarsService)((Engine)Engine.getInstance()).getRadarsService()).broadcastRadarsEvent(
+                ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).broadcastRadarsEvent(
                         new RadarsEventArgs(RadarsEventTypes.RADARS_EVENT_1,
                                 results),
                         SgsDateTimeUtils.now()

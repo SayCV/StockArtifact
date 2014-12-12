@@ -20,17 +20,17 @@ import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
 
 public abstract class BaseQuoteFetcher implements QuoteFetcher {
+    private static final int TIMEOUT = 10;
     private HttpClient client;
     private HtmlCleaner cleaner;
-    private static final int TIMEOUT = 10;
-    
+
     public BaseQuoteFetcher() {
-        
+
         HttpParams params = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(params, TIMEOUT * 1000);
         HttpConnectionParams.setSoTimeout(params, TIMEOUT * 1000);
         HttpProtocolParams.setUserAgent(params, Constants.USER_AGENT);
-        
+
         SchemeRegistry schemeRegistry = new SchemeRegistry();
         schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
         ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
@@ -43,15 +43,16 @@ public abstract class BaseQuoteFetcher implements QuoteFetcher {
         prop.setOmitComments(true);
         prop.setIgnoreQuestAndExclam(true);
         prop.setOmitDeprecatedTags(true);
-        prop.setOmitXmlDeclaration(true); 
+        prop.setOmitXmlDeclaration(true);
         prop.setAdvancedXmlEscape(false);
         prop.setRecognizeUnicodeChars(false);
-        prop.setOmitHtmlEnvelope(false);        
-        prop.setUseCdataForScriptAndStyle(true);        
+        prop.setOmitHtmlEnvelope(false);
+        prop.setUseCdataForScriptAndStyle(true);
     }
 
     /**
      * From the document, search the specified xpath, return the TagNode of first matched element
+     *
      * @param document
      * @param xpath
      * @return
@@ -59,16 +60,17 @@ public abstract class BaseQuoteFetcher implements QuoteFetcher {
      */
     public TagNode getFirstMatchedElement(TagNode document, String xpath) throws XPatherException {
         Object[] xpathResult = document.evaluateXPath(xpath);
-        for(int i=0; i<xpathResult.length; i++) {
+        for (int i = 0; i < xpathResult.length; i++) {
             if (xpathResult[i] instanceof TagNode) {
                 return (TagNode) xpathResult[i];
             }
         }
         return null;
     }
-    
+
     /**
      * From the document, search the specified xpath, return the content text of first matched element
+     *
      * @param document
      * @param xpath
      * @return
@@ -76,15 +78,15 @@ public abstract class BaseQuoteFetcher implements QuoteFetcher {
      */
     public String getFirstMatchedElementContent(TagNode document, String xpath) throws XPatherException {
         Object[] elements = document.evaluateXPath(xpath);
-        for(int i=0; i<elements.length; i++) {
+        for (int i = 0; i < elements.length; i++) {
             if (elements[i] instanceof TagNode) {
                 TagNode node = (TagNode) elements[i];
                 return StringUtils.trim(node.getText().toString());
-            }            
+            }
         }
         return "";
     }
-    
+
     /**
      * @return the client
      */

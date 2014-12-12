@@ -42,13 +42,12 @@ public class SgsFileUtils {
         try {
             ins = new FileInputStream(new File(filename));
             br = new BufferedReader(new InputStreamReader(ins), 8192);
-            while((line = br.readLine())!=null) {
+            while ((line = br.readLine()) != null) {
                 lines.add(line.trim());
             }
         } catch (Exception e) {
-            Log.d(TAG, "Unexpected error - Here is what I know: "+e.getMessage());
-        }
-        finally {
+            Log.d(TAG, "Unexpected error - Here is what I know: " + e.getMessage());
+        } finally {
             try {
                 ins.close();
                 br.close();
@@ -68,8 +67,7 @@ public class SgsFileUtils {
             out.write(lines.getBytes());
         } catch (Exception e) {
             Log.d(TAG, "Unexpected error - Here is what I know: " + e.getMessage());
-        }
-        finally {
+        } finally {
             try {
                 if (out != null)
                     out.close();

@@ -18,28 +18,13 @@
 
 package org.saycv.sgs.services.impl;
 
-import java.nio.ByteBuffer;
-import java.util.UUID;
+import android.content.Context;
+import android.util.Log;
 
-import org.saycv.sgs.SgsApplication;
 import org.saycv.sgs.SgsEngine;
-
-import org.saycv.sgs.model.SgsDeviceInfo.Orientation;
-import org.saycv.sgs.services.ISgsSgsService;
 import org.saycv.sgs.services.ISgsConfigurationService;
 import org.saycv.sgs.services.ISgsNetworkService;
-
-import org.saycv.sgs.utils.SgsConfigurationEntry;
-import org.saycv.sgs.utils.SgsContentType;
-import org.saycv.sgs.utils.SgsDateTimeUtils;
-import org.saycv.sgs.utils.SgsStringUtils;
-
-import android.content.Context;
-import android.content.Intent;
-import android.os.ConditionVariable;
-import android.os.Looper;
-import android.util.Log;
-import android.widget.Toast;
+import org.saycv.sgs.services.ISgsSgsService;
 
 
 public class SgsSgsService extends SgsBaseService
@@ -86,14 +71,14 @@ public class SgsSgsService extends SgsBaseService
 
     @Override
     public boolean register(Context context) {
-        Log.d(TAG,"register()");
+        Log.d(TAG, "register()");
         return true;
     }
 
     @Override
     public boolean unRegister() {
         if (isRegistered()) {
-            new Thread(new Runnable(){
+            new Thread(new Runnable() {
                 @Override
                 public void run() {
 
@@ -113,7 +98,6 @@ public class SgsSgsService extends SgsBaseService
 //		intent.putExtra(SgsRegistrationEventArgs.EXTRA_EMBEDDED, args);
 //		SgsApplication.getContext().sendBroadcast(intent);
 //	}
-
 
 
 }

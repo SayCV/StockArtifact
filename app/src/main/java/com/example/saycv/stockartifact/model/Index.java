@@ -5,12 +5,12 @@ import java.util.Calendar;
 
 public class Index {
     private String name;
-    
+
     private BigDecimal value;
     private BigDecimal change;
     private BigDecimal changePercent;
     private Calendar updatedAt;
-    
+
     /**
      * @return the name
      */
@@ -19,8 +19,7 @@ public class Index {
     }
 
     /**
-     * @param name
-     *            the name to set
+     * @param name the name to set
      */
     public void setName(String name) {
         this.name = name;
@@ -34,8 +33,7 @@ public class Index {
     }
 
     /**
-     * @param change
-     *            the change to set
+     * @param change the change to set
      */
     public void setChange(BigDecimal change) {
         this.change = change;
@@ -49,8 +47,7 @@ public class Index {
     }
 
     /**
-     * @param changePercent
-     *            the changePercent to set
+     * @param changePercent the changePercent to set
      */
     public void setChangePercent(BigDecimal changePercent) {
         this.changePercent = changePercent;
@@ -93,7 +90,6 @@ public class Index {
     public void setUpdatedAt(Calendar updatedAt) {
         this.updatedAt = updatedAt;
     }
-    
-    
+
 
 }

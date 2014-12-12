@@ -8,8 +8,8 @@ import java.util.List;
 
 /**
  * Return list of stock indexes
- * @author siuying
  *
+ * @author siuying
  */
 public interface RadarFetcher {
     List<Radar> fetch() throws DownloadException, ParseException;

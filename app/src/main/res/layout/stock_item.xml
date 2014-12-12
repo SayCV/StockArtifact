@@ -1,34 +1,90 @@
-<RelativeLayout android:id="@+id/RelativeLayout01"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	xmlns:android="http://schemas.android.com/apk/res/android" android:background="@drawable/item" android:padding="4sp">
-	<TextView android:id="@+id/name" android:layout_height="wrap_content"
-		android:lines="1" android:shadowRadius="1" android:shadowDx="1"
-		android:shadowDy="1" android:shadowColor="#88444444" android:textSize="22sp"
-		android:textColor="#FFFFFF" android:maxLines="1" android:minLines="1"
-		android:marqueeRepeatLimit="marquee_forever" android:text="長江實業長 江實業 長江實業"
-		android:ellipsize="marquee" android:singleLine="true"
-		android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:layout_width="160sp"></TextView>
-	<TextView android:layout_height="wrap_content" android:id="@+id/quote"
-		android:text="00001" android:paddingRight="5sp" android:paddingLeft="10sp"
-		android:shadowColor="#88444444" android:shadowDx="1" android:shadowDy="1"
-		android:shadowRadius="1" android:textSize="24sp" android:textColor="#FFFFFF"
-		android:layout_width="80sp" android:lines="1"
-		android:layout_alignParentTop="true" android:layout_toRightOf="@+id/name"></TextView>
-	<TextView android:id="@+id/price" android:layout_height="wrap_content"
-		android:gravity="right" android:paddingLeft="5sp" android:textStyle="bold"
-		android:textColor="@color/normal" android:shadowColor="#88444444"
-		android:shadowDx="1" android:shadowDy="1" android:shadowRadius="1"
-		android:textSize="24sp" android:text="794.100" android:layout_width="80sp"
-		android:lines="1" android:layout_alignParentRight="true"
-		android:layout_alignParentTop="true"></TextView>
-	<TextView android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:text="10:10" android:id="@+id/time" android:layout_below="@+id/name"></TextView>
-	<TextView android:layout_height="wrap_content"
-		android:gravity="right" android:id="@+id/volume" android:text="12345678"
-		android:paddingRight="10sp"
-		android:layout_toRightOf="@+id/time" android:layout_width="180sp" android:layout_below="@+id/name"></TextView>
-	<TextView android:layout_height="wrap_content" android:id="@+id/change"
-		android:gravity="right" android:text="+1.5 (+0.02%) "
-		android:layout_width="wrap_content" android:layout_alignParentRight="true" android:layout_below="@+id/name"></TextView>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/item"
+    android:padding="4sp">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="160sp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:ellipsize="marquee"
+        android:lines="1"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxLines="1"
+        android:minLines="1"
+        android:shadowColor="#88444444"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:singleLine="true"
+        android:text="長江實業長 江實業 長江實業"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"></TextView>
+
+    <TextView
+        android:id="@+id/quote"
+        android:layout_width="80sp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/name"
+        android:lines="1"
+        android:paddingLeft="10sp"
+        android:paddingRight="5sp"
+        android:shadowColor="#88444444"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:text="00001"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"></TextView>
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="80sp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="right"
+        android:lines="1"
+        android:paddingLeft="5sp"
+        android:shadowColor="#88444444"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:text="794.100"
+        android:textColor="@color/normal"
+        android:textSize="24sp"
+        android:textStyle="bold"></TextView>
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:text="10:10"></TextView>
+
+    <TextView
+        android:id="@+id/volume"
+        android:layout_width="180sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_toRightOf="@+id/time"
+        android:gravity="right"
+        android:paddingRight="10sp"
+        android:text="12345678"></TextView>
+
+    <TextView
+        android:id="@+id/change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/name"
+        android:gravity="right"
+        android:text="+1.5 (+0.02%) "></TextView>
 
 </RelativeLayout>

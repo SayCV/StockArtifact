@@ -20,9 +20,9 @@ package org.saycv.sgs.utils;
 
 import java.util.Observable;
 
-public abstract class SgsObservableObject extends Observable{
-	protected void setChangedAndNotifyObservers(Object data){
-		super.setChanged();
-		super.notifyObservers(data);
-	}
+public abstract class SgsObservableObject extends Observable {
+    protected void setChangedAndNotifyObservers(Object data) {
+        super.setChanged();
+        super.notifyObservers(data);
+    }
 }

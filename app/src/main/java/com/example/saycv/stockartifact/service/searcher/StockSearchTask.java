@@ -1,5 +1,9 @@
 package com.example.saycv.stockartifact.service.searcher;
 
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.example.saycv.stockartifact.PortfolioActivity;
 import com.example.saycv.stockartifact.R;
 import com.example.saycv.stockartifact.StockApplication;
@@ -10,40 +14,33 @@ import com.example.saycv.stockartifact.service.exception.DownloadException;
 import com.example.saycv.stockartifact.service.exception.ParseException;
 import com.example.saycv.utils.NetworkDetector;
 
-import java.util.List;
-
 import org.apache.commons.lang.Validate;
 
-import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
+import java.util.List;
 
 public class StockSearchTask extends AsyncTask<String, Void, Stock> {
     private static final String TAG = "StockSearchTask";
     private Error error;
     private PortfolioActivity activity;
-    enum Error {
-        ERROR_NO_NET, ERROR_DOWNLOAD, ERROR_PARSE, ERROR_UNKNOWN
-    }
-    
+
     public StockSearchTask(PortfolioActivity activity) {
         this.activity = activity;
     }
-    
+
     @Override
-    protected Stock doInBackground(String... params) {        
+    protected Stock doInBackground(String... params) {
         Validate.notNull(params, "params cannot be null");
         Validate.notNull(params[0], "lang cannot be null");
         Validate.notNull(params[1], "quote cannot be null");
 
         String lang = params[0];
         String quote = params[1];
-        
+
         if (!NetworkDetector.hasValidNetwork(activity)) {
             error = Error.ERROR_NO_NET;
             return null;
         }
-        
+
         try {
             StockSearcher searcher = new HkexStockSearcher(Lang.valueOf(lang));
             return searcher.searchStock(quote);
@@ -59,12 +56,12 @@ public class StockSearchTask extends AsyncTask<String, Void, Stock> {
         }
         return null;
     }
-    
+
     @Override
     protected void onPreExecute() {
         activity.showDialog(PortfolioActivity.DIALOG_ADD_IN_PROGRESS);
     }
-    
+
     @Override
     protected void onPostExecute(Stock result) {
         activity.dismissDialog(PortfolioActivity.DIALOG_ADD_IN_PROGRESS);
@@ -85,21 +82,25 @@ public class StockSearchTask extends AsyncTask<String, Void, Stock> {
             activity.updateStocks();
         } else {
             switch (error) {
-            case ERROR_NO_NET:
-                Toast.makeText(activity, R.string.msg_no_network, Toast.LENGTH_LONG).show();
-                break;
-            case ERROR_DOWNLOAD:
-                activity.showDialog(PortfolioActivity.DIALOG_ERR_DOWNLOAD_PORTFOLIO);
-                break;
-            case ERROR_PARSE:
-                activity.showDialog(PortfolioActivity.DIALOG_ERR_QUOTE);
-                break;
-            case ERROR_UNKNOWN:
-                activity.showDialog(PortfolioActivity.DIALOG_ERR_UNEXPECTED);
-                break;
-            default:
-                break;
+                case ERROR_NO_NET:
+                    Toast.makeText(activity, R.string.msg_no_network, Toast.LENGTH_LONG).show();
+                    break;
+                case ERROR_DOWNLOAD:
+                    activity.showDialog(PortfolioActivity.DIALOG_ERR_DOWNLOAD_PORTFOLIO);
+                    break;
+                case ERROR_PARSE:
+                    activity.showDialog(PortfolioActivity.DIALOG_ERR_QUOTE);
+                    break;
+                case ERROR_UNKNOWN:
+                    activity.showDialog(PortfolioActivity.DIALOG_ERR_UNEXPECTED);
+                    break;
+                default:
+                    break;
             }
         }
+    }
+
+    enum Error {
+        ERROR_NO_NET, ERROR_DOWNLOAD, ERROR_PARSE, ERROR_UNKNOWN
     }
 }

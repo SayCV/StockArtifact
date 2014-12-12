@@ -1,8 +1,5 @@
 package com.example.saycv.stockartifact.view;
 
-import com.example.saycv.stockartifact.R;
-import com.example.saycv.stockartifact.model.Index;
-import com.example.saycv.utils.PriceFormatter;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.format.DateFormat;
@@ -13,13 +10,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.saycv.stockartifact.R;
+import com.example.saycv.stockartifact.model.Index;
+import com.example.saycv.utils.PriceFormatter;
+
 public class IndexAdapter extends ArrayAdapter<Index> {
     private static final String TAG = "IndexAdapter";
     private java.text.DateFormat formatter;
 
     public IndexAdapter(Context context) {
         super(context, 0);
-        formatter = DateFormat.getTimeFormat(context);        
+        formatter = DateFormat.getTimeFormat(context);
     }
 
     @Override
@@ -32,12 +33,12 @@ public class IndexAdapter extends ArrayAdapter<Index> {
 
         Log.d(TAG, "prepare view for indexes");
         // prepare views
-        TextView name = (TextView) v.findViewById(R.id.name);       
+        TextView name = (TextView) v.findViewById(R.id.name);
         TextView price = (TextView) v.findViewById(R.id.price);
         TextView change = (TextView) v.findViewById(R.id.change);
         TextView volume = (TextView) v.findViewById(R.id.volume);
         TextView time = (TextView) v.findViewById(R.id.time);
-        
+
         // set data
         Index index = getItem(position);
         if (index != null) {
@@ -50,15 +51,15 @@ public class IndexAdapter extends ArrayAdapter<Index> {
             } else {
                 time.setText("");
             }
-            
+
             if (index.getChange() != null) {
-                change.setText(String.format("%s (%s)", 
-                		PriceFormatter.forPrice(index.getChange().doubleValue()), 
-                		PriceFormatter.forPercent(index.getChangePercent().doubleValue())));
+                change.setText(String.format("%s (%s)",
+                        PriceFormatter.forPrice(index.getChange().doubleValue()),
+                        PriceFormatter.forPercent(index.getChangePercent().doubleValue())));
             } else {
                 change.setText("---- (---)");
             }
-            
+
             if (index.getChange() != null && index.getChange().floatValue() > 0) {
                 price.setTextColor(Color.rgb(0, 213, 65));
                 change.setTextColor(Color.rgb(0, 213, 65));

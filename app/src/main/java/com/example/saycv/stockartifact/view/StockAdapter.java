@@ -1,14 +1,5 @@
 package com.example.saycv.stockartifact.view;
 
-import com.example.saycv.stockartifact.R;
-import com.example.saycv.stockartifact.model.Stock;
-import com.example.saycv.stockartifact.model.StockDetail;
-import com.example.saycv.utils.PriceFormatter;
-
-import java.util.Comparator;
-
-import org.apache.commons.lang.StringUtils;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.text.format.DateFormat;
@@ -18,8 +9,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.saycv.stockartifact.R;
+import com.example.saycv.stockartifact.model.Stock;
+import com.example.saycv.stockartifact.model.StockDetail;
+import com.example.saycv.utils.PriceFormatter;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.util.Comparator;
+
 public class StockAdapter extends ArrayAdapter<Stock> {
     private java.text.DateFormat formatter;
+
     public StockAdapter(Context context) {
         super(context, 0);
         formatter = DateFormat.getTimeFormat(context);
@@ -34,13 +35,13 @@ public class StockAdapter extends ArrayAdapter<Stock> {
         }
 
         // prepare views
-        TextView name = (TextView) v.findViewById(R.id.name);       
+        TextView name = (TextView) v.findViewById(R.id.name);
         TextView quote = (TextView) v.findViewById(R.id.quote);
         TextView price = (TextView) v.findViewById(R.id.price);
         TextView change = (TextView) v.findViewById(R.id.change);
         TextView volume = (TextView) v.findViewById(R.id.volume);
         TextView time = (TextView) v.findViewById(R.id.time);
-        
+
         // set data
         Stock stock = getItem(position);
         StockDetail detail = stock.getDetail();
@@ -50,10 +51,10 @@ public class StockAdapter extends ArrayAdapter<Stock> {
             name.setText(stock.getName());
             quote.setText(detail.getQuote());
             price.setText(PriceFormatter.forPrice(detail.getPrice().doubleValue()));
-            change.setText(String.format("%s (%s)", 
-            		PriceFormatter.forPrice(detail.getChangePrice().doubleValue()), 
-            		PriceFormatter.forPercent(detail.getChangePricePercent().doubleValue())));
-            
+            change.setText(String.format("%s (%s)",
+                    PriceFormatter.forPrice(detail.getChangePrice().doubleValue()),
+                    PriceFormatter.forPercent(detail.getChangePricePercent().doubleValue())));
+
             if (detail.getChangePrice().floatValue() > 0) {
                 price.setTextColor(Color.rgb(0, 213, 65));
                 change.setTextColor(Color.rgb(0, 213, 65));
@@ -71,7 +72,7 @@ public class StockAdapter extends ArrayAdapter<Stock> {
             quote.setText(stock.getQuote());
             price.setText("----");
             change.setText("---- (---)");
-        }        
+        }
         return v;
     }
 
@@ -86,6 +87,6 @@ public class StockAdapter extends ArrayAdapter<Stock> {
                 return 0;
             }
         }
-        
+
     }
 }

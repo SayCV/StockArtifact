@@ -19,5 +19,5 @@
 package org.saycv.sgs.utils;
 
 public interface SgsCallbackFunc<T> {
-	void callback(T object, Object[]... args);
+    void callback(T object, Object[]... args);
 }

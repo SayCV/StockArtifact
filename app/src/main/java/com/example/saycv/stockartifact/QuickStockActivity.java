@@ -10,5 +10,5 @@ public class QuickStockActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.quickstock);
     }
-    
+
 }

@@ -25,23 +25,23 @@ import android.os.Parcelable;
  * Base class for all events
  */
 public abstract class SgsEventArgs implements Parcelable {
-	public static final String EXTRA_EMBEDDED = "EXTRA_" + SgsEventArgs.class.getCanonicalName();
-	
-	public SgsEventArgs(){
-		super();
-	}
+    public static final String EXTRA_EMBEDDED = "EXTRA_" + SgsEventArgs.class.getCanonicalName();
 
-	 protected SgsEventArgs(Parcel in) {
-	      readFromParcel(in);
-	 }
-	 
+    public SgsEventArgs() {
+        super();
+    }
+
+    protected SgsEventArgs(Parcel in) {
+        readFromParcel(in);
+    }
+
     abstract protected void readFromParcel(Parcel in);
-	    
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-	
-	@Override
-	abstract public void writeToParcel(Parcel dest, int flags);
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    abstract public void writeToParcel(Parcel dest, int flags);
 }

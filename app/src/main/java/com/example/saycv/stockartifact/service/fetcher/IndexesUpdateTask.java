@@ -1,5 +1,8 @@
 package com.example.saycv.stockartifact.service.fetcher;
 
+import android.os.AsyncTask;
+import android.util.Log;
+
 import com.example.saycv.stockartifact.IndexActivity;
 import com.example.saycv.stockartifact.model.Index;
 import com.example.saycv.stockartifact.view.IndexAdapter;
@@ -7,25 +10,19 @@ import com.example.saycv.utils.NetworkDetector;
 
 import java.util.List;
 
-import android.os.AsyncTask;
-import android.util.Log;
-
 public class IndexesUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     public static final String TAG = "IndexesUpdateTask";
     private IndexActivity activity;
     private List<Index> results;
 
     private Error error;
-    enum Error {
-        ERROR_NO_NET, ERROR_DOWNLOAD, ERROR_PARSE, ERROR_UNKNOWN
-    }
-    
+
     public IndexesUpdateTask(IndexActivity activity) {
         this.activity = activity;
     }
 
     @Override
-    protected Boolean doInBackground(Void ... ignored) {
+    protected Boolean doInBackground(Void... ignored) {
         Log.i(TAG, "running indexes update in background");
         if (!NetworkDetector.hasValidNetwork(activity)) {
             error = Error.ERROR_NO_NET;
@@ -42,12 +39,12 @@ public class IndexesUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     private void updateIndexes(List<Index> indexes) {
         IndexAdapter adapter = activity.getIndexAdapter();
         adapter.clear();
-        for(Index i : indexes) {
+        for (Index i : indexes) {
             adapter.add(i);
         }
         adapter.notifyDataSetChanged();
     }
-    
+
     @Override
     protected void onPreExecute() {
         activity.getParent().setProgressBarVisibility(true);
@@ -59,7 +56,7 @@ public class IndexesUpdateTask extends AsyncTask<Void, Integer, Boolean> {
         activity.getParent().setProgressBarVisibility(false);
         activity.getParent().setProgressBarIndeterminateVisibility(false);
     }
-    
+
     @Override
     protected void onPostExecute(Boolean result) {
         activity.getParent().setProgressBarVisibility(false);
@@ -70,5 +67,9 @@ public class IndexesUpdateTask extends AsyncTask<Void, Integer, Boolean> {
         } else {
             Log.i(TAG, "update failure");
         }
+    }
+
+    enum Error {
+        ERROR_NO_NET, ERROR_DOWNLOAD, ERROR_PARSE, ERROR_UNKNOWN
     }
 }

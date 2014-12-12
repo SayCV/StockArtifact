@@ -15,8 +15,8 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
 public abstract class BaseRadarFetcher implements RadarFetcher {
-    private HttpClient client;
     private static final int TIMEOUT = 10;
+    private HttpClient client;
 
     public BaseRadarFetcher() {
         HttpParams params = new BasicHttpParams();

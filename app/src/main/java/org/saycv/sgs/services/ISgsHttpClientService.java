@@ -20,8 +20,10 @@ package org.saycv.sgs.services;
 
 import java.io.InputStream;
 
-public interface ISgsHttpClientService extends ISgsBaseService{
-	String get(String uri);
-	String post(String uri, String contentUTF8, String contentType);
-	public InputStream getBinary(String uri);
+public interface ISgsHttpClientService extends ISgsBaseService {
+    String get(String uri);
+
+    String post(String uri, String contentUTF8, String contentType);
+
+    public InputStream getBinary(String uri);
 }

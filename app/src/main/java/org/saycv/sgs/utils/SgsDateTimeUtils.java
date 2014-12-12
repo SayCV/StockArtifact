@@ -32,37 +32,37 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class SgsDateTimeUtils {
-	static final DateFormat sDefaultDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	
-	public static String now(String dateFormat) {
-	    Calendar cal = Calendar.getInstance();
-	    SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-	    return sdf.format(cal.getTime());
-	}
-	
-	public static String now() {
-	    Calendar cal = Calendar.getInstance();
-	    return sDefaultDateFormat.format(cal.getTime());
-	}
-	
-	public static Date parseDate(String date, DateFormat format){
-		if(!SgsStringUtils.isNullOrEmpty(date)){
-			try {
-				return format == null ? sDefaultDateFormat.parse(date) : format.parse(date);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}
-		return new Date();
-	}
-	
-	public static Date parseDate(String date){
-		return parseDate(date, null);
-	}
-	
-	public static boolean isSameDay(Date d1, Date d2){
-		return d1.getTime() == d2.getTime();
-	}
+    static final DateFormat sDefaultDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    public static String now(String dateFormat) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        return sdf.format(cal.getTime());
+    }
+
+    public static String now() {
+        Calendar cal = Calendar.getInstance();
+        return sDefaultDateFormat.format(cal.getTime());
+    }
+
+    public static Date parseDate(String date, DateFormat format) {
+        if (!SgsStringUtils.isNullOrEmpty(date)) {
+            try {
+                return format == null ? sDefaultDateFormat.parse(date) : format.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return new Date();
+    }
+
+    public static Date parseDate(String date) {
+        return parseDate(date, null);
+    }
+
+    public static boolean isSameDay(Date d1, Date d2) {
+        return d1.getTime() == d2.getTime();
+    }
 
     public static String getDate(String dateFormat) {
         Calendar calendar = Calendar.getInstance();

@@ -19,7 +19,7 @@
 package com.example.saycv.stockartifact.events;
 
 public enum RadarsEventTypes {
-	RADARS_EVENT_1,
+    RADARS_EVENT_1,
     RADARS_EVENT_2,
     RADARS_EVENT_4,
     RADARS_EVENT_5,

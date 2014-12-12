@@ -1,18 +1,12 @@
 package com.example.saycv.stockartifact.service.fetcher;
 
-import static com.example.saycv.stockartifact.service.fetcher.Utils.rounded;
-import com.example.saycv.stockartifact.R;
+import android.content.Context;
+import android.text.format.Time;
+import android.util.Log;
+
 import com.example.saycv.stockartifact.model.Radar;
 import com.example.saycv.stockartifact.service.exception.DownloadException;
 import com.example.saycv.stockartifact.service.exception.ParseException;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
@@ -21,9 +15,11 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-import android.text.format.Time;
-import android.util.Log;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class QQRadarFetcher extends BaseRadarFetcher {
     public static final String TAG = "QQRadarFetcher";
@@ -57,23 +53,22 @@ public class QQRadarFetcher extends BaseRadarFetcher {
         int dayofmonth = cal.get(Calendar.DAY_OF_MONTH);
 
         boolean debug = true;
-        if(debug || ( (hourofday == 9 && minute >=24) || hourofday > 9 && hour <15) || (hourofday == 15 && minute <= 1)) {
-           if(initDone==false) {
-               Log.d(TAG, "get all begin");
-               radar.addAll(getChinaRadar());
-               Log.d(TAG, "get all end");
-               initDone = true;
-           } else {
-            Log.d(TAG, "get latest");
-            radar.addAll(getChinaRadar());
-           }
+        if (debug || ((hourofday == 9 && minute >= 24) || hourofday > 9 && hour < 15) || (hourofday == 15 && minute <= 1)) {
+            if (initDone == false) {
+                Log.d(TAG, "get all begin");
+                radar.addAll(getChinaRadar());
+                Log.d(TAG, "get all end");
+                initDone = true;
+            } else {
+                Log.d(TAG, "get latest");
+                radar.addAll(getChinaRadar());
+            }
         } else {
             Log.d(TAG, "get all");
             radar.addAll(getChinaRadar());
         }
         return radar;
     }
-
 
 
     private String getChinaRadarURL() {
@@ -87,7 +82,7 @@ public class QQRadarFetcher extends BaseRadarFetcher {
         return json;
     }
 
-    private List<Radar> getChinaRadar()  throws ParseException, DownloadException {
+    private List<Radar> getChinaRadar() throws ParseException, DownloadException {
 
         try {
             HttpGet req = new HttpGet(getChinaRadarURL());
@@ -121,8 +116,8 @@ public class QQRadarFetcher extends BaseRadarFetcher {
 
         String[] stocks = radarData.split("\\^");
         int index = 0;
-        int nbrStocks = stocks.length/6;
-        for(int nbr = 0; nbr<nbrStocks; nbr++) {
+        int nbrStocks = stocks.length / 6;
+        for (int nbr = 0; nbr < nbrStocks; nbr++) {
             String[] stock = stocks[nbr].split("~");
             String time = stock[0];
             String code = stock[1];

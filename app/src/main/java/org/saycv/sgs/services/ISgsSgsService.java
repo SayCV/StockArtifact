@@ -22,24 +22,29 @@ import android.content.Context;
 
 
 public interface ISgsSgsService extends ISgsBaseService {
-	String getDefaultIdentity();
-	void setDefaultIdentity(String identity);
-	
+    String getDefaultIdentity();
+
+    void setDefaultIdentity(String identity);
+
     /**
      * Checks whether we are already registered or not.
+     *
      * @return
      */
     boolean isRegistered();
 
     /**
      * Sends a Sip REGISTER request to the Proxy-CSCF
+     *
      * @param context the context associated to this request. Could be null.
      * @return true if succeed and false otherwise
      * @sa @ref unRegister()
      */
     boolean register(Context context);
+
     /**
      * Deregisters the user by sending a Sip REGISTER request with an expires value equal to zero
+     *
      * @return true if succeed and false otherwise
      * @sa register
      */

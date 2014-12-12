@@ -1,6 +1,8 @@
 package com.example.saycv.stockartifact;
 
-import com.example.saycv.stockartifact.model.Index;
+import android.app.Application;
+import android.util.Log;
+
 import com.example.saycv.stockartifact.model.Portfolio;
 import com.example.saycv.stockartifact.model.Stock;
 import com.example.saycv.stockartifact.service.FilePortfolioService;
@@ -11,15 +13,31 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import android.app.Application;
-import android.util.Log;
-
 public class StockApplication extends Application {
     private static final String TAG = "StockApplication";
     private static PortfolioService portfolioService;
     private static Portfolio currentPortfolio;
-    private static ExecutorService executor; 
-    
+    private static ExecutorService executor;
+
+    public static PortfolioService getPortfolioService() {
+        return portfolioService;
+    }
+
+    public static Portfolio getCurrentPortfolio() {
+        return currentPortfolio;
+    }
+
+    public static void setCurrentPortfolio(Portfolio currentPortfolio) {
+        StockApplication.currentPortfolio = currentPortfolio;
+    }
+
+    /**
+     * @return the executor
+     */
+    public static ExecutorService getExecutor() {
+        return executor;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -47,24 +65,5 @@ public class StockApplication extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
-    }
-
-    public static PortfolioService getPortfolioService() {
-        return portfolioService;
-    }
-
-    public static Portfolio getCurrentPortfolio() {
-        return currentPortfolio;
-    }
-
-    public static void setCurrentPortfolio(Portfolio currentPortfolio) {
-        StockApplication.currentPortfolio = currentPortfolio;
-    }
-
-    /**
-     * @return the executor
-     */
-    public static ExecutorService getExecutor() {
-        return executor;
     }
 }

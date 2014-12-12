@@ -24,7 +24,6 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
-import org.saycv.logger.Log;
 import org.saycv.sgs.SgsApplication;
 
 import java.util.ArrayList;
@@ -36,65 +35,65 @@ public class SgsRingToneUtils {
     protected static SgsRingToneUtils sInstance;
     private static Context mContext;
 
-    public static SgsRingToneUtils getInstance(){
-        if(sInstance == null){
+    public SgsRingToneUtils(Context context) {
+        mContext = context;
+    }
+
+    public static SgsRingToneUtils getInstance() {
+        if (sInstance == null) {
             sInstance = new SgsRingToneUtils(SgsApplication.getContext());
         }
         return sInstance;
     }
 
-    public SgsRingToneUtils(Context context){
-        mContext = context;
-    }
-
-    public Ringtone getDefaultRingtone(int type){
+    public Ringtone getDefaultRingtone(int type) {
         return RingtoneManager.getRingtone(mContext, RingtoneManager.getActualDefaultRingtoneUri(mContext, type));
     }
 
-    public Uri getDefaultRingtoneUri(int type){
+    public Uri getDefaultRingtoneUri(int type) {
         return RingtoneManager.getActualDefaultRingtoneUri(mContext, type);
     }
 
-    public List<Ringtone> getRingtoneList(int type){
+    public List<Ringtone> getRingtoneList(int type) {
         List<Ringtone> resArr = new ArrayList<Ringtone>();
         RingtoneManager manager = new RingtoneManager(mContext);
         manager.setType(type);
         Cursor cursor = manager.getCursor();
         int count = cursor.getCount();
-        for(int i = 0 ; i < count ; i ++){
+        for (int i = 0; i < count; i++) {
             resArr.add(manager.getRingtone(i));
         }
         return resArr;
     }
 
-    public Ringtone getRingtone(int type,int pos){
+    public Ringtone getRingtone(int type, int pos) {
         RingtoneManager manager = new RingtoneManager(mContext);
         manager.setType(type);
         return manager.getRingtone(pos);
     }
 
-    public List<String> getRingtoneTitleList(int type){
+    public List<String> getRingtoneTitleList(int type) {
         List<String> resArr = new ArrayList<String>();
         RingtoneManager manager = new RingtoneManager(mContext);
         manager.setType(type);
         Cursor cursor = manager.getCursor();
-        if(cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 resArr.add(cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX));
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         return resArr;
     }
 
 
-    public String getRingtoneUriPath(int type,int pos,String def){
+    public String getRingtoneUriPath(int type, int pos, String def) {
         RingtoneManager manager = new RingtoneManager(mContext);
         manager.setType(type);
         Uri uri = manager.getRingtoneUri(pos);
-        return uri==null?def:uri.toString();
+        return uri == null ? def : uri.toString();
     }
 
-    public Ringtone getRingtoneByUriPath(int type ,String uriPath){
+    public Ringtone getRingtoneByUriPath(int type, String uriPath) {
         RingtoneManager manager = new RingtoneManager(mContext);
         manager.setType(type);
         Uri uri = Uri.parse(uriPath);

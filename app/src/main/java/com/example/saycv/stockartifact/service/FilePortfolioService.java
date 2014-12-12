@@ -1,7 +1,12 @@
 package com.example.saycv.stockartifact.service;
 
+import android.util.Log;
+
 import com.example.saycv.stockartifact.model.Portfolio;
 import com.example.saycv.stockartifact.service.exception.StorageException;
+import com.thoughtworks.xstream.io.StreamException;
+
+import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,61 +20,55 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
 
-import org.apache.commons.io.IOUtils;
-
-import android.util.Log;
-
-import com.thoughtworks.xstream.io.StreamException;
-
 public class FilePortfolioService implements PortfolioService {
-	private static final String STORAGE_FILE = "portfolio.xml";
-	private static final String TAG = "FilePortfolioService";
-	private File baseDirectory;
-	private List<Portfolio> portfolios;
-	
-	public FilePortfolioService(File directory) {
-		Log.i(TAG, "init portfolio service: " + directory.getAbsolutePath());
-		this.baseDirectory = directory;
-		this.portfolios = loadOrCreateNew();
-	}
+    private static final String STORAGE_FILE = "portfolio.xml";
+    private static final String TAG = "FilePortfolioService";
+    private File baseDirectory;
+    private List<Portfolio> portfolios;
 
-	@Override
-	public void create(Portfolio p) {
-		Log.i(TAG, "create portfolio: " + p.getName());
-		p.setId(UUID.randomUUID().toString());
-		portfolios.add(p);
-		save();
-	}
+    public FilePortfolioService(File directory) {
+        Log.i(TAG, "init portfolio service: " + directory.getAbsolutePath());
+        this.baseDirectory = directory;
+        this.portfolios = loadOrCreateNew();
+    }
 
-	@Override
-	public void delete(Portfolio p) {
-		Log.i(TAG, "delete portfolio: " + p.getName());
-		portfolios.remove(p);
-		save();
-	}
+    @Override
+    public void create(Portfolio p) {
+        Log.i(TAG, "create portfolio: " + p.getName());
+        p.setId(UUID.randomUUID().toString());
+        portfolios.add(p);
+        save();
+    }
 
-	@Override
-	public List<Portfolio> list() {
-		Log.i(TAG, "list portfolio ");
-		return Collections.unmodifiableList(this.portfolios);
-	}
+    @Override
+    public void delete(Portfolio p) {
+        Log.i(TAG, "delete portfolio: " + p.getName());
+        portfolios.remove(p);
+        save();
+    }
 
-	@Override
-	public void update(Portfolio p) {
-		Log.i(TAG, "update portfolio: " + p.getName());
-		
-		int pos = portfolios.indexOf(p);
-		if (pos > -1) {
-			Portfolio orig = portfolios.get(pos);
-			orig.setName(p.getName());
-			orig.setStocks(p.getStocks());
-		} else {
-			throw new IllegalArgumentException("record not found");
-		}
-		save();
-	}
-	
-	private List<Portfolio> loadOrCreateNew() {
+    @Override
+    public List<Portfolio> list() {
+        Log.i(TAG, "list portfolio ");
+        return Collections.unmodifiableList(this.portfolios);
+    }
+
+    @Override
+    public void update(Portfolio p) {
+        Log.i(TAG, "update portfolio: " + p.getName());
+
+        int pos = portfolios.indexOf(p);
+        if (pos > -1) {
+            Portfolio orig = portfolios.get(pos);
+            orig.setName(p.getName());
+            orig.setStocks(p.getStocks());
+        } else {
+            throw new IllegalArgumentException("record not found");
+        }
+        save();
+    }
+
+    private List<Portfolio> loadOrCreateNew() {
         Log.i(TAG, "loading portfolio file ...");
         File store = new File(baseDirectory, STORAGE_FILE);
         Reader reader = null;
@@ -77,42 +76,42 @@ public class FilePortfolioService implements PortfolioService {
             if (!store.exists()) {
                 return new Vector<Portfolio>();
             }
-            
+
             reader = new FileReader(store);
             return PortfolioSerializer.fromXML(reader);
         } catch (IOException e) {
             throw new StorageException("failed storing datafile", e);
-        
+
         } catch (StreamException se) {
             Log.w(TAG, "failed to read or write datafile", se);
             return new Vector<Portfolio>();
-            
+
         } finally {
             IOUtils.closeQuietly(reader);
-        
-        }
-	}
-	
-	private void save() {
-	    Log.i(TAG, "saving portfolio file ...");
-		File store = new File(baseDirectory, STORAGE_FILE);
-		Writer writer = null;
-		try {
-			if (!store.exists()) {
-				store.createNewFile();
-			}
-			
-			writer = new BufferedWriter(new FileWriter(store));
-			String xml = PortfolioSerializer.toXML(portfolios);
-			IOUtils.write(xml, writer);
-			Log.i(TAG, "save completed");
 
-		} catch (IOException e) {
-			throw new StorageException("failed storing datafile", e);
-		
-		} finally {
-			IOUtils.closeQuietly(writer);
-		
-		}
-	}
+        }
+    }
+
+    private void save() {
+        Log.i(TAG, "saving portfolio file ...");
+        File store = new File(baseDirectory, STORAGE_FILE);
+        Writer writer = null;
+        try {
+            if (!store.exists()) {
+                store.createNewFile();
+            }
+
+            writer = new BufferedWriter(new FileWriter(store));
+            String xml = PortfolioSerializer.toXML(portfolios);
+            IOUtils.write(xml, writer);
+            Log.i(TAG, "save completed");
+
+        } catch (IOException e) {
+            throw new StorageException("failed storing datafile", e);
+
+        } finally {
+            IOUtils.closeQuietly(writer);
+
+        }
+    }
 }

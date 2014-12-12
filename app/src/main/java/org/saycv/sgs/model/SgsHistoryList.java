@@ -18,65 +18,65 @@
 
 package org.saycv.sgs.model;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.saycv.sgs.utils.SgsObservableList;
 import org.saycv.sgs.utils.SgsPredicate;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
+import java.util.Collection;
+import java.util.List;
+
 @Root(name = "events")
 public class SgsHistoryList {
     private final SgsObservableList<SgsHistoryEvent> mEvents;
-    
+
     @SuppressWarnings("unused")
-	@ElementList(name="event", required=false, inline=true)
-	private List<SgsHistoryEvent> mSerializableEvents;
-	
-    public SgsHistoryList(){
-    	mEvents = new SgsObservableList<SgsHistoryEvent>(true);
-    	mSerializableEvents = mEvents.getList();
+    @ElementList(name = "event", required = false, inline = true)
+    private List<SgsHistoryEvent> mSerializableEvents;
+
+    public SgsHistoryList() {
+        mEvents = new SgsObservableList<SgsHistoryEvent>(true);
+        mSerializableEvents = mEvents.getList();
     }
-    
-	public SgsObservableList<SgsHistoryEvent> getList(){
-		return mEvents;
-	}
-	
-	public void addEvent(SgsHistoryEvent e){
-		mEvents.add(0, e);
-	}
-	
-	public void removeEvent(SgsHistoryEvent e){
-		if(mEvents != null){
-			mEvents.remove(e);
-		}
-	}
-	
-	public void removeEvents(Collection<SgsHistoryEvent> events){
-		if(mEvents != null){
-			mEvents.removeAll(events);
-		}
-	}
-	
-	public void removeEvents(SgsPredicate<SgsHistoryEvent> predicate){
-		if(mEvents != null){
-			final List<SgsHistoryEvent> eventsToRemove = mEvents.filter(predicate);
-			mEvents.removeAll(eventsToRemove);
-		}
-	}
-	
-	public void removeEvent(int location){
-		if(mEvents != null){
-			mEvents.remove(location);
-		}
-	}
-	
-	public void clear(){
-		if(mEvents != null){
-			mEvents.clear();
-		}
-	}
-	
-	
+
+    public SgsObservableList<SgsHistoryEvent> getList() {
+        return mEvents;
+    }
+
+    public void addEvent(SgsHistoryEvent e) {
+        mEvents.add(0, e);
+    }
+
+    public void removeEvent(SgsHistoryEvent e) {
+        if (mEvents != null) {
+            mEvents.remove(e);
+        }
+    }
+
+    public void removeEvents(Collection<SgsHistoryEvent> events) {
+        if (mEvents != null) {
+            mEvents.removeAll(events);
+        }
+    }
+
+    public void removeEvents(SgsPredicate<SgsHistoryEvent> predicate) {
+        if (mEvents != null) {
+            final List<SgsHistoryEvent> eventsToRemove = mEvents.filter(predicate);
+            mEvents.removeAll(eventsToRemove);
+        }
+    }
+
+    public void removeEvent(int location) {
+        if (mEvents != null) {
+            mEvents.remove(location);
+        }
+    }
+
+    public void clear() {
+        if (mEvents != null) {
+            mEvents.clear();
+        }
+    }
+
+
 }

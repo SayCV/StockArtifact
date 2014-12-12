@@ -1,8 +1,5 @@
 package com.example.saycv.stockartifact.view;
 
-import com.example.saycv.stockartifact.R;
-import com.example.saycv.stockartifact.model.Radar;
-import com.example.saycv.utils.PriceFormatter;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.format.DateFormat;
@@ -11,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.saycv.stockartifact.R;
+import com.example.saycv.stockartifact.model.Radar;
 
 public class RadarAdapter extends ArrayAdapter<Radar> {
     private static final String TAG = "RadarAdapter";
@@ -20,7 +19,7 @@ public class RadarAdapter extends ArrayAdapter<Radar> {
 
     public RadarAdapter(Context context) {
         super(context, 0);
-        formatter = DateFormat.getTimeFormat(context);        
+        formatter = DateFormat.getTimeFormat(context);
     }
 
     @Override
@@ -29,7 +28,9 @@ public class RadarAdapter extends ArrayAdapter<Radar> {
         if (v == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = (View) vi.inflate(R.layout.radar_item, null);
-            if (v.getLayoutParams() != null) { v.getLayoutParams().height = 22;}
+            if (v.getLayoutParams() != null) {
+                v.getLayoutParams().height = 22;
+            }
         }
 
         Log.d(TAG, "prepare view for Radar");
@@ -51,7 +52,7 @@ public class RadarAdapter extends ArrayAdapter<Radar> {
             price.setText(index.getPrice());
             volume.setText(index.getVolume());
 
-            if(index.getType().equals("大买单") || index.getType().equals("封涨停板") || index.getType().equals("快速上涨")) {
+            if (index.getType().equals("大买单") || index.getType().equals("封涨停板") || index.getType().equals("快速上涨")) {
                 time.setTextColor(Color.rgb(255, 0, 0));
                 code.setTextColor(Color.rgb(255, 0, 0));
                 name.setTextColor(Color.rgb(255, 0, 0));

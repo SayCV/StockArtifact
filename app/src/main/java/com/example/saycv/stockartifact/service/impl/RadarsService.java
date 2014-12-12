@@ -1,16 +1,13 @@
 package com.example.saycv.stockartifact.service.impl;
 
-import android.content.Context;
 import android.content.Intent;
 
 import com.example.saycv.stockartifact.events.RadarsEventArgs;
 import com.example.saycv.stockartifact.service.IRadarsService;
 import com.example.saycv.stockartifact.service.fetcher.RadarUpdateTask;
 
-import org.saycv.sgs.SgsApplication;
-import org.saycv.sgs.services.ISgsBaseService;
-
 import org.saycv.logger.Log;
+import org.saycv.sgs.SgsApplication;
 import org.saycv.sgs.services.impl.SgsBaseService;
 
 public class RadarsService extends SgsBaseService
@@ -48,10 +45,15 @@ public class RadarsService extends SgsBaseService
 
     }
 
-    public void setDefaultTask(RadarUpdateTask task) {  mRadarUpdateTask = task; }
-    public RadarUpdateTask getDefaultTask() { return mRadarUpdateTask; }
+    public RadarUpdateTask getDefaultTask() {
+        return mRadarUpdateTask;
+    }
 
-    public void broadcastRadarsEvent(RadarsEventArgs args, String date){
+    public void setDefaultTask(RadarUpdateTask task) {
+        mRadarUpdateTask = task;
+    }
+
+    public void broadcastRadarsEvent(RadarsEventArgs args, String date) {
         final Intent intent = new Intent(RadarsEventArgs.ACTION_RADARS_EVENT);
         /*intent.putExtra(TrafficCountEventArgs.EXTRA_DATA_COUNT_TOTAL_UPLOAD, dataCount.totalUpload);
         intent.putExtra(TrafficCountEventArgs.EXTRA_DATA_COUNT_TOTAL_DOWNLOAD, dataCount.totalDownload);

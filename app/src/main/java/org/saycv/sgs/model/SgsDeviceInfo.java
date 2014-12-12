@@ -21,56 +21,58 @@ package org.saycv.sgs.model;
 import java.util.Date;
 
 public class SgsDeviceInfo {
-	private String mLang;
-	private String mCountry;
-	private Date mDate;
-	private Orientation mOrientation;
+    private String mLang;
+    private String mCountry;
+    private Date mDate;
+    private Orientation mOrientation;
 
-	public enum Orientation {
-		PORTRAIT,
-		LANDSCAPE
-	};
-	
-	public SgsDeviceInfo(String lang, String country, Date date, Orientation orientation){
-		mLang = lang;
-		mCountry = country;
-		mDate = date;
-		mOrientation = orientation;
-	}
-	
-	public SgsDeviceInfo(){
-		this(null, null, null, Orientation.PORTRAIT);
-	}
-	
-	public String getLang(){
-		return mLang;
-	}
-	
-	public void setLang(String lang){
-		mLang = lang;
-	}
-	
-	public String getCountry(){
-		return mCountry;
-	}
-	
-	public void setCountry(String country){
-		mCountry = country;
-	}
-	
-	public Date getDate(){
-		return mDate;
-	}
-	
-	public void setDate(Date date){
-		mDate = date;
-	}
-	
-	public Orientation getOrientation(){
-		return mOrientation;
-	}
-	
-	public void setOrientation(Orientation orientation){
-		mOrientation = orientation;
-	}
+    public SgsDeviceInfo(String lang, String country, Date date, Orientation orientation) {
+        mLang = lang;
+        mCountry = country;
+        mDate = date;
+        mOrientation = orientation;
+    }
+
+    ;
+
+    public SgsDeviceInfo() {
+        this(null, null, null, Orientation.PORTRAIT);
+    }
+
+    public String getLang() {
+        return mLang;
+    }
+
+    public void setLang(String lang) {
+        mLang = lang;
+    }
+
+    public String getCountry() {
+        return mCountry;
+    }
+
+    public void setCountry(String country) {
+        mCountry = country;
+    }
+
+    public Date getDate() {
+        return mDate;
+    }
+
+    public void setDate(Date date) {
+        mDate = date;
+    }
+
+    public Orientation getOrientation() {
+        return mOrientation;
+    }
+
+    public void setOrientation(Orientation orientation) {
+        mOrientation = orientation;
+    }
+
+    public enum Orientation {
+        PORTRAIT,
+        LANDSCAPE
+    }
 }

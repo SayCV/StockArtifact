@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.example.saycv.stockartifact.events.RadarsEventArgs;
 import com.example.saycv.stockartifact.events.RadarsEventTypes;
@@ -23,63 +21,63 @@ import org.saycv.sgs.utils.SgsDateTimeUtils;
 import org.saycv.sgs.utils.SgsStringUtils;
 
 public class NativeService extends SgsNativeService {
-	private final static String TAG = NativeService.class.getCanonicalName();
-	public static final String ACTION_STATE_EVENT = TAG + ".ACTION_STATE_EVENT";
-	
-	private PowerManager.WakeLock mWakeLock;
-	private BroadcastReceiver mBroadcastReceiver;
-	private Engine mEngine;
-	
-	public NativeService(){
-		super();
-		mEngine = (Engine)Engine.getInstance();
-	}
+    private final static String TAG = NativeService.class.getCanonicalName();
+    public static final String ACTION_STATE_EVENT = TAG + ".ACTION_STATE_EVENT";
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		Log.d(TAG, "onCreate()");
-		
-		final PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		if(powerManager != null && mWakeLock == null){
-			mWakeLock = powerManager.newWakeLock(PowerManager.ON_AFTER_RELEASE 
-					| PowerManager.SCREEN_BRIGHT_WAKE_LOCK
-					| PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
-		}
+    private PowerManager.WakeLock mWakeLock;
+    private BroadcastReceiver mBroadcastReceiver;
+    private Engine mEngine;
+
+    public NativeService() {
+        super();
+        mEngine = (Engine) Engine.getInstance();
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "onCreate()");
+
+        final PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if (powerManager != null && mWakeLock == null) {
+            mWakeLock = powerManager.newWakeLock(PowerManager.ON_AFTER_RELEASE
+                    | PowerManager.SCREEN_BRIGHT_WAKE_LOCK
+                    | PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
+        }
         /*final PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
         if(mEngine != null){
             mEngine.getInstance().getMainActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }*/
-	}
-	
-	@Override
-	public void onStart(Intent intent, int startId) {
-		super.onStart(intent, startId);
-		Log.d(TAG, "onStart()");
-		
-		// register()
-		mBroadcastReceiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				final String action = intent.getAction();
-				
-				// Registration Events
+    }
 
-                if(RadarsEventArgs.ACTION_RADARS_EVENT.equals(action)){
+    @Override
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+        Log.d(TAG, "onStart()");
+
+        // register()
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+
+                // Registration Events
+
+                if (RadarsEventArgs.ACTION_RADARS_EVENT.equals(action)) {
                     RadarsEventArgs args = intent.getParcelableExtra(SgsEventArgs.EXTRA_EMBEDDED);
                     final RadarsEventTypes type;
-                    if(args == null){
+                    if (args == null) {
                         Log.e(TAG, "Invalid event args");
                         return;
                     }
                     String dateString = intent.getStringExtra(RadarsEventArgs.EXTRA_DATE);
                     String remoteParty = intent.getStringExtra(RadarsEventArgs.EXTRA_REMOTE_PARTY);
-                    if(SgsStringUtils.isNullOrEmpty(remoteParty)){
+                    if (SgsStringUtils.isNullOrEmpty(remoteParty)) {
                         remoteParty = SgsStringUtils.nullValue();
                     }
                     remoteParty = "RadarsEvent";//SgsUriUtils.getUserName(remoteParty);
                     HistoryRadarsEvent event;
-                    switch((type = args.getEventType())){
+                    switch ((type = args.getEventType())) {
                         case RADARS_EVENT_1:
                             event = new HistoryRadarsEvent(remoteParty, SgsHistoryEvent.StatusType.RADARS_ALL);
                             /*event.setContent(new String("Start Tethering -- TotalUpload: " +
@@ -90,7 +88,7 @@ public class NativeService extends SgsNativeService {
                             //Log.d(TAG, "Traffic Count Rx End date = " + dateString);
                             event.setRadarsData(args.getRadarsData());
                             event.setStartTime(SgsDateTimeUtils.parseDate(dateString).getTime());
-                            if(mEngine.getHistoryService().getEvents().size() != 0 && mEngine.getHistoryService().getEvents().get(0).compareTo(event) == 0 ) {
+                            if (mEngine.getHistoryService().getEvents().size() != 0 && mEngine.getHistoryService().getEvents().get(0).compareTo(event) == 0) {
                                 Log.d(TAG, "Found Redundant Traffic Count Event, will avoid this");
                                 break;
                             }
@@ -103,40 +101,40 @@ public class NativeService extends SgsNativeService {
                     }
 
                 }
-			}
-		};
-		final IntentFilter intentFilter = new IntentFilter();
+            }
+        };
+        final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(RadarsEventArgs.ACTION_RADARS_EVENT);
-		registerReceiver(mBroadcastReceiver, intentFilter);
-		
-		if(intent != null){
-			Bundle bundle = intent.getExtras();
-			if (bundle != null && bundle.getBoolean("autostarted")) {
-				if (mEngine.start()) {
-					//mEngine.getRadarsService().register(null);
-				}
-			}
-		}
-		
-		// alert()
-		final Intent i = new Intent(ACTION_STATE_EVENT);
-		i.putExtra("started", true);
-		sendBroadcast(i);
-	}
-	
-	@Override
-	public void onDestroy() {
-		Log.d(TAG, "onDestroy()");
-		if(mBroadcastReceiver != null){
-			unregisterReceiver(mBroadcastReceiver);
-			mBroadcastReceiver = null;
-		}
-		if(mWakeLock != null){
-			if(mWakeLock.isHeld()){
-				mWakeLock.release();
-				mWakeLock = null;
-			}
-		}
-		super.onDestroy();
-	}
+        registerReceiver(mBroadcastReceiver, intentFilter);
+
+        if (intent != null) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null && bundle.getBoolean("autostarted")) {
+                if (mEngine.start()) {
+                    //mEngine.getRadarsService().register(null);
+                }
+            }
+        }
+
+        // alert()
+        final Intent i = new Intent(ACTION_STATE_EVENT);
+        i.putExtra("started", true);
+        sendBroadcast(i);
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy()");
+        if (mBroadcastReceiver != null) {
+            unregisterReceiver(mBroadcastReceiver);
+            mBroadcastReceiver = null;
+        }
+        if (mWakeLock != null) {
+            if (mWakeLock.isHeld()) {
+                mWakeLock.release();
+                mWakeLock = null;
+            }
+        }
+        super.onDestroy();
+    }
 }

@@ -1,14 +1,12 @@
 package com.example.saycv.stockartifact.service.searcher;
 
+import android.util.Log;
+
 import com.example.saycv.stockartifact.Constants;
 import com.example.saycv.stockartifact.model.Stock;
 import com.example.saycv.stockartifact.service.Lang;
 import com.example.saycv.stockartifact.service.exception.DownloadException;
 import com.example.saycv.stockartifact.service.exception.ParseException;
-
-import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
@@ -22,7 +20,9 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.util.EntityUtils;
 
-import android.util.Log;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HkexStockSearcher implements StockSearcher {
     private static final String TAG = "HKEX";
@@ -33,11 +33,11 @@ public class HkexStockSearcher implements StockSearcher {
 
     private static final String REGEXP = "(.+)\\(([0-9]{1,5})";
     private static final Pattern pattern = Pattern.compile(REGEXP);
-    
-    private HttpClient client;    
+
+    private HttpClient client;
     private Lang language;
 
-    public HkexStockSearcher(Lang language) {        
+    public HkexStockSearcher(Lang language) {
         HttpParams params = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(params, 30 * 1000);
         HttpConnectionParams.setSoTimeout(params, 30 * 1000);
@@ -45,7 +45,7 @@ public class HkexStockSearcher implements StockSearcher {
         this.client = new DefaultHttpClient(params);
         this.language = language;
     }
-    
+
     @Override
     public Stock searchStock(String quote) throws DownloadException, ParseException {
         Log.i(TAG, "search stock: " + quote + ", lang=" + language);
@@ -61,7 +61,7 @@ public class HkexStockSearcher implements StockSearcher {
                 String value = StringUtils.substring(content, begin + BEGIN.length(), end);
                 value = StringUtils.strip(value).replaceAll("[\n\r]*", "");
                 Log.i(TAG, "result text: " + value);
-                
+
                 Matcher m = pattern.matcher(value);
                 if (m.find()) {
                     String name = StringUtils.strip(m.group(1));
@@ -73,10 +73,10 @@ public class HkexStockSearcher implements StockSearcher {
                     s.setQuote(quoteNumber);
                     return s;
                 } else {
-                    Log.w(TAG, "result text not match target pattern " );
+                    Log.w(TAG, "result text not match target pattern ");
                 }
             } else {
-                Log.w(TAG, "begin or end not found " + begin + ", " + end );
+                Log.w(TAG, "begin or end not found " + begin + ", " + end);
             }
         } catch (ClientProtocolException e) {
             throw new DownloadException("error searching stock", e);
@@ -85,7 +85,7 @@ public class HkexStockSearcher implements StockSearcher {
         }
         throw new ParseException("stock quote not found");
     }
-    
+
     /**
      * @return the language
      */

@@ -1,10 +1,18 @@
 package com.example.saycv.stockartifact.service.fetcher;
 
-import static com.example.saycv.stockartifact.service.fetcher.Utils.rounded;
+import android.content.Context;
+
 import com.example.saycv.stockartifact.R;
 import com.example.saycv.stockartifact.model.Index;
 import com.example.saycv.stockartifact.service.exception.DownloadException;
 import com.example.saycv.stockartifact.service.exception.ParseException;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -14,19 +22,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.content.Context;
+import static com.example.saycv.stockartifact.service.fetcher.Utils.rounded;
 
 public class Money18IndexesFetcher extends BaseIndexesFetcher {
     private static final String DATE_FORMAT = "yyyy/MM/dd HH:mm";
     private Context context;
-    
+
     public Money18IndexesFetcher(Context context) {
         this.context = context;
     }
@@ -44,26 +45,26 @@ public class Money18IndexesFetcher extends BaseIndexesFetcher {
             Index hsi = new Index();
             HttpGet req = new HttpGet(getHSIURL());
             req.setHeader("Referer", "http://money18.on.cc/");
-    
+
             HttpResponse resp = getClient().execute(req);
             String content = EntityUtils.toString(resp.getEntity());
             JSONObject json = preprocessJson(content);
-            
+
             SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
             Date updateTime = formatter.parse(json.getString("ltt"));
             Calendar updatedAt = Calendar.getInstance();
             updatedAt.setTime(updateTime);
             hsi.setUpdatedAt(updatedAt);
-            
+
             double value = json.getDouble("value");
             double change = json.getDouble("difference");
             double changePercent = change * 100.0 / value;
-            
+
             hsi.setName(getContext().getString(R.string.msg_hsi));
             hsi.setValue(new BigDecimal(json.getString("value")));
             hsi.setChange(new BigDecimal(rounded(change, 1000.0)));
             hsi.setChangePercent(new BigDecimal(rounded(changePercent, 100.0)));
-    
+
             return hsi;
         } catch (org.apache.http.ParseException pe) {
             throw new ParseException("error parsing http data", pe);
@@ -75,27 +76,27 @@ public class Money18IndexesFetcher extends BaseIndexesFetcher {
             throw new ParseException("error parsing json data", e);
         }
     }
-    
+
     private String getHSIURL() {
         return "http://money18.on.cc/js/real/index/HSI_r.js";
     }
-    
+
     private String getWorldIndexURL() {
         return "http://money18.on.cc/js/daily/worldidx/worldidx_b.js";
     }
-    
+
     private JSONObject preprocessJson(String content) throws JSONException {
         int pos = content.indexOf('{');
         String result = StringUtils.substring(content, pos);
         JSONObject json = new JSONObject(result);
         return json;
     }
-    
-    private List<Index> getWorldIndexes()  throws ParseException, DownloadException {
+
+    private List<Index> getWorldIndexes() throws ParseException, DownloadException {
         try {
             HttpGet req = new HttpGet(getWorldIndexURL());
             req.setHeader("Referer", "http://money18.on.cc/");
-    
+
             HttpResponse resp = getClient().execute(req);
             String content = EntityUtils.toString(resp.getEntity(), "Big5");
             return getWorldIndexesFromJson(content);
@@ -107,7 +108,7 @@ public class Money18IndexesFetcher extends BaseIndexesFetcher {
             throw new DownloadException("error parsing http data", ie);
         }
     }
-    
+
     private List<Index> getWorldIndexesFromJson(String content) throws JSONException {
         List<Index> indexes = new ArrayList<Index>();
         int start = content.indexOf('{');
@@ -122,11 +123,11 @@ public class Money18IndexesFetcher extends BaseIndexesFetcher {
             Index index = new Index();
             index.setName(name);
             index.setValue(new BigDecimal(value));
-            
+
             if (diff != null && !StringUtils.equalsIgnoreCase(diff, "null")) {
                 index.setChange(new BigDecimal(diff));
-            
-            	double changePercent = index.getValue().doubleValue() / (index.getValue().doubleValue() - index.getChange().doubleValue()) - 1;
+
+                double changePercent = index.getValue().doubleValue() / (index.getValue().doubleValue() - index.getChange().doubleValue()) - 1;
                 index.setChangePercent(new BigDecimal(changePercent));
             }
 

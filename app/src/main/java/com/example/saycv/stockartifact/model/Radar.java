@@ -1,8 +1,5 @@
 package com.example.saycv.stockartifact.model;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-
 public class Radar {
     private String time;
     private String code;
@@ -16,6 +13,7 @@ public class Radar {
     public String getTime() {
         return time;
     }
+
     public void setTime(String time) {
         this.time = time;
     }
@@ -23,6 +21,7 @@ public class Radar {
     public String getCode() {
         return code;
     }
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -30,6 +29,7 @@ public class Radar {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -37,6 +37,7 @@ public class Radar {
     public String getType() {
         return type;
     }
+
     public void setType(String type) {
         this.type = type;
     }
@@ -44,6 +45,7 @@ public class Radar {
     public String getPrice() {
         return price;
     }
+
     public void setPrice(String price) {
         this.price = price;
     }
@@ -51,6 +53,7 @@ public class Radar {
     public String getVolume() {
         return volume;
     }
+
     public void setVolume(String volume) {
         this.volume = volume;
     }
@@ -62,7 +65,7 @@ public class Radar {
     public String toString() {
         return String.format(
                 "Index [time=%s, code=%s, name=%s, price=%s, type=%s, volume=%s]",
-                time, code, name, price, type, volume );
+                time, code, name, price, type, volume);
     }
 
 }

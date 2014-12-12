@@ -18,6 +18,13 @@
 
 package org.saycv.sgs;
 
+import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Vibrator;
+
+import org.saycv.logger.Log;
 import org.saycv.sgs.services.ISgsConfigurationService;
 import org.saycv.sgs.services.ISgsHistoryService;
 import org.saycv.sgs.services.ISgsHttpClientService;
@@ -30,14 +37,6 @@ import org.saycv.sgs.services.impl.SgsHttpClientService;
 import org.saycv.sgs.services.impl.SgsNetworkService;
 import org.saycv.sgs.services.impl.SgsSgsService;
 import org.saycv.sgs.services.impl.SgsStorageService;
-import org.saycv.sgs.utils.SgsConfigurationEntry;
-
-import android.app.Activity;
-import android.app.NotificationManager;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Vibrator;
-import org.saycv.logger.Log;
 
 /**
  * Next Generation Network Engine.
@@ -45,217 +44,226 @@ import org.saycv.logger.Log;
  * Anywhere in the code you can get an instance of the engine by calling @ref getInstance() function.
  */
 public class SgsEngine {
-	private final static String TAG = SgsEngine.class.getCanonicalName();
-	
-	protected static SgsEngine sInstance;
-	
-	protected boolean mStarted;
-	protected Activity mMainActivity;
-	
-	protected final NotificationManager mNotifManager;
-	protected final Vibrator mVibrator;
+    private final static String TAG = SgsEngine.class.getCanonicalName();
 
+    protected static SgsEngine sInstance;
+    protected final NotificationManager mNotifManager;
+    protected final Vibrator mVibrator;
+    protected boolean mStarted;
+    protected Activity mMainActivity;
     protected ISgsSgsService mSgsService;
-	protected ISgsConfigurationService mConfigurationService;
-	protected ISgsStorageService mStorageService;
-	protected ISgsNetworkService mNetworkService;
-	protected ISgsHttpClientService mHttpClientService;
-	protected ISgsHistoryService mHistoryService;
-	
-	public static void initialize(){
+    protected ISgsConfigurationService mConfigurationService;
+    protected ISgsStorageService mStorageService;
+    protected ISgsNetworkService mNetworkService;
+    protected ISgsHttpClientService mHttpClientService;
+    protected ISgsHistoryService mHistoryService;
 
-	}
-	
-	/**
-	 * Gets an instance of the NGN engine. You can call this function as many as you need and it will always return th
-	 * same instance.
-	 * @return An instance of the NGN engine.
-	 */
-	public static SgsEngine getInstance(){
-		if(sInstance == null){
-			sInstance = new SgsEngine();
-		}
-		return sInstance;
-	}
-	
-	/**
-	 * Default constructor for the NGN engine. You should never call this function from your code. Instead you should
-	 * use @ref getInstance().
-	 * @sa @ref getInstance()
-	 */
-	protected SgsEngine(){
-		final Context applicationContext = SgsApplication.getContext();
-		final ISgsConfigurationService configurationService = getConfigurationService();
-		if(applicationContext != null){
-			mNotifManager = (NotificationManager) applicationContext.getSystemService(Context.NOTIFICATION_SERVICE);
-		}
-		else{ 
-			mNotifManager = null;
-		}
-		mVibrator = null;
-		
+    /**
+     * Default constructor for the NGN engine. You should never call this function from your code. Instead you should
+     * use @ref getInstance().
+     *
+     * @sa @ref getInstance()
+     */
+    protected SgsEngine() {
+        final Context applicationContext = SgsApplication.getContext();
+        final ISgsConfigurationService configurationService = getConfigurationService();
+        if (applicationContext != null) {
+            mNotifManager = (NotificationManager) applicationContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        } else {
+            mNotifManager = null;
+        }
+        mVibrator = null;
 
-	}
-	
-	/**
-	 * Starts the engine. This function will start all underlying services (SIP, XCAP, MSRP, History, ...).
-	 * You must call this function before trying to use any of the underlying services.
-	 * @return true if all services have been successfully started and false otherwise
-	 */
-	public synchronized boolean start() {
-		if(mStarted){
-			return true;
-		}
-		
-		boolean success = true;
-		
-		success &= getConfigurationService().start();
-		success &= getStorageService().start();
-		success &= getNetworkService().start();
-		success &= getHttpClientService().start();
-		success &= getHistoryService().start();
-		
-		if(success) {
-			success &= getHistoryService().load();
-			
-			SgsApplication.getContext().startService(
-					new Intent(SgsApplication.getContext(), getNativeServiceClass()));
-		} else {
-			Log.e(TAG, "Failed to start services");
-		}
-		
-		mStarted = true;
-		return success;
-	}
-	
-	/**
-	 * Stops the engine. This function will stop all underlying services (SIP, XCAP, MSRP, History, ...).
-	 * @return true if all services have been successfully stopped and false otherwise
-	 */
-	public synchronized boolean stop() {
-		if(!mStarted){
-			return true;
-		}
-		
-		boolean success = true;
+
+    }
+
+    public static void initialize() {
+
+    }
+
+    /**
+     * Gets an instance of the NGN engine. You can call this function as many as you need and it will always return th
+     * same instance.
+     *
+     * @return An instance of the NGN engine.
+     */
+    public static SgsEngine getInstance() {
+        if (sInstance == null) {
+            sInstance = new SgsEngine();
+        }
+        return sInstance;
+    }
+
+    /**
+     * Starts the engine. This function will start all underlying services (SIP, XCAP, MSRP, History, ...).
+     * You must call this function before trying to use any of the underlying services.
+     *
+     * @return true if all services have been successfully started and false otherwise
+     */
+    public synchronized boolean start() {
+        if (mStarted) {
+            return true;
+        }
+
+        boolean success = true;
+
+        success &= getConfigurationService().start();
+        success &= getStorageService().start();
+        success &= getNetworkService().start();
+        success &= getHttpClientService().start();
+        success &= getHistoryService().start();
+
+        if (success) {
+            success &= getHistoryService().load();
+
+            SgsApplication.getContext().startService(
+                    new Intent(SgsApplication.getContext(), getNativeServiceClass()));
+        } else {
+            Log.e(TAG, "Failed to start services");
+        }
+
+        mStarted = true;
+        return success;
+    }
+
+    /**
+     * Stops the engine. This function will stop all underlying services (SIP, XCAP, MSRP, History, ...).
+     *
+     * @return true if all services have been successfully stopped and false otherwise
+     */
+    public synchronized boolean stop() {
+        if (!mStarted) {
+            return true;
+        }
+
+        boolean success = true;
 
         success &= getConfigurationService().stop();
         success &= getHttpClientService().stop();
         success &= getHistoryService().stop();
         success &= getStorageService().stop();
         success &= getNetworkService().stop();
-		
-		if(!success){
-			Log.e(TAG, "Failed to stop services");
-		}
-		
-		SgsApplication.getContext().stopService(
-				new Intent(SgsApplication.getContext(), getNativeServiceClass()));
-		
-		// Cancel the persistent notifications.
-		if(mNotifManager != null){
-			mNotifManager.cancelAll();
-		}
-		
-		mStarted = false;
-		return success;
-	}
-	
-	/**
-	 * Checks whether the engine is started.
-	 * @return true is the engine is running and false otherwise.
-	 * @sa @ref start() @ref stop()
-	 */
-	public synchronized boolean isStarted(){
-		return mStarted;
-	}
-	
-	/**
-	 * Sets the main activity to use as context in order to query some native resources.
-	 * It's up to you to call this function in order to retrieve the contacts for the ContactService.
-	 * @param mainActivity The activity
-	 * @sa @ref getMainActivity()
-	 */
-	public void setMainActivity(Activity mainActivity){
-		mMainActivity = mainActivity;
-	}
-	
-	/**
-	 * Gets the main activity.
-	 * @return the main activity
-	 * @sa @ref setMainActivity()
-	 */
-	public Activity getMainActivity(){
-		return mMainActivity;
-	}
 
-    public ISgsSgsService getSgsService(){
-        if(mSgsService == null){
+        if (!success) {
+            Log.e(TAG, "Failed to stop services");
+        }
+
+        SgsApplication.getContext().stopService(
+                new Intent(SgsApplication.getContext(), getNativeServiceClass()));
+
+        // Cancel the persistent notifications.
+        if (mNotifManager != null) {
+            mNotifManager.cancelAll();
+        }
+
+        mStarted = false;
+        return success;
+    }
+
+    /**
+     * Checks whether the engine is started.
+     *
+     * @return true is the engine is running and false otherwise.
+     * @sa @ref start() @ref stop()
+     */
+    public synchronized boolean isStarted() {
+        return mStarted;
+    }
+
+    /**
+     * Gets the main activity.
+     *
+     * @return the main activity
+     * @sa @ref setMainActivity()
+     */
+    public Activity getMainActivity() {
+        return mMainActivity;
+    }
+
+    /**
+     * Sets the main activity to use as context in order to query some native resources.
+     * It's up to you to call this function in order to retrieve the contacts for the ContactService.
+     *
+     * @param mainActivity The activity
+     * @sa @ref getMainActivity()
+     */
+    public void setMainActivity(Activity mainActivity) {
+        mMainActivity = mainActivity;
+    }
+
+    public ISgsSgsService getSgsService() {
+        if (mSgsService == null) {
             mSgsService = new SgsSgsService();
         }
         return mSgsService;
     }
 
-	/**
-	 * Gets the configuration service.
-	 * @return the configuration service.
-	 */
-	public ISgsConfigurationService getConfigurationService(){
-		if(mConfigurationService == null){
-			mConfigurationService = new SgsConfigurationService();
-		}
-		return mConfigurationService;
-	}
-	
-	/**
-	 * Gets the storage service.
-	 * @return the storage service.
-	 */
-	public ISgsStorageService getStorageService(){
-		if(mStorageService == null){
-			mStorageService = new SgsStorageService();
-		}
-		return mStorageService;
-	}
-	
-	/**
-	 * Gets the network service
-	 * @return the network service
-	 */
-	public ISgsNetworkService getNetworkService(){
-		if(mNetworkService == null){
-			mNetworkService = new SgsNetworkService();
-		}
-		return mNetworkService;
-	}
-	
-	/**
-	 * Gets the HTTP service
-	 * @return the HTTP service
-	 */
-	public ISgsHttpClientService getHttpClientService(){
-		if(mHttpClientService == null){
-			mHttpClientService = new SgsHttpClientService();
-		}
-		return mHttpClientService;
-	}
-	
-	/**
-	 * Gets the history service
-	 * @return the history service
-	 */
-	public ISgsHistoryService getHistoryService(){
-		if(mHistoryService == null){
-			mHistoryService = new SgsHistoryService();
-		}
-		return mHistoryService;
-	}
-	
-	/**
-	 * Gets the native service class
-	 * @return the native service class
-	 */
-	public Class<? extends SgsNativeService> getNativeServiceClass(){
-		return SgsNativeService.class;
-	}
+    /**
+     * Gets the configuration service.
+     *
+     * @return the configuration service.
+     */
+    public ISgsConfigurationService getConfigurationService() {
+        if (mConfigurationService == null) {
+            mConfigurationService = new SgsConfigurationService();
+        }
+        return mConfigurationService;
+    }
+
+    /**
+     * Gets the storage service.
+     *
+     * @return the storage service.
+     */
+    public ISgsStorageService getStorageService() {
+        if (mStorageService == null) {
+            mStorageService = new SgsStorageService();
+        }
+        return mStorageService;
+    }
+
+    /**
+     * Gets the network service
+     *
+     * @return the network service
+     */
+    public ISgsNetworkService getNetworkService() {
+        if (mNetworkService == null) {
+            mNetworkService = new SgsNetworkService();
+        }
+        return mNetworkService;
+    }
+
+    /**
+     * Gets the HTTP service
+     *
+     * @return the HTTP service
+     */
+    public ISgsHttpClientService getHttpClientService() {
+        if (mHttpClientService == null) {
+            mHttpClientService = new SgsHttpClientService();
+        }
+        return mHttpClientService;
+    }
+
+    /**
+     * Gets the history service
+     *
+     * @return the history service
+     */
+    public ISgsHistoryService getHistoryService() {
+        if (mHistoryService == null) {
+            mHistoryService = new SgsHistoryService();
+        }
+        return mHistoryService;
+    }
+
+    /**
+     * Gets the native service class
+     *
+     * @return the native service class
+     */
+    public Class<? extends SgsNativeService> getNativeServiceClass() {
+        return SgsNativeService.class;
+    }
 }

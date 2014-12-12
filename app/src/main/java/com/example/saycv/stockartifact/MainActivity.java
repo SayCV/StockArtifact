@@ -1,22 +1,18 @@
 package com.example.saycv.stockartifact;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
-import android.os.Handler;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.example.saycv.stockartifact.service.IRadarsService;
@@ -28,10 +24,9 @@ import com.example.saycv.stockartifact.view.RadarAdapter;
 public class MainActivity extends Activity {
     public static final String TAG = "MainActivity";
     public static RadarAdapter adapter;
-
-    private Handler mHandler;
     private final Engine mEngine;
     private final IRadarsService mRadarsService;
+    private Handler mHandler;
 
 
 
@@ -56,6 +51,7 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
         mHandler = new Handler();
+        mEngine.start();
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
@@ -124,6 +120,7 @@ public class MainActivity extends Activity {
             RadarUpdateTask task = new RadarUpdateTask((Activity)view.getContext());
             task.execute();
             ((RadarsService) ((Engine)Engine.getInstance()).getRadarsService()).setDefaultTask(task);
+
         }
     }
 }

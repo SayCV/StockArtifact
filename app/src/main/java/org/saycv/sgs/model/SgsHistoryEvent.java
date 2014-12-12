@@ -18,104 +18,102 @@
 
 package org.saycv.sgs.model;
 
-import java.util.Date;
-
 import org.saycv.sgs.media.SgsMediaType;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import java.util.Date;
+
 @Root
-public abstract class SgsHistoryEvent  implements Comparable<SgsHistoryEvent> {
-	
-	public enum StatusType{
-		Outgoing,
-		Incoming,
-		Missed,
-		Failed,
+public abstract class SgsHistoryEvent implements Comparable<SgsHistoryEvent> {
+
+    @Element(name = "type", required = true)
+    protected SgsMediaType mMediaType;
+
+    // For performance reasons, do not use Date() class
+    @Element(name = "start", required = true)
+    protected long mStartTime;
+    @Element(name = "end", required = true)
+    protected long mEndTime;
+    @Element(name = "remote", required = true)
+    protected String mRemoteParty;
+    @Element(name = "seen", required = true)
+    protected boolean mSeen;
+    @Element(name = "status", required = true)
+    protected StatusType mStatus;
+    private String mDisplayName;
+
+    protected SgsHistoryEvent(SgsMediaType mediaType, String remoteParty) {
+        mMediaType = mediaType;
+        mStartTime = new Date().getTime();
+        mEndTime = mStartTime;
+        mRemoteParty = remoteParty;
+        mStatus = StatusType.Missed;
+    }
+
+    public long getStartTime() {
+        return mStartTime;
+    }
+
+    public void setStartTime(long time) {
+        mStartTime = time;
+    }
+
+    public long getEndTime() {
+        return mEndTime;
+    }
+
+    public void setEndTime(long time) {
+        mEndTime = time;
+    }
+
+    public SgsMediaType getMediaType() {
+        return mMediaType;
+    }
+
+    public String getRemoteParty() {
+        return mRemoteParty;
+    }
+
+    public void setRemoteParty(String remoteParty) {
+        mRemoteParty = remoteParty;
+    }
+
+    public boolean isSeen() {
+        return mSeen;
+    }
+
+    public void setSeen(boolean seen) {
+        mSeen = seen;
+    }
+
+    public StatusType getStatus() {
+        return mStatus;
+    }
+
+    public void setStatus(StatusType status) {
+        mStatus = status;
+    }
+
+    public String getDisplayName() {
+        return mDisplayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        mDisplayName = displayName;
+    }
+
+    @Override
+    public int compareTo(SgsHistoryEvent another) {
+        return (int) (mStartTime - another.mStartTime);
+    }
+
+    public enum StatusType {
+        Outgoing,
+        Incoming,
+        Missed,
+        Failed,
         RADARS_ALL,
         RADARS_LATEST
-	}
-	
-	// For performance reasons, do not use Date() class
-	
-	@Element(name = "type", required = true)
-	protected SgsMediaType mMediaType;
-	@Element(name = "start", required = true)
-	protected long mStartTime;
-	@Element(name = "end", required = true)
-	protected long mEndTime;
-	@Element(name = "remote", required = true)
-	protected String mRemoteParty;
-	@Element(name = "seen", required = true)
-	protected boolean mSeen;
-	@Element(name = "status", required = true)
-	protected StatusType mStatus;
-	
-	private String mDisplayName;
-	
-	
-	protected SgsHistoryEvent(SgsMediaType mediaType, String remoteParty){
-		mMediaType = mediaType;
-		mStartTime = new Date().getTime();
-		mEndTime = mStartTime;
-		mRemoteParty = remoteParty;
-		mStatus = StatusType.Missed;
-	}
-	
-	public void setStartTime(long time){
-		mStartTime = time;
-	}
-	
-	public long getStartTime(){
-		return mStartTime;
-	}
-	
-	public long getEndTime(){
-		return mEndTime;
-	}
-	
-	public void setEndTime(long time){
-		mEndTime = time;
-	}
-	
-	public SgsMediaType getMediaType(){
-		return mMediaType;
-	}
-	
-	public String getRemoteParty(){
-		return mRemoteParty;
-	}
-	
-	public void setRemoteParty(String remoteParty){
-		mRemoteParty = remoteParty;
-	}
-	
-	public boolean isSeen(){
-		return mSeen;
-	}
-	
-	public void setSeen(boolean seen){
-		mSeen = seen;
-	}
-	
-	public StatusType getStatus(){
-		return mStatus;
-	}
-	
-	public void setStatus(StatusType status){
-		mStatus = status;
-	}
-	
-	public void setDisplayName(String displayName){
-		mDisplayName = displayName;
-	}
-	
-	public String getDisplayName(){
-		return mDisplayName;
-	}
-	
-	@Override
-	public int compareTo(SgsHistoryEvent another) {
-		return (int)(mStartTime - another.mStartTime);
-	}
+    }
 }

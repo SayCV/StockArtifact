@@ -6,12 +6,12 @@ import java.util.List;
 
 public interface PortfolioService {
     void create(Portfolio portfolio);
-    
+
     List<Portfolio> list();
-    
+
     void update(Portfolio portfolio);
-    
+
     void delete(Portfolio portfolio);
 
-    
+
 }

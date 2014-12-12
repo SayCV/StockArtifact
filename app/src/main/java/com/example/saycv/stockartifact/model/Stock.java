@@ -3,10 +3,10 @@ package com.example.saycv.stockartifact.model;
 import java.io.Serializable;
 
 public class Stock implements Serializable {
-	private static final long serialVersionUID = -6452165113616479803L;
-	private String name;
-	private String quote;
-    private StockDetail detail; 
+    private static final long serialVersionUID = -6452165113616479803L;
+    private String name;
+    private String quote;
+    private StockDetail detail;
 
     /**
      * @return the quote
@@ -16,8 +16,7 @@ public class Stock implements Serializable {
     }
 
     /**
-     * @param quote
-     *            the quote to set
+     * @param quote the quote to set
      */
     public void setQuote(String quote) {
         this.quote = quote;

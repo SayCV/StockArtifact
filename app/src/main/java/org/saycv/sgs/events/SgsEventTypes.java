@@ -19,7 +19,7 @@
 package org.saycv.sgs.events;
 
 public enum SgsEventTypes {
-	SGS_EVENT_1,
+    SGS_EVENT_1,
     SGS_EVENT_2,
     SGS_EVENT_4,
     SGS_EVENT_5,
