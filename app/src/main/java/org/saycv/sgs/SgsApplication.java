@@ -317,6 +317,17 @@ public class SgsApplication extends Application {
         return getInstance();
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        sPackageManager = sInstance.getPackageManager();
+        sPackageName = sInstance.getPackageName();
+
+        Log.d(TAG,"Build.MODEL="+Build.MODEL);
+        Log.d(TAG,"Build.VERSION.SDK="+Build.VERSION.SDK_INT);
+    }
+
     /**
      * Gets Android SDK version
      *
@@ -605,16 +616,5 @@ public class SgsApplication extends Application {
             }
         }
         return true;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        sPackageManager = sInstance.getPackageManager();
-        sPackageName = sInstance.getPackageName();
-
-        Log.d(TAG, "Build.MODEL=" + Build.MODEL);
-        Log.d(TAG, "Build.VERSION.SDK=" + Build.VERSION.SDK_INT);
     }
 }

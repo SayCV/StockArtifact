@@ -64,6 +64,7 @@ public class NativeService extends SgsNativeService {
                 // Registration Events
 
                 if (RadarsEventArgs.ACTION_RADARS_EVENT.equals(action)) {
+                    Log.d(TAG, "RadarsEventArgs.ACTION_RADARS_EVENT.");
                     RadarsEventArgs args = intent.getParcelableExtra(SgsEventArgs.EXTRA_EMBEDDED);
                     final RadarsEventTypes type;
                     if (args == null) {
@@ -85,14 +86,13 @@ public class NativeService extends SgsNativeService {
                             */
                             //Log.d(TAG, "Traffic Count getTotalUpload = " + args.getTotalUpload());
                             //Log.d(TAG, "Traffic Count getTotalDownload = " + args.getTotalDownload());
-                            //Log.d(TAG, "Traffic Count Rx End date = " + dateString);
                             event.setRadarsData(args.getRadarsData());
                             event.setStartTime(SgsDateTimeUtils.parseDate(dateString).getTime());
-                            if (mEngine.getHistoryService().getEvents().size() != 0 && mEngine.getHistoryService().getEvents().get(0).compareTo(event) == 0) {
+                            /*if (mEngine.getHistoryService().getEvents().size() != 0 && mEngine.getHistoryService().getEvents().get(0).compareTo(event) == 0) {
                                 Log.d(TAG, "Found Redundant Traffic Count Event, will avoid this");
                                 break;
-                            }
-                            mEngine.getHistoryService().addEvent(event);
+                            }*/
+                            //mEngine.getHistoryService().addEvent(event);
                             ((RadarsService) mEngine.getRadarsService()).getDefaultTask().updateRadars(args.getRadarsData());
                             break;
                         default:

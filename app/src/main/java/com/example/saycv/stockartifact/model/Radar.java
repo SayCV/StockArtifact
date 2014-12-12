@@ -1,6 +1,8 @@
 package com.example.saycv.stockartifact.model;
 
-public class Radar {
+import java.io.Serializable;
+
+public class Radar implements Serializable {
     private String time;
     private String code;
     private String name;

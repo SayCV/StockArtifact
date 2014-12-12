@@ -2,6 +2,10 @@ package com.example.saycv.stockartifact;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -23,12 +27,15 @@ import com.example.saycv.stockartifact.view.RadarAdapter;
 
 public class MainActivity extends Activity {
     public static final String TAG = "MainActivity";
+
+    public static final int ACTION_NONE = 0;
+
     public static RadarAdapter adapter;
     private final Engine mEngine;
     private final IRadarsService mRadarsService;
     private Handler mHandler;
 
-
+    private BroadcastReceiver mBroadCastRecv;
 
     public MainActivity(){
         super();
@@ -51,15 +58,75 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
         mHandler = new Handler();
-        mEngine.start();
 
+        Bundle bundle = savedInstanceState;
+        if(bundle == null){
+            Intent intent = getIntent();
+            bundle = intent == null ? null : intent.getExtras();
+        }
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment(mEngine))
                     .commit();
         }
+
+        mBroadCastRecv = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+                Log.d(TAG, "onReceive()");
+
+                if(NativeService.ACTION_STATE_EVENT.equals(action)){
+                    if(intent.getBooleanExtra("started", false)){
+                        /*if(getEngine().getConfigurationService().getBoolean(SgsConfigurationEntry.NETWORK_CONNECTED,
+                                SgsConfigurationEntry.DEFAULT_NETWORK_CONNECTED)) {
+                            ((TetheringService)getEngine().getTetheringService()).setRegistrationState(TetheringSession.ConnectionState.CONNECTED);
+                            SgsApplication.acquireWakeLock();
+                        }*/
+                        //mScreenService.show(ScreenHome.class);
+                        //getEngine().getConfigurationService().putBoolean(SgsConfigurationEntry.GENERAL_AUTOSTART, true);
+                        finish();
+                    }
+                }
+            }
+        };
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(NativeService.ACTION_STATE_EVENT);
+        registerReceiver(mBroadCastRecv, intentFilter);
     }
 
+    @Override
+    protected void onDestroy() {
+        if(mBroadCastRecv != null){
+            unregisterReceiver(mBroadCastRecv);
+            //SgsApplication.releaseWakeLock();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final Engine engine = mEngine;
+
+        final Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                if(!engine.isStarted()){
+                    Log.d(TAG, "Starts the engine from the splash screen");
+                    engine.start();
+//                    if(getEngine().getConfigurationService().getBoolean(SgsConfigurationEntry.NETWORK_CONNECTED,
+//                            SgsConfigurationEntry.DEFAULT_NETWORK_CONNECTED)) {
+//                        //((TetheringService)getEngine().getTetheringService()).setRegistrationState(TetheringSession.ConnectionState.CONNECTED);
+//                        SgsApplication.acquireWakeLock();
+//                        ((TetheringService)getEngine().getTetheringService()).reRegister(null);
+//                    }
+                }
+            }
+        });
+        thread.setPriority(Thread.MAX_PRIORITY);
+        thread.start();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

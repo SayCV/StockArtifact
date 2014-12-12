@@ -123,6 +123,9 @@ public class SgsEngine {
         }
 
         mStarted = true;
+
+        Log.e(TAG, "start services");
+
         return success;
     }
 

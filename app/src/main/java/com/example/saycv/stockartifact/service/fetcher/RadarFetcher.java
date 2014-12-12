@@ -4,6 +4,8 @@ import com.example.saycv.stockartifact.model.Radar;
 import com.example.saycv.stockartifact.service.exception.DownloadException;
 import com.example.saycv.stockartifact.service.exception.ParseException;
 
+import org.apache.http.conn.ConnectTimeoutException;
+
 import java.util.List;
 
 /**

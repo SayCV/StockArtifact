@@ -11,6 +11,11 @@ import com.example.saycv.stockartifact.service.exception.ParseException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +31,9 @@ public class QQRadarFetcher extends BaseRadarFetcher {
     private static final String DATE_FORMAT = "yyyy/MM/dd HH:mm";
     private Context context;
     private boolean initDone = false;
+
+    private static final int sTimeoutConnection = 3000;
+    private static final int sTimeoutSocket = 5000;
 
     public QQRadarFetcher(Context context) {
         this.context = context;
@@ -87,6 +95,10 @@ public class QQRadarFetcher extends BaseRadarFetcher {
         try {
             HttpGet req = new HttpGet(getChinaRadarURL());
             //req.setHeader("Referer", "http://stock.gtimg.cn");
+            final HttpParams params = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(params, sTimeoutConnection);
+            HttpConnectionParams.setSoTimeout(params, sTimeoutSocket);
+            ((HttpGet)req).setParams(params);
 
             HttpResponse resp = getClient().execute(req);
             String content = EntityUtils.toString(resp.getEntity(), "GB2312");
