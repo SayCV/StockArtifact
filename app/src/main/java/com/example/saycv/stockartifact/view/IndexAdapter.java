@@ -69,6 +69,12 @@ public class IndexAdapter extends ArrayAdapter<Index> {
                 lastDayClose.setText("");
             }
 
+            if (index.getDayClose() != null) {
+                dayClose.setText(index.getDayClose());
+            } else {
+                dayClose.setText("");
+            }
+
             if (index.getDayHigh() != null) {
                 dayHigh.setText(index.getDayHigh());
             } else {
