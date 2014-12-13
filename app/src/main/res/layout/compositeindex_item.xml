@@ -27,7 +27,7 @@
         android:textSize="22sp"></TextView>
 
     <TextView
-        android:id="@+id/dayClose"
+        android:id="@+id/dayCurrent"
         android:layout_width="120sp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -110,7 +110,7 @@
         android:textColor="@color/normal"></TextView>
 
     <TextView
-        android:id="@+id/today_quote_price"
+        android:id="@+id/dayClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lastDayClose"

@@ -36,7 +36,7 @@ public class IndexAdapter extends ArrayAdapter<Index> {
         TextView name = (TextView) v.findViewById(R.id.name);
         TextView code = (TextView) v.findViewById(R.id.code);
         TextView time = (TextView) v.findViewById(R.id.time);
-
+        TextView dayCurrent = (TextView) v.findViewById(R.id.dayCurrent);
         TextView lastDayClose = (TextView) v.findViewById(R.id.lastDayClose);
         //TextView lastDayHigh = (TextView) v.findViewById(R.id.lastDayHigh);
         //TextView lastDayLow = (TextView) v.findViewById(R.id.lastDayLow);
@@ -55,7 +55,7 @@ public class IndexAdapter extends ArrayAdapter<Index> {
         if (index != null) {
             //dayVolume.setText("");
             name.setText(index.getName());
-            dayClose.setText(index.getDayClose());
+            dayCurrent.setText(index.getDayClose());
 
            /*if (index.getTime() != null) {
                 time.setText(index.getTime());
@@ -63,20 +63,50 @@ public class IndexAdapter extends ArrayAdapter<Index> {
                 time.setText("");
             }*/
 
+            if (index.getLastDayClose() != null) {
+                lastDayClose.setText(index.getLastDayClose());
+            } else {
+                lastDayClose.setText("");
+            }
+
+            if (index.getDayHigh() != null) {
+                dayHigh.setText(index.getDayHigh());
+            } else {
+                dayHigh.setText("");
+            }
+
+            if (index.getDayLow() != null) {
+                dayLow.setText(index.getDayLow());
+            } else {
+                dayLow.setText("");
+            }
+
             if (index.getDayRange() != null) {
                 dayRange.setText(index.getDayRange());
             } else {
-                dayRange.setText("---- (---)");
+                dayRange.setText("----");
+            }
+
+            if (index.getDayRangePercent() != null) {
+                dayRangePercent.setText(String.format("%s%", index.getDayRangePercent()));
+            } else {
+                dayRangePercent.setText("----");
+            }
+
+            if (index.getDaySwing() != null) {
+                daySwing.setText(String.format("%s%", index.getDaySwing()));
+            } else {
+                daySwing.setText("");
             }
 
             if (index.getDayRange() != null && Float.parseFloat(index.getDayRange()) < 0) {
-                dayClose.setTextColor(Color.rgb(0, 213, 65));
+                dayCurrent.setTextColor(Color.rgb(0, 213, 65));
                 dayRange.setTextColor(Color.rgb(0, 213, 65));
             } else if (index.getDayRange() != null && Float.parseFloat(index.getDayRange()) > 0) {
-                dayClose.setTextColor(Color.rgb(238, 30, 0));
+                dayCurrent.setTextColor(Color.rgb(238, 30, 0));
                 dayRange.setTextColor(Color.rgb(238, 30, 0));
             } else {
-                dayClose.setTextColor(Color.WHITE);
+                dayCurrent.setTextColor(Color.WHITE);
                 dayRange.setTextColor(Color.WHITE);
             }
 
@@ -85,7 +115,7 @@ public class IndexAdapter extends ArrayAdapter<Index> {
             //dayVolume.setText("---");
             name.setText("");
             dayClose.setText("----");
-            dayRange.setText("---- (---)");
+            dayRange.setText("----");
         }
         return v;
     }

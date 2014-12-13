@@ -174,7 +174,7 @@ public class MainActivity extends Activity {
 //                        ((TetheringService)getEngine().getTetheringService()).reRegister(null);
 //                    }
                     engine.getRadarsService().start();
-                    ((RadarsService)(engine.getRadarsService())).getRadarsDataTask().setRadarsUpdateThreadClassEnabled(true);
+                    //((RadarsService)(engine.getRadarsService())).getRadarsDataTask().setRadarsUpdateThreadClassEnabled(true);
                 }
             }
         });
@@ -248,7 +248,7 @@ public class MainActivity extends Activity {
             RadarUpdateTask radarUpdateTask = new RadarUpdateTask((Activity)view.getContext());
             radarUpdateTask.execute();
             ((RadarsService) ((Engine)Engine.getInstance()).getRadarsService()).setDefaultTask(radarUpdateTask);
-
+            radarUpdateTask.setRadarsUpdateThreadClassEnabled(true);
         }
     }
 }
