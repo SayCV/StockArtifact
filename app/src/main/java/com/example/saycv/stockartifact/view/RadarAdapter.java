@@ -52,20 +52,23 @@ public class RadarAdapter extends ArrayAdapter<Radar> {
             price.setText(index.getPrice());
             volume.setText(index.getVolume());
 
+            int rgb;
             if (index.getType().equals("大买单") || index.getType().equals("封涨停板") || index.getType().equals("快速上涨")) {
-                time.setTextColor(Color.rgb(255, 0, 0));
-                code.setTextColor(Color.rgb(255, 0, 0));
-                name.setTextColor(Color.rgb(255, 0, 0));
-                type.setTextColor(Color.rgb(255, 0, 0));
-                price.setTextColor(Color.rgb(255, 0, 0));
-                volume.setTextColor(Color.rgb(255, 0, 0));
+                rgb = (Color.rgb(238, 30, 0));
+                time.setTextColor(rgb);
+                code.setTextColor(rgb);
+                name.setTextColor(rgb);
+                type.setTextColor(rgb);
+                price.setTextColor(rgb);
+                volume.setTextColor(rgb);
             } else {
-                time.setTextColor(Color.rgb(0, 255, 0));
-                code.setTextColor(Color.rgb(0, 255, 0));
-                name.setTextColor(Color.rgb(0, 255, 0));
-                type.setTextColor(Color.rgb(0, 255, 0));
-                price.setTextColor(Color.rgb(0, 255, 0));
-                volume.setTextColor(Color.rgb(0, 255, 0));
+                rgb = Color.rgb(0, 213, 65);
+                time.setTextColor(rgb);
+                code.setTextColor(rgb);
+                name.setTextColor(rgb);
+                type.setTextColor(rgb);
+                price.setTextColor(rgb);
+                volume.setTextColor(rgb);
             }
 
         } else {
