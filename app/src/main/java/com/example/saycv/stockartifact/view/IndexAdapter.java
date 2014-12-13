@@ -88,13 +88,13 @@ public class IndexAdapter extends ArrayAdapter<Index> {
             }
 
             if (index.getDayRangePercent() != null) {
-                dayRangePercent.setText(String.format("%s%", index.getDayRangePercent()));
+                dayRangePercent.setText(String.format("%s%%", index.getDayRangePercent()));
             } else {
                 dayRangePercent.setText("----");
             }
 
             if (index.getDaySwing() != null) {
-                daySwing.setText(String.format("%s%", index.getDaySwing()));
+                daySwing.setText(String.format("%s%%", index.getDaySwing()));
             } else {
                 daySwing.setText("");
             }
