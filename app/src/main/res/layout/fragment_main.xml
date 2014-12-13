@@ -12,7 +12,9 @@
         android:id="@+id/listViewIndex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/include_radar_item"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
     <!--<include
@@ -39,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/include_compositeindex_item_sz"
+        android:layout_below="@+id/listViewIndex"
         android:text="@string/msg_stock_radar" />
 
     <include

@@ -57,11 +57,11 @@ public class IndexAdapter extends ArrayAdapter<Index> {
             name.setText(index.getName());
             dayClose.setText(index.getDayClose());
 
-            if (index.getUpdatedAt() != null) {
-                time.setText(formatter.format(index.getUpdatedAt().getTime()));
+           /*if (index.getTime() != null) {
+                time.setText(index.getTime());
             } else {
                 time.setText("");
-            }
+            }*/
 
             if (index.getDayRange() != null) {
                 dayRange.setText(index.getDayRange());
