@@ -55,7 +55,7 @@ public class IndexAdapter extends ArrayAdapter<Index> {
         if (index != null) {
             //dayVolume.setText("");
             name.setText(index.getName());
-            dayClose.setText(PriceFormatter.forPrice(index.getValue().doubleValue()));
+            dayClose.setText(index.getDayClose());
 
             if (index.getUpdatedAt() != null) {
                 time.setText(formatter.format(index.getUpdatedAt().getTime()));
@@ -63,18 +63,16 @@ public class IndexAdapter extends ArrayAdapter<Index> {
                 time.setText("");
             }
 
-            if (index.getChange() != null) {
-                dayRange.setText(String.format("%s (%s)",
-                        PriceFormatter.forPrice(index.getChange().doubleValue()),
-                        PriceFormatter.forPercent(index.getChangePercent().doubleValue())));
+            if (index.getDayRange() != null) {
+                dayRange.setText(index.getDayRange());
             } else {
                 dayRange.setText("---- (---)");
             }
 
-            if (index.getChange() != null && index.getChange().floatValue() > 0) {
+            if (index.getDayRange() != null && Float.parseFloat(index.getDayRange()) > 0) {
                 dayClose.setTextColor(Color.rgb(0, 213, 65));
                 dayRange.setTextColor(Color.rgb(0, 213, 65));
-            } else if (index.getChange() != null && index.getChange().floatValue() < 0) {
+            } else if (index.getDayRange() != null && Float.parseFloat(index.getDayRange()) < 0) {
                 dayClose.setTextColor(Color.rgb(238, 30, 0));
                 dayRange.setTextColor(Color.rgb(238, 30, 0));
             } else {

@@ -145,7 +145,7 @@ public class Index {
         this.dayMoney = dayMoney;
     }
 
-    public String getDayChange() {
+    public String getDayRange() {
         return dayRange;
     }
 
