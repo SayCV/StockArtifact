@@ -5,7 +5,7 @@ import android.text.format.Time;
 
 import com.example.saycv.stockartifact.Engine;
 import com.example.saycv.stockartifact.events.RadarsEventArgs;
-import com.example.saycv.stockartifact.model.HistoryRadarsEvent;
+import com.example.saycv.stockartifact.model.RadarsHistoryEvent;
 import com.example.saycv.stockartifact.model.Radar;
 import com.example.saycv.stockartifact.service.exception.DownloadException;
 import com.example.saycv.stockartifact.service.exception.ParseException;
@@ -27,6 +27,8 @@ import org.saycv.sgs.model.SgsHistoryEvent;
 import org.saycv.sgs.utils.SgsDateTimeUtils;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,8 +40,10 @@ public class QQRadarFetcher extends BaseRadarFetcher {
     private Context context;
     private boolean initDone = false;
 
-    private static final int sTimeoutConnection = 3000;
-    private static final int sTimeoutSocket = 5000;
+    private boolean debug = false;
+
+    /*private static final int sTimeoutConnection = 3000;
+    private static final int sTimeoutSocket = 5000;*/
 
     public QQRadarFetcher(Context context) {
         this.context = context;
@@ -66,20 +70,20 @@ public class QQRadarFetcher extends BaseRadarFetcher {
         int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
         int dayofmonth = cal.get(Calendar.DAY_OF_MONTH);
 
-        boolean debug = true;
-        if (debug || ((hourofday == 9 && minute >= 24) || hourofday > 9 && hour < 15) || (hourofday == 15 && minute <= 1)) {
+
+        if (debug || ((hourofday == 9 && minute >= 24) || hourofday > 9 && hourofday < 15) || (hourofday == 15 && minute <= 1)) {
             if (initDone == false) {
                 Log.d(TAG, "get all begin");
-                radar.addAll(getChinaRadar());
+                radar.addAll(getChinaRadar("all"));
                 Log.d(TAG, "get all end");
                 initDone = true;
             } else {
                 Log.d(TAG, "get latest");
-                radar.addAll(getChinaRadar());
+                radar.addAll(getChinaRadar("latest"));
             }
         } else {
             Log.d(TAG, "get all");
-            radar.addAll(getChinaRadar());
+            radar.addAll(getChinaRadar("all"));
         }
         return radar;
     }
@@ -89,6 +93,10 @@ public class QQRadarFetcher extends BaseRadarFetcher {
         return "http://stock.gtimg.cn/data/index.php?appn=radar&t=all&d=09001515";
     }
 
+    private String getChinaRadarURL(String flag) {
+        return String.format("http://stock.gtimg.cn/data/index.php?appn=radar&t=%s&d=09001515", flag);
+    }
+
     private JSONObject preprocessJson(String content) throws JSONException {
         int pos = content.indexOf('{');
         String result = StringUtils.substring(content, pos);
@@ -96,15 +104,15 @@ public class QQRadarFetcher extends BaseRadarFetcher {
         return json;
     }
 
-    private List<Radar> getChinaRadar() throws ParseException, DownloadException {
+    private List<Radar> getChinaRadar(String flag) throws ParseException, DownloadException {
 
         try {
-            HttpGet req = new HttpGet(getChinaRadarURL());
+            HttpGet req = new HttpGet(getChinaRadarURL(flag));
             //req.setHeader("Referer", "http://stock.gtimg.cn");
-            final HttpParams params = new BasicHttpParams();
+            /*final HttpParams params = new BasicHttpParams();
             HttpConnectionParams.setConnectionTimeout(params, sTimeoutConnection);
             HttpConnectionParams.setSoTimeout(params, sTimeoutSocket);
-            ((HttpGet)req).setParams(params);
+            ((HttpGet)req).setParams(params);*/
 
             HttpResponse resp = getClient().execute(req);
 
@@ -116,15 +124,14 @@ public class QQRadarFetcher extends BaseRadarFetcher {
             throw new ParseException("error parsing http data", je);
         } catch (IOException ie) {
             //throw new DownloadException("error parsing http data", ie);
-            Log.e(TAG, "error parsing http data" + ie.getMessage());
+            Log.e(TAG, "error parsing http data: " + ie.getMessage());
             return new ArrayList<Radar>();
         }
     }
 
     private List<Radar> getChinaRadarFromJson(String content) throws JSONException {
         List<Radar> radars = new ArrayList<Radar>();
-        HistoryRadarsEvent event;
-        event = new HistoryRadarsEvent(RadarsEventArgs.EXTRA_REMOTE_PARTY, SgsHistoryEvent.StatusType.RADARS_ALL);
+
         ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().clear();
 
         String radarData = null;
@@ -161,10 +168,6 @@ public class QQRadarFetcher extends BaseRadarFetcher {
             radar.setVolume(volume);
 
             radars.add(radar);
-
-            event.setRadarsData(radar);
-            //event.setStartTime(Long.getLong(SgsDateTimeUtils.now()));
-            ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().addEvent(event);
 
         }
         Log.i(TAG, "Radar update success, number of results ..." + nbrStocks);

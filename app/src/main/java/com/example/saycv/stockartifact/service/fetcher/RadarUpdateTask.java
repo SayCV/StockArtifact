@@ -8,8 +8,9 @@ import com.example.saycv.stockartifact.Engine;
 import com.example.saycv.stockartifact.MainActivity;
 import com.example.saycv.stockartifact.events.RadarsEventArgs;
 import com.example.saycv.stockartifact.events.RadarsEventTypes;
-import com.example.saycv.stockartifact.model.HistoryRadarsEvent;
+import com.example.saycv.stockartifact.model.RadarsHistoryEvent;
 import com.example.saycv.stockartifact.model.Radar;
+import com.example.saycv.stockartifact.service.impl.RadarsHistoryService;
 import com.example.saycv.stockartifact.service.impl.RadarsService;
 import com.example.saycv.stockartifact.view.RadarAdapter;
 import com.example.saycv.utils.NetworkDetector;
@@ -54,11 +55,27 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
         RadarAdapter adapter = activity.getRadarAdapter();
         adapter.clear();
 
-        for (Radar i : results) {
-            adapter.add(i);
+        /*if ( results!=null ) {
+            for (Radar i : results) {
+                adapter.add(i);
+            }
+            adapter.notifyDataSetChanged();
+        } else {
+            Log.d(TAG, "results is null");
+        }*/
+        //RadarsService radarsService = (RadarsService)((Engine)Engine.getInstance()).getRadarsService();
+        //RadarsHistoryService radarsHistoryService = (RadarsHistoryService)radarsService.getHistoryService();
+        List<SgsHistoryEvent> sgsHistoryEvent = ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().getEvents();
+        RadarsHistoryEvent radarsHistoryEvent = ((RadarsHistoryEvent)sgsHistoryEvent.get(sgsHistoryEvent.size()-1));
+        List<Radar> radars = radarsHistoryEvent.getRadars();
+        if ( radars!=null ) {
+            for (Radar i : radars) {
+                adapter.add(i);
+            }
+            adapter.notifyDataSetChanged();
+        } else {
+            Log.d(TAG, "radars is null");
         }
-
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -103,7 +120,12 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
 
     class RadarsUpdateThreadClass implements Runnable {
 
+        RadarsHistoryEvent event;
+
+
         public RadarsUpdateThreadClass() {
+            //event = new RadarsHistoryEvent(RadarsEventArgs.EXTRA_REMOTE_PARTY, SgsHistoryEvent.StatusType.RADARS_ALL);
+            event = new RadarsHistoryEvent(RadarsEventArgs.EXTRA_REMOTE_PARTY, "MyRadars");
         }
 
         //@Override
@@ -131,7 +153,11 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
                                 Log.d(TAG, "Found Redundant Traffic Count Event, will avoid this");
                                 break;
                             }*/
-                //((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().addEvent(event);
+                //((RadarsHistoryEvent)event).setRadarsData(results);
+                event.setStartTime(Long.parseLong(SgsDateTimeUtils.now("yyyyMMddHHmmss")));
+                event.setContent(results);
+                ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().addEvent(event);
+
                 //Only the original thread that created a view hierarchy can touch its views
                 //updateRadars(results);
                 ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).broadcastRadarsEvent(
@@ -142,11 +168,11 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
                 //activity.
 
                 // Taking a nap - 10s
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
             }
         }
 

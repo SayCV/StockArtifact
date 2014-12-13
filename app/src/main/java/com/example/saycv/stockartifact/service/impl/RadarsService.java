@@ -23,6 +23,7 @@ public class RadarsService extends SgsBaseService
 
     private RadarsHistoryService mRadarsHistoryService;
     private RadarUpdateTask mRadarUpdateTask;
+    //private RadarIndexUpdateTask mRadarUpdateTask;
 
     public RadarsService() {
         super();
@@ -63,11 +64,19 @@ public class RadarsService extends SgsBaseService
         return mRadarsHistoryService;
     }
 
-    public RadarUpdateTask getDefaultTask() {
+    public RadarUpdateTask getRadarsDataTask() {
         return mRadarUpdateTask;
     }
 
     public void setDefaultTask(RadarUpdateTask task) {
+        mRadarUpdateTask = task;
+    }
+
+    public RadarUpdateTask getRadarsIndexTask() {
+        return mRadarUpdateTask;
+    }
+
+    public void setRadarsIndexTask(RadarUpdateTask task) {
         mRadarUpdateTask = task;
     }
 

@@ -42,7 +42,10 @@ public class RadarsEventArgs extends SgsEventArgs {
     public static final String EXTRA_EMBEDDED = SgsEventArgs.EXTRA_EMBEDDED;
 
     private final static String TAG = RadarsEventArgs.class.getCanonicalName();
+
     public static final String ACTION_RADARS_EVENT = TAG + ".ACTION_RADARS_EVENT";
+    public static final String ACTION_RADARS_INDEX = TAG + ".ACTION_RADARS_EVENT";
+
     public static final String EXTRA_REMOTE_PARTY = TAG + "from";
     public static final String EXTRA_DATA = TAG + "data";
     public static final String EXTRA_DATE = TAG + "date";

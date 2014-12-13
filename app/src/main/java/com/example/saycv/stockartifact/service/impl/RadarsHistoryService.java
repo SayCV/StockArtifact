@@ -1,7 +1,5 @@
 package com.example.saycv.stockartifact.service.impl;
 
-import com.example.saycv.stockartifact.model.HistoryRadarsEvent;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;

@@ -27,7 +27,7 @@
         android:textSize="22sp"></TextView>
 
     <TextView
-        android:id="@+id/quote"
+        android:id="@+id/dayClose"
         android:layout_width="120sp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -44,7 +44,7 @@
         android:textSize="24sp"></TextView>
 
     <TextView
-        android:id="@+id/change"
+        android:id="@+id/dayRange"
         android:layout_width="120sp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -61,7 +61,7 @@
         android:textStyle="bold"></TextView>
 
     <TextView
-        android:id="@+id/change2"
+        android:id="@+id/dayRangePercent"
         android:layout_width="120sp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/quote"
@@ -98,7 +98,7 @@
         android:textColor="@color/normal"></TextView>
 
     <TextView
-        android:id="@+id/yesterday_quote_price"
+        android:id="@+id/lastDayClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"
@@ -112,7 +112,7 @@
         android:id="@+id/today_quote_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/yesterday_quote_price"
+        android:layout_below="@+id/lastDayClose"
         android:layout_toRightOf="@+id/today_quote_name"
         android:paddingLeft="10sp"
         android:shadowColor="#88444444"
@@ -124,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"
-        android:layout_toRightOf="@+id/yesterday_quote_price"
+        android:layout_toRightOf="@+id/lastDayClose"
         android:paddingLeft="40sp"
         android:shadowColor="#88444444"
         android:text="最高"
@@ -135,14 +135,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/today_quote_high_name"
-        android:layout_toRightOf="@+id/yesterday_quote_price"
+        android:layout_toRightOf="@+id/lastDayClose"
         android:paddingLeft="40sp"
         android:shadowColor="#88444444"
         android:text="最低"
         android:textColor="@color/normal"></TextView>
 
     <TextView
-        android:id="@+id/today_quote_high_price"
+        android:id="@+id/dayHigh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"
@@ -153,10 +153,10 @@
         android:textColor="@color/normal"></TextView>
 
     <TextView
-        android:id="@+id/today_quote_low_price"
+        android:id="@+id/dayLow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/today_quote_high_price"
+        android:layout_below="@+id/dayHigh"
         android:layout_toRightOf="@+id/today_quote_low_name"
         android:paddingLeft="10sp"
         android:shadowColor="#88444444"
@@ -170,7 +170,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/name"
-        android:layout_toRightOf="@+id/today_quote_high_price"
+        android:layout_toRightOf="@+id/dayHigh"
         android:gravity="right"
         android:paddingRight="10sp"
         android:shadowColor="#88444444"
@@ -178,7 +178,7 @@
         android:textColor="@color/normal"></TextView>
 
     <TextView
-        android:id="@+id/amplitude_value"
+        android:id="@+id/daySwing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

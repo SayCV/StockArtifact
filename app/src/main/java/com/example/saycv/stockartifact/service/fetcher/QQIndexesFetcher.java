@@ -13,6 +13,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.saycv.logger.Log;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -21,10 +22,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.example.saycv.stockartifact.service.fetcher.Utils.rounded;
 
 public class QQIndexesFetcher extends BaseIndexesFetcher {
+    public static final String TAG = "QQIndexesFetcher";
     private static final String DATE_FORMAT = "yyyy/MM/dd HH:mm";
     private Context context;
 
@@ -35,54 +39,60 @@ public class QQIndexesFetcher extends BaseIndexesFetcher {
     @Override
     public List<Index> fetch() throws DownloadException, ParseException {
         List<Index> indexes = new ArrayList<Index>();
-        indexes.add(getHsi());
-        indexes.addAll(getWorldIndexes());
+        indexes.add(getChinaIndex("sh", "000001"));
+        indexes.add(getChinaIndex("sz", "399001"));
+        //indexes.addAll(getWorldIndexes());
         return indexes;
     }
 
-    private Index getHsi() throws ParseException, DownloadException {
+    private Index getChinaIndex(String market, String code) throws ParseException, DownloadException {
         try {
-            Index hsi = new Index();
-            HttpGet req = new HttpGet(getHSIURL());
-            req.setHeader("Referer", "http://QQ.on.cc/");
+            Index index = new Index();
+            HttpGet req = new HttpGet(getChinaIndexURL(market, code));
+            //req.setHeader("Referer", "http://QQ.on.cc/");
 
             HttpResponse resp = getClient().execute(req);
-            String content = EntityUtils.toString(resp.getEntity());
-            JSONObject json = preprocessJson(content);
+            String content = EntityUtils.toString(resp.getEntity(), "utf8");
+            //JSONObject json = preprocessJson(content);
+            String[] contentArray = getContent(content);
 
-            SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
-            Date updateTime = formatter.parse(json.getString("ltt"));
-            Calendar updatedAt = Calendar.getInstance();
-            updatedAt.setTime(updateTime);
-            hsi.setUpdatedAt(updatedAt);
+            index.setName(contentArray[1]);
+            index.setCode(code);
+            index.setTime(contentArray[30].substring(0, 8));
 
-            double value = json.getDouble("value");
-            double change = json.getDouble("difference");
-            double changePercent = change * 100.0 / value;
+            index.setLastDayClose(contentArray[4]);
+            //index.setLastDayHigh(contentArray[1]);
+            //index.setLastDayLow(contentArray[1]);
+            index.setDayHigh(contentArray[33]);
+            index.setDayLow(contentArray[34]);
+            index.setDayOpen(contentArray[5]);
+            index.setDayClose(contentArray[3]);
+            index.setDayVolume(contentArray[6]);
+            index.setDayMoney(contentArray[37]);
+            index.setDayRange(contentArray[31]);
+            index.setDayRangePercent(contentArray[32]);
+            index.setDaySwing(contentArray[43]);
 
-            hsi.setName(getContext().getString(R.string.msg_hsi));
-            hsi.setValue(new BigDecimal(json.getString("value")));
-            hsi.setChange(new BigDecimal(rounded(change, 1000.0)));
-            hsi.setChangePercent(new BigDecimal(rounded(changePercent, 100.0)));
 
-            return hsi;
+
+            return index;
         } catch (org.apache.http.ParseException pe) {
             throw new ParseException("error parsing http data", pe);
-        } catch (JSONException je) {
+        } /*catch (JSONException je) {
             throw new ParseException("error parsing http data", je);
-        } catch (IOException ie) {
+        }*/ catch (IOException ie) {
             throw new DownloadException("error parsing http data", ie);
-        } catch (java.text.ParseException e) {
+        } /*catch (java.text.ParseException e) {
             throw new ParseException("error parsing json data", e);
-        }
+        }*/
     }
 
-    private String getHSIURL() {
-        return "http://QQ.on.cc/js/real/index/HSI_r.js";
+    private String getChinaIndexURL(String market, String code) {
+        return String.format("http://qt.gtimg.cn/q=s_pk%s%s", market, code);
     }
 
     private String getWorldIndexURL() {
-        return "http://QQ.on.cc/js/daily/worldidx/worldidx_b.js";
+        return "http://qt.gtimg.cn/q=s_pk%s%s";
     }
 
     private JSONObject preprocessJson(String content) throws JSONException {
@@ -95,7 +105,7 @@ public class QQIndexesFetcher extends BaseIndexesFetcher {
     private List<Index> getWorldIndexes() throws ParseException, DownloadException {
         try {
             HttpGet req = new HttpGet(getWorldIndexURL());
-            req.setHeader("Referer", "http://QQ.on.cc/");
+            //req.setHeader("Referer", "http://QQ.on.cc/");
 
             HttpResponse resp = getClient().execute(req);
             String content = EntityUtils.toString(resp.getEntity(), "Big5");
@@ -151,4 +161,18 @@ public class QQIndexesFetcher extends BaseIndexesFetcher {
         this.context = context;
     }
 
+
+    private String[] getContent(String content) {
+        //"处理腾讯股票数据接口信息"
+        String results = new String();
+        Pattern pattern = Pattern.compile("\"(.*)\"");
+        Matcher matcher = pattern.matcher(content);
+        while(matcher.find())
+        {
+            results= matcher.group() ;
+            Log.e(TAG, results); // 使用Android的Logcat查看运行结果，直接使用e标志红色的为结果。
+
+        }
+        return results.split("~");
+    }
 }

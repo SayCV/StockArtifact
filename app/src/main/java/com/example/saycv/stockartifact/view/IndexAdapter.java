@@ -28,23 +28,34 @@ public class IndexAdapter extends ArrayAdapter<Index> {
         View v = view;
         if (v == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = (View) vi.inflate(R.layout.index_item, null);
+            v = (View) vi.inflate(R.layout.compositeindex_item, null);
         }
 
         Log.d(TAG, "prepare view for indexes");
         // prepare views
         TextView name = (TextView) v.findViewById(R.id.name);
-        TextView price = (TextView) v.findViewById(R.id.price);
-        TextView change = (TextView) v.findViewById(R.id.change);
-        TextView volume = (TextView) v.findViewById(R.id.volume);
+        TextView code = (TextView) v.findViewById(R.id.code);
         TextView time = (TextView) v.findViewById(R.id.time);
+
+        TextView lastDayClose = (TextView) v.findViewById(R.id.lastDayClose);
+        //TextView lastDayHigh = (TextView) v.findViewById(R.id.lastDayHigh);
+        //TextView lastDayLow = (TextView) v.findViewById(R.id.lastDayLow);
+        TextView dayHigh = (TextView) v.findViewById(R.id.dayHigh);
+        TextView dayLow = (TextView) v.findViewById(R.id.dayLow);
+        //TextView dayOpen = (TextView) v.findViewById(R.id.dayOpen);
+        TextView dayClose = (TextView) v.findViewById(R.id.dayClose);
+        //TextView dayVolume = (TextView) v.findViewById(R.id.dayVolume);
+        //TextView dayMoney = (TextView) v.findViewById(R.id.dayMoney);
+        TextView dayRange = (TextView) v.findViewById(R.id.dayRange);
+        TextView dayRangePercent = (TextView) v.findViewById(R.id.dayRangePercent);
+        TextView daySwing = (TextView) v.findViewById(R.id.daySwing);
 
         // set data
         Index index = getItem(position);
         if (index != null) {
-            volume.setText("");
+            //dayVolume.setText("");
             name.setText(index.getName());
-            price.setText(PriceFormatter.forPrice(index.getValue().doubleValue()));
+            dayClose.setText(PriceFormatter.forPrice(index.getValue().doubleValue()));
 
             if (index.getUpdatedAt() != null) {
                 time.setText(formatter.format(index.getUpdatedAt().getTime()));
@@ -53,30 +64,30 @@ public class IndexAdapter extends ArrayAdapter<Index> {
             }
 
             if (index.getChange() != null) {
-                change.setText(String.format("%s (%s)",
+                dayRange.setText(String.format("%s (%s)",
                         PriceFormatter.forPrice(index.getChange().doubleValue()),
                         PriceFormatter.forPercent(index.getChangePercent().doubleValue())));
             } else {
-                change.setText("---- (---)");
+                dayRange.setText("---- (---)");
             }
 
             if (index.getChange() != null && index.getChange().floatValue() > 0) {
-                price.setTextColor(Color.rgb(0, 213, 65));
-                change.setTextColor(Color.rgb(0, 213, 65));
+                dayClose.setTextColor(Color.rgb(0, 213, 65));
+                dayRange.setTextColor(Color.rgb(0, 213, 65));
             } else if (index.getChange() != null && index.getChange().floatValue() < 0) {
-                price.setTextColor(Color.rgb(238, 30, 0));
-                change.setTextColor(Color.rgb(238, 30, 0));
+                dayClose.setTextColor(Color.rgb(238, 30, 0));
+                dayRange.setTextColor(Color.rgb(238, 30, 0));
             } else {
-                price.setTextColor(Color.WHITE);
-                change.setTextColor(Color.WHITE);
+                dayClose.setTextColor(Color.WHITE);
+                dayRange.setTextColor(Color.WHITE);
             }
 
         } else {
             time.setText("");
-            volume.setText("---");
+            //dayVolume.setText("---");
             name.setText("");
-            price.setText("----");
-            change.setText("---- (---)");
+            dayClose.setText("----");
+            dayRange.setText("---- (---)");
         }
         return v;
     }

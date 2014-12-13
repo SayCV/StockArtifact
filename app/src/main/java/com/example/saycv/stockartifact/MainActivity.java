@@ -21,10 +21,12 @@ import android.widget.TextView;
 
 import com.example.saycv.stockartifact.events.RadarsEventArgs;
 import com.example.saycv.stockartifact.events.RadarsEventTypes;
-import com.example.saycv.stockartifact.model.HistoryRadarsEvent;
+import com.example.saycv.stockartifact.model.RadarsHistoryEvent;
 import com.example.saycv.stockartifact.service.IRadarsService;
+import com.example.saycv.stockartifact.service.fetcher.IndexesUpdateTask;
 import com.example.saycv.stockartifact.service.fetcher.RadarUpdateTask;
 import com.example.saycv.stockartifact.service.impl.RadarsService;
+import com.example.saycv.stockartifact.view.IndexAdapter;
 import com.example.saycv.stockartifact.view.RadarAdapter;
 
 import org.saycv.sgs.events.SgsEventArgs;
@@ -38,7 +40,8 @@ public class MainActivity extends Activity {
 
     public static final int ACTION_NONE = 0;
 
-    public static RadarAdapter adapter;
+    public static IndexAdapter indexAdapter;
+    public static RadarAdapter radarAdapter;
     private final Engine mEngine;
     private final IRadarsService mRadarsService;
     private Handler mHandler;
@@ -54,8 +57,11 @@ public class MainActivity extends Activity {
         mRadarsService = ((Engine)Engine.getInstance()).getRadarsService();
     }
 
+    public IndexAdapter getIndexAdapter() {
+        return indexAdapter;
+    }
     public RadarAdapter getRadarAdapter() {
-        return adapter;
+        return radarAdapter;
     }
 
     @Override
@@ -108,10 +114,10 @@ public class MainActivity extends Activity {
                             remoteParty = SgsStringUtils.nullValue();
                         }
                         remoteParty = "RadarsEvent";//SgsUriUtils.getUserName(remoteParty);
-                        HistoryRadarsEvent event;
+                        RadarsHistoryEvent event;
                         switch ((type = args.getEventType())) {
                             case RADARS_EVENT_1:
-                                event = new HistoryRadarsEvent(remoteParty, SgsHistoryEvent.StatusType.RADARS_ALL);
+                                event = new RadarsHistoryEvent();
                             /*event.setContent(new String("Start Tethering -- TotalUpload: " +
                                     Long.toString(args.getTotalUpload()) + ", TotalDownload: " + Long.toString(args.getTotalDownload())));
                             */
@@ -167,7 +173,7 @@ public class MainActivity extends Activity {
 //                        ((TetheringService)getEngine().getTetheringService()).reRegister(null);
 //                    }
                     engine.getRadarsService().start();
-                    ((RadarsService)(engine.getRadarsService())).getDefaultTask().setRadarsUpdateThreadClassEnabled(true);
+                    ((RadarsService)(engine.getRadarsService())).getRadarsDataTask().setRadarsUpdateThreadClassEnabled(true);
                 }
             }
         });
@@ -222,18 +228,25 @@ public class MainActivity extends Activity {
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            RelativeLayout szCompositeIndexLayoutView = (RelativeLayout) view.findViewById(R.id.include_compositeindex_item_sz);
+            /*RelativeLayout szCompositeIndexLayoutView = (RelativeLayout) view.findViewById(R.id.include_compositeindex_item_sz);
             TextView tv = (TextView)szCompositeIndexLayoutView.findViewById(R.id.name);
-            tv.setText(R.string.compositeindex_sz_name);
+            tv.setText(R.string.compositeindex_sz_name);*/
 
-            ListView lv = (ListView)view.findViewById(R.id.listView);
-            adapter = new RadarAdapter(view.getContext());
-            lv.setAdapter(adapter);
+            ListView lvIndex = (ListView)view.findViewById(R.id.listViewIndex);
+            indexAdapter = new IndexAdapter(view.getContext());
+            lvIndex.setAdapter(indexAdapter);
+
+            ListView lvRadars = (ListView)view.findViewById(R.id.listViewRadars);
+            radarAdapter = new RadarAdapter(view.getContext());
+            lvRadars.setAdapter(radarAdapter);
 
             Log.i(TAG, "start radar activity");
-            RadarUpdateTask task = new RadarUpdateTask((Activity)view.getContext());
-            task.execute();
-            ((RadarsService) ((Engine)Engine.getInstance()).getRadarsService()).setDefaultTask(task);
+            IndexesUpdateTask indexesUpdateTask = new IndexesUpdateTask((Activity)view.getContext());
+            indexesUpdateTask.execute();
+
+            RadarUpdateTask radarUpdateTask = new RadarUpdateTask((Activity)view.getContext());
+            radarUpdateTask.execute();
+            ((RadarsService) ((Engine)Engine.getInstance()).getRadarsService()).setDefaultTask(radarUpdateTask);
 
         }
     }

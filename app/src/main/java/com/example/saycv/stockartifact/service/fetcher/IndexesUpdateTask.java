@@ -1,9 +1,11 @@
 package com.example.saycv.stockartifact.service.fetcher;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.saycv.stockartifact.IndexActivity;
+import com.example.saycv.stockartifact.MainActivity;
 import com.example.saycv.stockartifact.model.Index;
 import com.example.saycv.stockartifact.view.IndexAdapter;
 import com.example.saycv.utils.NetworkDetector;
@@ -12,13 +14,13 @@ import java.util.List;
 
 public class IndexesUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     public static final String TAG = "IndexesUpdateTask";
-    private IndexActivity activity;
+    private MainActivity activity;
     private List<Index> results;
 
     private Error error;
 
-    public IndexesUpdateTask(IndexActivity activity) {
-        this.activity = activity;
+    public IndexesUpdateTask(Activity activity) {
+        this.activity = (MainActivity)activity;
     }
 
     @Override
