@@ -17,7 +17,7 @@ public class HistoryRadarsEvent extends SgsHistoryEvent {
     @Element(name = "TotalUpload", required = true)
     protected String mTotalUpload;
     @Element(name = "RadarsData", required = true)
-    protected List<Radar> mRadarsData;
+    protected Radar mRadarsData;
     //@Element(name = "RealFirstTimeChecked", required = true)
     //protected String mRealFirstTimeChecked;
 
@@ -46,11 +46,11 @@ public class HistoryRadarsEvent extends SgsHistoryEvent {
         this.mTotalUpload = content;
     }
 
-    public List<Radar> getRadarsData() {
+    public Radar getRadarsData() {
         return this.mRadarsData;
     }
 
-    public void setRadarsData(List<Radar> content) {
+    public void setRadarsData(Radar content) {
         this.mRadarsData = content;
     }
 

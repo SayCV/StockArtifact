@@ -6,6 +6,7 @@ import com.example.saycv.stockartifact.service.exception.ParseException;
 
 import org.apache.http.conn.ConnectTimeoutException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**

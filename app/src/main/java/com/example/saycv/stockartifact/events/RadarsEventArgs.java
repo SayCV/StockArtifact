@@ -25,56 +25,73 @@ import com.example.saycv.stockartifact.model.Radar;
 
 import org.saycv.sgs.events.SgsEventArgs;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Base class for all events
  */
 public class RadarsEventArgs extends SgsEventArgs {
-    public static final String EXTRA_EMBEDDED = SgsEventArgs.EXTRA_EMBEDDED;
-    public static final Parcelable.Creator<RadarsEventArgs> CREATOR = new Parcelable.Creator<RadarsEventArgs>() {
-        public RadarsEventArgs createFromParcel(Parcel in) {
-            return new RadarsEventArgs(in);
-        }
 
-        public RadarsEventArgs[] newArray(int size) {
-            return new RadarsEventArgs[size];
-        }
-    };
+    private RadarsEventTypes mEventType;
+    // TransactionTooLargeException
+    // private List<Radar> mRadarsData;
+    private int mRadarsNumber;
+
+    public static final String EXTRA_EMBEDDED = SgsEventArgs.EXTRA_EMBEDDED;
+
     private final static String TAG = RadarsEventArgs.class.getCanonicalName();
     public static final String ACTION_RADARS_EVENT = TAG + ".ACTION_RADARS_EVENT";
     public static final String EXTRA_REMOTE_PARTY = TAG + "from";
+    public static final String EXTRA_DATA = TAG + "data";
     public static final String EXTRA_DATE = TAG + "date";
-    private RadarsEventTypes mEventType;
-    private List<Radar> mRadarsData;
 
-    public RadarsEventArgs(RadarsEventTypes type, List<Radar> radarsData) {
+
+
+    public RadarsEventArgs(RadarsEventTypes type) {
         super();
         mEventType = type;
-        mRadarsData = radarsData;
+    }
+
+    public RadarsEventArgs(RadarsEventTypes type, int radarsNumber) {
+        super();
+        mEventType = type;
+        //mRadarsData = radarsData;
+        mRadarsNumber = radarsNumber;
     }
 
     public RadarsEventArgs(Parcel in) {
         super(in);
     }
 
+    public static final Parcelable.Creator<RadarsEventArgs> CREATOR = new Parcelable.Creator<RadarsEventArgs>() {
+        public RadarsEventArgs createFromParcel(Parcel in) { return new RadarsEventArgs(in); }
+
+        public RadarsEventArgs[] newArray(int size) {
+            return new RadarsEventArgs[size];
+        }
+    };
+
     public RadarsEventTypes getEventType() {
         return mEventType;
     }
 
-    public List<Radar> getRadarsData() {
-        return mRadarsData;
-    }
+   public int getRadarsNumber() {
+        return mRadarsNumber;
+   }
 
     @Override
     protected void readFromParcel(Parcel in) {
         mEventType = Enum.valueOf(RadarsEventTypes.class, in.readString());
-        in.readList(mRadarsData, Radar.class.getClassLoader());
+        //mRadarsData = in.readArrayList(Radar.class.getClassLoader());
+        mRadarsNumber = in.readInt();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mEventType.toString());
-        dest.writeList(mRadarsData);
+        //dest.writeList( mRadarsData);
+        dest.writeInt(mRadarsNumber);
     }
 }

@@ -2,11 +2,14 @@ package com.example.saycv.stockartifact.service.fetcher;
 
 import android.content.Context;
 import android.text.format.Time;
-import android.util.Log;
 
+import com.example.saycv.stockartifact.Engine;
+import com.example.saycv.stockartifact.events.RadarsEventArgs;
+import com.example.saycv.stockartifact.model.HistoryRadarsEvent;
 import com.example.saycv.stockartifact.model.Radar;
 import com.example.saycv.stockartifact.service.exception.DownloadException;
 import com.example.saycv.stockartifact.service.exception.ParseException;
+import com.example.saycv.stockartifact.service.impl.RadarsService;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
@@ -19,6 +22,9 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.saycv.logger.Log;
+import org.saycv.sgs.model.SgsHistoryEvent;
+import org.saycv.sgs.utils.SgsDateTimeUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -101,6 +107,7 @@ public class QQRadarFetcher extends BaseRadarFetcher {
             ((HttpGet)req).setParams(params);
 
             HttpResponse resp = getClient().execute(req);
+
             String content = EntityUtils.toString(resp.getEntity(), "GB2312");
             return getChinaRadarFromJson(content);
         } catch (org.apache.http.ParseException pe) {
@@ -108,12 +115,17 @@ public class QQRadarFetcher extends BaseRadarFetcher {
         } catch (JSONException je) {
             throw new ParseException("error parsing http data", je);
         } catch (IOException ie) {
-            throw new DownloadException("error parsing http data", ie);
+            //throw new DownloadException("error parsing http data", ie);
+            Log.e(TAG, "error parsing http data" + ie.getMessage());
+            return new ArrayList<Radar>();
         }
     }
 
     private List<Radar> getChinaRadarFromJson(String content) throws JSONException {
         List<Radar> radars = new ArrayList<Radar>();
+        HistoryRadarsEvent event;
+        event = new HistoryRadarsEvent(RadarsEventArgs.EXTRA_REMOTE_PARTY, SgsHistoryEvent.StatusType.RADARS_ALL);
+        ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().clear();
 
         String radarData = null;
         int start = content.indexOf('{');
@@ -149,6 +161,11 @@ public class QQRadarFetcher extends BaseRadarFetcher {
             radar.setVolume(volume);
 
             radars.add(radar);
+
+            event.setRadarsData(radar);
+            //event.setStartTime(Long.getLong(SgsDateTimeUtils.now()));
+            ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().addEvent(event);
+
         }
         Log.i(TAG, "Radar update success, number of results ..." + nbrStocks);
         return radars;

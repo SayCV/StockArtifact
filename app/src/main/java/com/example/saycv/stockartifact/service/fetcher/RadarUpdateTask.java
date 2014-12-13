@@ -8,13 +8,16 @@ import com.example.saycv.stockartifact.Engine;
 import com.example.saycv.stockartifact.MainActivity;
 import com.example.saycv.stockartifact.events.RadarsEventArgs;
 import com.example.saycv.stockartifact.events.RadarsEventTypes;
+import com.example.saycv.stockartifact.model.HistoryRadarsEvent;
 import com.example.saycv.stockartifact.model.Radar;
 import com.example.saycv.stockartifact.service.impl.RadarsService;
 import com.example.saycv.stockartifact.view.RadarAdapter;
 import com.example.saycv.utils.NetworkDetector;
 
+import org.saycv.sgs.model.SgsHistoryEvent;
 import org.saycv.sgs.utils.SgsDateTimeUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
@@ -33,7 +36,7 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     protected Boolean doInBackground(Void... ignored) {
         Log.i(TAG, "running Radar update in background");
 
-        setRadarsUpdateThreadClassEnabled(true);
+        //setRadarsUpdateThreadClassEnabled(true);
 
         return Boolean.TRUE;
     }
@@ -44,6 +47,17 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
         for (Radar i : radar) {
             adapter.add(i);
         }
+        adapter.notifyDataSetChanged();
+    }
+
+    public void updateRadars(int number) {
+        RadarAdapter adapter = activity.getRadarAdapter();
+        adapter.clear();
+
+        for (Radar i : results) {
+            adapter.add(i);
+        }
+
         adapter.notifyDataSetChanged();
     }
 
@@ -104,11 +118,25 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
                 RadarFetcher fetcher = RadarFetcherFactory.getRadarFetcher(activity);
                 results = fetcher.fetch();
 
+                //HistoryRadarsEvent event;
+                //event = new HistoryRadarsEvent(RadarsEventArgs.EXTRA_REMOTE_PARTY, SgsHistoryEvent.StatusType.RADARS_ALL);
+                            /*event.setContent(new String("Start Tethering -- TotalUpload: " +
+                                    Long.toString(args.getTotalUpload()) + ", TotalDownload: " + Long.toString(args.getTotalDownload())));
+                            */
+                //Log.d(TAG, "Traffic Count getTotalUpload = " + args.getTotalUpload());
+                //Log.d(TAG, "Traffic Count getTotalDownload = " + args.getTotalDownload());
+                //event.setRadarsData(results);
+                //event.setStartTime(SgsDateTimeUtils.parseDate(dateString).getTime());
+                            /*if (mEngine.getHistoryService().getEvents().size() != 0 && mEngine.getHistoryService().getEvents().get(0).compareTo(event) == 0) {
+                                Log.d(TAG, "Found Redundant Traffic Count Event, will avoid this");
+                                break;
+                            }*/
+                //((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().addEvent(event);
                 //Only the original thread that created a view hierarchy can touch its views
                 //updateRadars(results);
                 ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).broadcastRadarsEvent(
                         new RadarsEventArgs(RadarsEventTypes.RADARS_EVENT_1,
-                                results),
+                                results.size()),
                         SgsDateTimeUtils.now()
                 );
                 //activity.

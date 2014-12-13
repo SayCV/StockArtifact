@@ -63,11 +63,11 @@ public class Radar implements Serializable {
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
-    @Override
+    /*@Override
     public String toString() {
         return String.format(
                 "Index [time=%s, code=%s, name=%s, price=%s, type=%s, volume=%s]",
                 time, code, name, price, type, volume);
-    }
+    }*/
 
 }
