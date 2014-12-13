@@ -152,6 +152,7 @@ public class MainActivity extends Activity {
             unregisterReceiver(mBroadCastRecv);
             //SgsApplication.releaseWakeLock();
         }
+        ((RadarsService)(mEngine.getRadarsService())).getRadarsDataTask().setRadarsUpdateThreadClassEnabled(false);
         super.onDestroy();
     }
 

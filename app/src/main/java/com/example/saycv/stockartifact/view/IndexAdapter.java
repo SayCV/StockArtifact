@@ -69,10 +69,10 @@ public class IndexAdapter extends ArrayAdapter<Index> {
                 dayRange.setText("---- (---)");
             }
 
-            if (index.getDayRange() != null && Float.parseFloat(index.getDayRange()) > 0) {
+            if (index.getDayRange() != null && Float.parseFloat(index.getDayRange()) < 0) {
                 dayClose.setTextColor(Color.rgb(0, 213, 65));
                 dayRange.setTextColor(Color.rgb(0, 213, 65));
-            } else if (index.getDayRange() != null && Float.parseFloat(index.getDayRange()) < 0) {
+            } else if (index.getDayRange() != null && Float.parseFloat(index.getDayRange()) > 0) {
                 dayClose.setTextColor(Color.rgb(238, 30, 0));
                 dayRange.setTextColor(Color.rgb(238, 30, 0));
             } else {
