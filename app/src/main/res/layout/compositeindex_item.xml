@@ -65,7 +65,7 @@
         android:id="@+id/dayRangePercent"
         android:layout_width="120sp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/dayClose"
+        android:layout_alignBottom="@+id/dayCurrent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:gravity="right"
