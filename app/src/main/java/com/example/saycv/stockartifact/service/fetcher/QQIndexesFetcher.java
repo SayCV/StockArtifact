@@ -88,11 +88,11 @@ public class QQIndexesFetcher extends BaseIndexesFetcher {
     }
 
     private String getChinaIndexURL(String market, String code) {
-        return String.format("http://qt.gtimg.cn/q=s_pk%s%s", market, code);
+        return String.format("http://qt.gtimg.cn/q=%s%s", market, code);
     }
 
     private String getWorldIndexURL() {
-        return "http://qt.gtimg.cn/q=s_pk%s%s";
+        return "http://qt.gtimg.cn/q=%s%s";
     }
 
     private JSONObject preprocessJson(String content) throws JSONException {
