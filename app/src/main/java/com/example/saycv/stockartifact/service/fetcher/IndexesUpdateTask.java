@@ -49,20 +49,20 @@ public class IndexesUpdateTask extends AsyncTask<Void, Integer, Boolean> {
 
     @Override
     protected void onPreExecute() {
-        activity.getParent().setProgressBarVisibility(true);
-        activity.getParent().setProgressBarIndeterminateVisibility(true);
+        activity.setProgressBarVisibility(true);
+        activity.setProgressBarIndeterminateVisibility(true);
     }
 
     @Override
     protected void onCancelled() {
-        activity.getParent().setProgressBarVisibility(false);
-        activity.getParent().setProgressBarIndeterminateVisibility(false);
+        activity.setProgressBarVisibility(false);
+        activity.setProgressBarIndeterminateVisibility(false);
     }
 
     @Override
     protected void onPostExecute(Boolean result) {
-        activity.getParent().setProgressBarVisibility(false);
-        activity.getParent().setProgressBarIndeterminateVisibility(false);
+        activity.setProgressBarVisibility(false);
+        activity.setProgressBarIndeterminateVisibility(false);
         if (result) {
             Log.i(TAG, "update success, number of results ..." + results.size());
             updateIndexes(results);
