@@ -105,12 +105,23 @@ public class IndexAdapter extends ArrayAdapter<Index> {
                 daySwing.setText("");
             }
 
+            int rgb;
             if (index.getDayRange() != null && Float.parseFloat(index.getDayRange()) < 0) {
-                dayCurrent.setTextColor(Color.rgb(0, 213, 65));
-                dayRange.setTextColor(Color.rgb(0, 213, 65));
+                rgb = Color.rgb(0, 213, 65);
+                dayCurrent.setTextColor(rgb);
+                dayRange.setTextColor(rgb);
+
+                dayClose.setTextColor(rgb);
+                dayRangePercent.setTextColor(rgb);
+                daySwing.setTextColor(rgb);
             } else if (index.getDayRange() != null && Float.parseFloat(index.getDayRange()) > 0) {
-                dayCurrent.setTextColor(Color.rgb(238, 30, 0));
-                dayRange.setTextColor(Color.rgb(238, 30, 0));
+                rgb = (Color.rgb(238, 30, 0));
+                dayCurrent.setTextColor(rgb);
+                dayRange.setTextColor(rgb);
+
+                dayClose.setTextColor(rgb);
+                dayRangePercent.setTextColor(rgb);
+                daySwing.setTextColor(rgb);
             } else {
                 dayCurrent.setTextColor(Color.WHITE);
                 dayRange.setTextColor(Color.WHITE);
