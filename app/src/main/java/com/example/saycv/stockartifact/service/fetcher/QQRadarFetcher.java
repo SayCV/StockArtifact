@@ -51,7 +51,8 @@ public class QQRadarFetcher extends BaseRadarFetcher {
 
     @Override
     public List<Radar> fetch() throws DownloadException, ParseException {
-        List<Radar> radar = new ArrayList<Radar>();
+        List<Radar> radars = new ArrayList<Radar>();
+        List<Radar> radarsReturn = new ArrayList<Radar>();
         Date currentDate = new Date(System.currentTimeMillis());
         Time currentTime = new Time();
         currentTime.setToNow();
@@ -74,18 +75,19 @@ public class QQRadarFetcher extends BaseRadarFetcher {
         if (debug || ((hourofday == 9 && minute >= 24) || hourofday > 9 && hourofday < 15) || (hourofday == 15 && minute <= 1)) {
             if (initDone == false) {
                 Log.d(TAG, "get all begin");
-                radar.addAll(getChinaRadar("all"));
+                radarsReturn = getChinaRadar("all");
                 Log.d(TAG, "get all end");
                 initDone = true;
             } else {
                 Log.d(TAG, "get latest");
-                radar.addAll(getChinaRadar("latest"));
+                radarsReturn = getChinaRadar("latest");
             }
         } else {
             Log.d(TAG, "get all");
-            radar.addAll(getChinaRadar("all"));
+            radarsReturn = getChinaRadar("all");
         }
-        return radar;
+        if(radarsReturn!=null) { radars.addAll(radarsReturn); }
+        return radars;
     }
 
 
@@ -125,7 +127,7 @@ public class QQRadarFetcher extends BaseRadarFetcher {
         } catch (IOException ie) {
             //throw new DownloadException("error parsing http data", ie);
             Log.e(TAG, "error parsing http data: " + ie.getMessage());
-            return new ArrayList<Radar>();
+            return null;
         }
     }
 

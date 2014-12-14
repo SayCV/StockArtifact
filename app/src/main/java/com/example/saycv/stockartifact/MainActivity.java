@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
         }
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment(mEngine))
+                    .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
 
@@ -209,13 +209,7 @@ public class MainActivity extends Activity {
      */
     public static class PlaceholderFragment extends Fragment {
 
-        private Engine mEngine;
         public PlaceholderFragment() {
-        }
-
-        public PlaceholderFragment(Engine engine) {
-            super();
-            mEngine = engine;
         }
 
         @Override

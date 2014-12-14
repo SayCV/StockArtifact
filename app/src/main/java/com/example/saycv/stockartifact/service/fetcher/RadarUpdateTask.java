@@ -140,39 +140,42 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
                 RadarFetcher fetcher = RadarFetcherFactory.getRadarFetcher(activity);
                 results = fetcher.fetch();
 
-                //HistoryRadarsEvent event;
-                //event = new HistoryRadarsEvent(RadarsEventArgs.EXTRA_REMOTE_PARTY, SgsHistoryEvent.StatusType.RADARS_ALL);
+                if(results!=null && results.size() > 0) {
+                    //HistoryRadarsEvent event;
+                    //event = new HistoryRadarsEvent(RadarsEventArgs.EXTRA_REMOTE_PARTY, SgsHistoryEvent.StatusType.RADARS_ALL);
                             /*event.setContent(new String("Start Tethering -- TotalUpload: " +
                                     Long.toString(args.getTotalUpload()) + ", TotalDownload: " + Long.toString(args.getTotalDownload())));
                             */
-                //Log.d(TAG, "Traffic Count getTotalUpload = " + args.getTotalUpload());
-                //Log.d(TAG, "Traffic Count getTotalDownload = " + args.getTotalDownload());
-                //event.setRadarsData(results);
-                //event.setStartTime(SgsDateTimeUtils.parseDate(dateString).getTime());
+                    //Log.d(TAG, "Traffic Count getTotalUpload = " + args.getTotalUpload());
+                    //Log.d(TAG, "Traffic Count getTotalDownload = " + args.getTotalDownload());
+                    //event.setRadarsData(results);
+                    //event.setStartTime(SgsDateTimeUtils.parseDate(dateString).getTime());
                             /*if (mEngine.getHistoryService().getEvents().size() != 0 && mEngine.getHistoryService().getEvents().get(0).compareTo(event) == 0) {
                                 Log.d(TAG, "Found Redundant Traffic Count Event, will avoid this");
                                 break;
                             }*/
-                //((RadarsHistoryEvent)event).setRadarsData(results);
-                event.setStartTime(Long.parseLong(SgsDateTimeUtils.now("yyyyMMddHHmmss")));
-                event.setContent(results);
-                ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().addEvent(event);
+                    //((RadarsHistoryEvent)event).setRadarsData(results);
+                    event.setStartTime(Long.parseLong(SgsDateTimeUtils.now("yyyyMMddHHmmss")));
+                    event.setContent(results);
+                    ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().addEvent(event);
 
-                //Only the original thread that created a view hierarchy can touch its views
-                //updateRadars(results);
-                ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).broadcastRadarsEvent(
-                        new RadarsEventArgs(RadarsEventTypes.RADARS_EVENT_1,
-                                results.size()),
-                        SgsDateTimeUtils.now()
-                );
+                    //Only the original thread that created a view hierarchy can touch its views
+                    //updateRadars(results);
+
+                    ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).broadcastRadarsEvent(
+                            new RadarsEventArgs(RadarsEventTypes.RADARS_EVENT_1,
+                                    results.size()),
+                            SgsDateTimeUtils.now()
+                    );
+                }
                 //activity.
 
                 // Taking a nap - 10s
-                    try {
-                        Thread.sleep(10000);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
         }
 

@@ -131,7 +131,7 @@ public class IndexAdapter extends ArrayAdapter<Index> {
         } else {
             name.setText("");
             code.setText("");
-            //dayVolume.setText("---");
+            dayCurrent.setText("");
 
             dayClose.setText("----");
             dayRange.setText("----");

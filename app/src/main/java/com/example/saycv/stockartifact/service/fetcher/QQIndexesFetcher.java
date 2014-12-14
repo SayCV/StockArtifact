@@ -81,7 +81,9 @@ public class QQIndexesFetcher extends BaseIndexesFetcher {
         } /*catch (JSONException je) {
             throw new ParseException("error parsing http data", je);
         }*/ catch (IOException ie) {
-            throw new DownloadException("error parsing http data", ie);
+            //throw new DownloadException("error parsing http data", ie);
+            Log.e(TAG, "error parsing http data: " + ie.getMessage());
+            return null;
         } /*catch (java.text.ParseException e) {
             throw new ParseException("error parsing json data", e);
         }*/
