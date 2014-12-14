@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:gravity="center_vertical">
+
+    <RelativeLayout
+        android:id="@+id/head_contentLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="70.0dip"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10.0dip"
+            android:paddingTop="10.0dip">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ProgressBar
+                    android:id="@+id/head_progressBar"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="13.0dip"
+                    android:layout_height="13.0dip"
+                    android:layout_marginRight="5.0dip"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/head_tipsTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="下拉刷新"
+                    android:textSize="15.0sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/head_lastUpdatedTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="13.0dip"
+                android:singleLine="true"
+                android:text="上次更新:无"
+                android:textSize="12.0sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/fl"
+            android:layout_width="60.0dip"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/text"
+            android:layout_marginRight="10.0dip"
+            android:layout_toLeftOf="@id/text">
+
+            <ImageView
+                android:id="@+id/head_arrowImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="60.0dip"
+                android:layout_alignParentRight="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/arrow_down" />
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

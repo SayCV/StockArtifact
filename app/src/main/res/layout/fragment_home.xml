@@ -1,0 +1,128 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ff000000">
+
+    <TitleBar
+        android:id="@+id/home_main_head"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:id="@+id/home_scrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/home_main_head"
+        android:background="#ffffffff"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/headerView"
+                layout="@layout/item_refresh_head" />
+
+            <RelativeLayout
+                android:id="@+id/bannerAd_rl"
+                android:layout_width="fill_parent"
+                android:layout_height="120.0dip"
+                android:background="@color/font_new_home">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/bannerAd_viewpager"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
+
+                <com.eastmoney.android.ui.PointTips
+                    android:id="@+id/bannerAd_pointTips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:padding="5.0dip" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/index_viewpager"
+                    android:layout_width="fill_parent"
+                    android:layout_height="230.0dip" />
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="15.0dip"
+                    android:layout_below="@id/index_viewpager"
+                    android:layout_marginBottom="5.0dip"
+                    android:layout_marginTop="5.0dip">
+
+                    <com.eastmoney.android.ui.PointTips
+                        android:id="@+id/index_pointTips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="10.0dip"
+                android:background="#ffeeeeee" />
+
+            <ListView
+                android:id="@+id/ad_listview"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:divider="#ffeeeeee"
+                android:dividerHeight="10.0dip" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="10.0dip"
+                android:background="#ffeeeeee" />
+
+            <LinearLayout
+                android:id="@+id/ll_homepagenews"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/news_item_bg_not_select"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ffffffff"
+                    android:drawableLeft="@drawable/homepage_news_icon"
+                    android:drawablePadding="8.0dip"
+                    android:paddingBottom="10.0dip"
+                    android:paddingLeft="5.0dip"
+                    android:paddingTop="10.0dip"
+                    android:text="财经要闻"
+                    android:textColor="@color/black"
+                    android:textSize="17.0sp" />
+
+                <ListView
+                    android:id="@+id/lv_homepage_news"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <TextView
+                    android:id="@+id/tv_homepage_morenews"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/news_item_selected_homepage"
+                    android:gravity="center"
+                    android:padding="10.0dip"
+                    android:text="查看更多财经要闻"
+                    android:textColor="@android:color/black"
+                    android:textSize="17.0sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
