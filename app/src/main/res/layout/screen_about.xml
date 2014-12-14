@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ff000000"
+    android:orientation="vertical">
+
+    <!--<TitleBar
+        android:id="@+id/TitleBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />-->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ff000000"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/aaa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/about_margin_normal"
+            android:paddingBottom="@dimen/about_padding"
+            android:paddingTop="@dimen/about_padding"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/about_text_size"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/txtClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ff000000"
+            android:paddingBottom="@dimen/about_padding"
+            android:singleLine="true"
+            android:text="手机终端"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/about_text_size"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/update_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/about_margin_normal"
+        android:lineSpacingMultiplier="1.3"
+        android:text="版本号: "
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/about_text_size"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip"
+        android:background="#ff808080" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/declare"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/declare_margin"
+                android:paddingBottom="10.0dip"
+                android:paddingTop="@dimen/about_padding"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/declare_text_size" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/about_margin_normal"
+                android:autoLink="phone"
+                android:drawablePadding="@dimen/about_padding"
+                android:drawableRight="@drawable/phone"
+                android:paddingBottom="10.0dip"
+                android:text="@string/hot_line_message"
+                android:textColor="@android:color/white"
+                android:textColorLink="#ffff0000"
+                android:textSize="@dimen/about_text_size"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

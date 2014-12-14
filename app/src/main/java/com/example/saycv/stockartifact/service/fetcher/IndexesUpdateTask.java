@@ -7,6 +7,7 @@ import android.util.Log;
 import com.example.saycv.stockartifact.IndexActivity;
 import com.example.saycv.stockartifact.MainActivity;
 import com.example.saycv.stockartifact.model.Index;
+import com.example.saycv.stockartifact.screens.ScreenRadar;
 import com.example.saycv.stockartifact.view.IndexAdapter;
 import com.example.saycv.utils.NetworkDetector;
 
@@ -14,13 +15,13 @@ import java.util.List;
 
 public class IndexesUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     public static final String TAG = "IndexesUpdateTask";
-    private MainActivity activity;
+    private Activity activity;
     private List<Index> results;
 
     private Error error;
 
     public IndexesUpdateTask(Activity activity) {
-        this.activity = (MainActivity)activity;
+        this.activity = activity;
     }
 
     @Override
@@ -39,7 +40,7 @@ public class IndexesUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     }
 
     private void updateIndexes(List<Index> indexes) {
-        IndexAdapter adapter = activity.getIndexAdapter();
+        IndexAdapter adapter = ((ScreenRadar)activity).getIndexAdapter();
         adapter.clear();
         for (Index i : indexes) {
             adapter.add(i);

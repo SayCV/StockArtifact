@@ -23,6 +23,8 @@ import com.example.saycv.android.activities.SgsFragmentActivity;
 import com.example.saycv.stockartifact.events.RadarsEventArgs;
 import com.example.saycv.stockartifact.events.RadarsEventTypes;
 import com.example.saycv.stockartifact.model.RadarsHistoryEvent;
+import com.example.saycv.stockartifact.screens.ScreenAbout;
+import com.example.saycv.stockartifact.screens.ScreenRadar;
 import com.example.saycv.stockartifact.service.IRadarsService;
 import com.example.saycv.stockartifact.service.fetcher.IndexesUpdateTask;
 import com.example.saycv.stockartifact.service.fetcher.RadarUpdateTask;
@@ -159,6 +161,24 @@ public class MainActivity extends SgsFragmentActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == R.id.action_about) {
+            ScreenAbout screenAbout = new ScreenAbout();
+            Intent intent = new Intent(this, ScreenAbout.class);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+           //intent.putExtra(ScreenAbout.class.getName(), ScreenAbout.class.getName());
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_radar) {
+            ScreenRadar screenRadar = new ScreenRadar();
+            Intent intent = new Intent(this, ScreenRadar.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(ScreenRadar.class.getName(), ScreenRadar.class.getName());
+            startActivity(intent);
             return true;
         }
 

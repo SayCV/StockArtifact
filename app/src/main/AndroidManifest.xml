@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="68"
-    android:versionName="rcv1.1-4-g3ce27de"
+    android:versionCode="82"
+    android:versionName="rcv1.1-5-g88edd20"
     package="com.example.saycv.stockartifact">
 
     <application
@@ -26,6 +26,22 @@
         <activity android:name=".PortfolioActivity"></activity>
         <activity android:name=".QuickStockActivity"></activity>
         <activity android:name=".SettingsActivity"></activity>
+        <activity
+            android:name=".screens.ScreenRadar"
+            android:label="About"
+            android:parentActivityName="MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".screens.ScreenAbout"
+            android:label="About"
+            android:parentActivityName="MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
 
         <receiver android:name=".GlobalBroadcastReceiver">
             <intent-filter>

@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2014, sayCV.
+ *
+ * Copyright 2014 The sayCV's Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.example.saycv.stockartifact.screens;
 
 import android.app.Activity;
@@ -39,7 +57,7 @@ import org.saycv.sgs.utils.SgsDateTimeUtils;
 import org.saycv.sgs.utils.SgsStringUtils;
 
 
-public class RadarActivity extends SgsFragmentActivity {
+public class ScreenRadar extends SgsFragmentActivity {
     public static final String TAG = "MainActivity";
 
     public static final int ACTION_NONE = 0;
@@ -52,7 +70,7 @@ public class RadarActivity extends SgsFragmentActivity {
 
     private BroadcastReceiver mBroadCastRecv;
 
-    public RadarActivity() {
+    public ScreenRadar() {
         super();
 
         // Sets main activity (should be done before starting services)

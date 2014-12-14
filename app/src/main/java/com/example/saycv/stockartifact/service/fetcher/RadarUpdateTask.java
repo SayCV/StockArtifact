@@ -10,6 +10,7 @@ import com.example.saycv.stockartifact.events.RadarsEventArgs;
 import com.example.saycv.stockartifact.events.RadarsEventTypes;
 import com.example.saycv.stockartifact.model.RadarsHistoryEvent;
 import com.example.saycv.stockartifact.model.Radar;
+import com.example.saycv.stockartifact.screens.ScreenRadar;
 import com.example.saycv.stockartifact.service.impl.RadarsHistoryService;
 import com.example.saycv.stockartifact.service.impl.RadarsService;
 import com.example.saycv.stockartifact.view.RadarAdapter;
@@ -23,7 +24,7 @@ import java.util.List;
 
 public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     public static final String TAG = "RadarUpdateTask";
-    private MainActivity activity;
+    private Activity activity;
     private List<Radar> results;
 
     private Thread mRadarsUpdateThread = null;
@@ -43,7 +44,7 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     }
 
     public void updateRadars(List<Radar> radar) {
-        RadarAdapter adapter = activity.getRadarAdapter();
+        RadarAdapter adapter = ((ScreenRadar)activity).getRadarAdapter();
         adapter.clear();
         for (Radar i : radar) {
             adapter.add(i);
@@ -52,7 +53,7 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     }
 
     public void updateRadars(int number) {
-        RadarAdapter adapter = activity.getRadarAdapter();
+        RadarAdapter adapter = ((ScreenRadar)activity).getRadarAdapter();
         adapter.clear();
 
         /*if ( results!=null ) {

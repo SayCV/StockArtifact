@@ -10,14 +10,6 @@
 
 
 
-    <include
-        android:id="@+id/include_radar_item"
-        layout="@layout/radar_item"
-        android:layout_width="wrap_content"
-        android:layout_height="22sp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView" />
 
 
 
