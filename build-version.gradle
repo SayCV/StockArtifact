@@ -1,0 +1,51 @@
+import java.util.regex.Pattern
+
+task('increaseVersionCode') << {
+    def manifestFile = file("src/main/AndroidManifest.xml")
+    def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
+    def manifestText = manifestFile.getText()
+    def matcher = pattern.matcher(manifestText)
+    matcher.find()
+    def versionCode = Integer.parseInt(matcher.group(1))
+    android.defaultConfig.versionCode = versionCode + 1
+    println "Setting version code to ${android.defaultConfig.versionCode}"
+    def manifestContent = matcher.replaceAll("versionCode=\"" + android.defaultConfig.versionCode + "\"")
+    manifestFile.write(manifestContent)
+}
+
+task('setVersionName') << {
+
+    def git = 'git describe --abbrev=7 --tags'
+
+    def proc = git.execute()
+    proc.waitFor()
+    def desc = "${proc.in.text}".trim()
+
+    if (desc.isEmpty()) {
+        git = 'git branch'
+        proc = git.execute()
+        proc.waitFor()
+        desc = "${proc.in.text}".replace('*', ' ')
+        desc = "${desc}".trim()
+        if (desc.isEmpty()) {
+            println "ERROR setting version name"
+            return
+        }
+    }
+
+    def manifestFile = file("src/main/AndroidManifest.xml")
+    def pattern = Pattern.compile("versionName=\"(.*)\"")
+    def manifestText = manifestFile.getText()
+    def matcher = pattern.matcher(manifestText)
+    matcher.find()
+    println "Setting version name to ${desc}"
+    def manifestContent = matcher.replaceAll("versionName=\"" + desc + "\"")
+    manifestFile.write(manifestContent)
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'compileRelease' || task.name == 'generateDebugBuildConfig') {
+        task.dependsOn 'increaseVersionCode'
+        task.dependsOn 'setVersionName'
+    }
+}
