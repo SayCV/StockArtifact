@@ -164,7 +164,7 @@ public class ScreenRadar extends SgsFragmentActivity {
             }
         };
         final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(NativeService.ACTION_STATE_EVENT);
+        intentFilter.addAction(RadarsEventArgs.ACTION_RADARS_EVENT);
         registerReceiver(mBroadCastRecv, intentFilter);
     }
 
