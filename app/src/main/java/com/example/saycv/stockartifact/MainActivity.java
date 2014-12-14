@@ -91,8 +91,8 @@ public class MainActivity extends SgsFragmentActivity {
                 final String action = intent.getAction();
                 Log.d(TAG, "BroadcastReceiver: " + action.toString());
 
-                if(NativeService.ACTION_STATE_EVENT.equals(action)){
-                    if(intent.getBooleanExtra("started", false)){
+                if (NativeService.ACTION_STATE_EVENT.equals(action)) {
+                    if (intent.getBooleanExtra("started", false)) {
                         /*if(getEngine().getConfigurationService().getBoolean(SgsConfigurationEntry.NETWORK_CONNECTED,
                                 SgsConfigurationEntry.DEFAULT_NETWORK_CONNECTED)) {
                             ((TetheringService)getEngine().getTetheringService()).setRegistrationState(TetheringSession.ConnectionState.CONNECTED);
@@ -101,43 +101,6 @@ public class MainActivity extends SgsFragmentActivity {
                         //mScreenService.show(ScreenHome.class);
                         //getEngine().getConfigurationService().putBoolean(SgsConfigurationEntry.GENERAL_AUTOSTART, true);
                         //finish();
-                    } else if (RadarsEventArgs.ACTION_RADARS_EVENT.equals(action)) {
-                        org.saycv.logger.Log.d(TAG, "RadarsEventArgs.ACTION_RADARS_EVENT.");
-                        RadarsEventArgs args = intent.getParcelableExtra(SgsEventArgs.EXTRA_EMBEDDED);
-                        final RadarsEventTypes type;
-                        if (args == null) {
-                            org.saycv.logger.Log.e(TAG, "Invalid event args");
-                            return;
-                        }
-                        String dateString = intent.getStringExtra(RadarsEventArgs.EXTRA_DATE);
-                        String remoteParty = intent.getStringExtra(RadarsEventArgs.EXTRA_REMOTE_PARTY);
-                        if (SgsStringUtils.isNullOrEmpty(remoteParty)) {
-                            remoteParty = SgsStringUtils.nullValue();
-                        }
-                        remoteParty = "RadarsEvent";//SgsUriUtils.getUserName(remoteParty);
-                        RadarsHistoryEvent event;
-                        switch ((type = args.getEventType())) {
-                            case RADARS_EVENT_1:
-                                event = new RadarsHistoryEvent();
-                            /*event.setContent(new String("Start Tethering -- TotalUpload: " +
-                                    Long.toString(args.getTotalUpload()) + ", TotalDownload: " + Long.toString(args.getTotalDownload())));
-                            */
-                                //Log.d(TAG, "Traffic Count getTotalUpload = " + args.getTotalUpload());
-                                //Log.d(TAG, "Traffic Count getTotalDownload = " + args.getTotalDownload());
-                                //event.setRadarsData(args.getRadarsData());
-                                event.setStartTime(SgsDateTimeUtils.parseDate(dateString).getTime());
-                            /*if (mEngine.getHistoryService().getEvents().size() != 0 && mEngine.getHistoryService().getEvents().get(0).compareTo(event) == 0) {
-                                Log.d(TAG, "Found Redundant Traffic Count Event, will avoid this");
-                                break;
-                            }*/
-                                //mEngine.getHistoryService().addEvent(event);
-                                //((RadarsService) mEngine.getRadarsService()).getDefaultTask().updateRadars(args.getRadarsData());
-                                break;
-                            default:
-                                org.saycv.logger.Log.d(TAG, "Invalid event args.getEventType().");
-                                break;
-                        }
-
                     }
                 }
             }
@@ -153,7 +116,6 @@ public class MainActivity extends SgsFragmentActivity {
             unregisterReceiver(mBroadCastRecv);
             //SgsApplication.releaseWakeLock();
         }
-        ((RadarsService)(mEngine.getRadarsService())).getRadarsDataTask().setRadarsUpdateThreadClassEnabled(false);
         super.onDestroy();
     }
 
@@ -174,8 +136,6 @@ public class MainActivity extends SgsFragmentActivity {
 //                        SgsApplication.acquireWakeLock();
 //                        ((TetheringService)getEngine().getTetheringService()).reRegister(null);
 //                    }
-                    engine.getRadarsService().start();
-                    //((RadarsService)(engine.getRadarsService())).getRadarsDataTask().setRadarsUpdateThreadClassEnabled(true);
                 }
             }
         });
@@ -224,26 +184,7 @@ public class MainActivity extends SgsFragmentActivity {
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            /*RelativeLayout szCompositeIndexLayoutView = (RelativeLayout) view.findViewById(R.id.include_compositeindex_item_sz);
-            TextView tv = (TextView)szCompositeIndexLayoutView.findViewById(R.id.name);
-            tv.setText(R.string.compositeindex_sz_name);*/
 
-            ListView lvIndex = (ListView)view.findViewById(R.id.listViewIndex);
-            indexAdapter = new IndexAdapter(view.getContext());
-            lvIndex.setAdapter(indexAdapter);
-
-            ListView lvRadars = (ListView)view.findViewById(R.id.listViewRadars);
-            radarAdapter = new RadarAdapter(view.getContext());
-            lvRadars.setAdapter(radarAdapter);
-
-            Log.i(TAG, "start radar activity");
-            IndexesUpdateTask indexesUpdateTask = new IndexesUpdateTask((Activity)view.getContext());
-            indexesUpdateTask.execute();
-
-            RadarUpdateTask radarUpdateTask = new RadarUpdateTask((Activity)view.getContext());
-            radarUpdateTask.execute();
-            ((RadarsService) ((Engine)Engine.getInstance()).getRadarsService()).setDefaultTask(radarUpdateTask);
-            radarUpdateTask.setRadarsUpdateThreadClassEnabled(true);
         }
     }
 }

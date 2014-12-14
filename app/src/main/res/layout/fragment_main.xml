@@ -8,15 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity$PlaceholderFragment">
 
-    <ListView
-        android:id="@+id/listViewIndex"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
     <!--<include
         android:id="@+id/include_compositeindex_item_sh"
         layout="@layout/compositeindex_item"
@@ -41,7 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/listViewIndex"
         android:text="@string/msg_stock_radar" />
 
     <include
@@ -53,12 +43,6 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textView" />
 
-    <ListView
-        android:id="@+id/listViewRadars"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/include_radar_item"
-        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
