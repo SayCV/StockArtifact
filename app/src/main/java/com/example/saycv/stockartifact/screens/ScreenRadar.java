@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,6 +50,7 @@ import com.example.saycv.stockartifact.service.impl.RadarsService;
 import com.example.saycv.stockartifact.view.IndexAdapter;
 import com.example.saycv.stockartifact.view.RadarAdapter;
 
+import org.saycv.logger.Log;
 import org.saycv.sgs.events.SgsEventArgs;
 import org.saycv.sgs.model.SgsHistoryEvent;
 import org.saycv.sgs.utils.SgsDateTimeUtils;
@@ -58,7 +58,7 @@ import org.saycv.sgs.utils.SgsStringUtils;
 
 
 public class ScreenRadar extends SgsFragmentActivity {
-    public static final String TAG = "MainActivity";
+    private final static String TAG = ScreenRadar.class.getCanonicalName();
 
     public static final int ACTION_NONE = 0;
 
@@ -112,54 +112,52 @@ public class ScreenRadar extends SgsFragmentActivity {
                 final String action = intent.getAction();
                 Log.d(TAG, "BroadcastReceiver: " + action.toString());
 
-                if(NativeService.ACTION_STATE_EVENT.equals(action)){
-                    if(intent.getBooleanExtra("started", false)){
-                        /*if(getEngine().getConfigurationService().getBoolean(SgsConfigurationEntry.NETWORK_CONNECTED,
-                                SgsConfigurationEntry.DEFAULT_NETWORK_CONNECTED)) {
-                            ((TetheringService)getEngine().getTetheringService()).setRegistrationState(TetheringSession.ConnectionState.CONNECTED);
-                            SgsApplication.acquireWakeLock();
-                        }*/
-                        //mScreenService.show(ScreenHome.class);
-                        //getEngine().getConfigurationService().putBoolean(SgsConfigurationEntry.GENERAL_AUTOSTART, true);
-                        //finish();
-                    } else if (RadarsEventArgs.ACTION_RADARS_EVENT.equals(action)) {
-                        org.saycv.logger.Log.d(TAG, "RadarsEventArgs.ACTION_RADARS_EVENT.");
-                        RadarsEventArgs args = intent.getParcelableExtra(SgsEventArgs.EXTRA_EMBEDDED);
-                        final RadarsEventTypes type;
-                        if (args == null) {
-                            org.saycv.logger.Log.e(TAG, "Invalid event args");
-                            return;
-                        }
-                        String dateString = intent.getStringExtra(RadarsEventArgs.EXTRA_DATE);
-                        String remoteParty = intent.getStringExtra(RadarsEventArgs.EXTRA_REMOTE_PARTY);
-                        if (SgsStringUtils.isNullOrEmpty(remoteParty)) {
-                            remoteParty = SgsStringUtils.nullValue();
-                        }
-                        remoteParty = "RadarsEvent";//SgsUriUtils.getUserName(remoteParty);
-                        RadarsHistoryEvent event;
-                        switch ((type = args.getEventType())) {
-                            case RADARS_EVENT_1:
-                                event = new RadarsHistoryEvent();
+                if (RadarsEventArgs.ACTION_RADARS_EVENT.equals(action)) {
+                    org.saycv.logger.Log.d(TAG, "RadarsEventArgs.ACTION_RADARS_EVENT.");
+                    RadarsEventArgs args = intent.getParcelableExtra(SgsEventArgs.EXTRA_EMBEDDED);
+                    final RadarsEventTypes type;
+                    if (args == null) {
+                        org.saycv.logger.Log.e(TAG, "Invalid event args");
+                        return;
+                    }
+                    String dateString = intent.getStringExtra(RadarsEventArgs.EXTRA_DATE);
+                    String remoteParty = intent.getStringExtra(RadarsEventArgs.EXTRA_REMOTE_PARTY);
+                    if (SgsStringUtils.isNullOrEmpty(remoteParty)) {
+                        remoteParty = SgsStringUtils.nullValue();
+                    }
+                    remoteParty = "RadarsEvent";//SgsUriUtils.getUserName(remoteParty);
+                    RadarsHistoryEvent event;
+                    switch ((type = args.getEventType())) {
+                        case RADARS_EVENT_1:
+                            event = new RadarsHistoryEvent();
                             /*event.setContent(new String("Start Tethering -- TotalUpload: " +
                                     Long.toString(args.getTotalUpload()) + ", TotalDownload: " + Long.toString(args.getTotalDownload())));
                             */
-                                //Log.d(TAG, "Traffic Count getTotalUpload = " + args.getTotalUpload());
-                                //Log.d(TAG, "Traffic Count getTotalDownload = " + args.getTotalDownload());
-                                //event.setRadarsData(args.getRadarsData());
-                                event.setStartTime(SgsDateTimeUtils.parseDate(dateString).getTime());
+                            //Log.d(TAG, "Traffic Count getTotalUpload = " + args.getTotalUpload());
+                            //Log.d(TAG, "Traffic Count getTotalDownload = " + args.getTotalDownload());
+                            //event.setRadarsData(args.getRadarsData());
+                            event.setStartTime(SgsDateTimeUtils.parseDate(dateString).getTime());
                             /*if (mEngine.getHistoryService().getEvents().size() != 0 && mEngine.getHistoryService().getEvents().get(0).compareTo(event) == 0) {
                                 Log.d(TAG, "Found Redundant Traffic Count Event, will avoid this");
                                 break;
                             }*/
-                                //mEngine.getHistoryService().addEvent(event);
-                                //((RadarsService) mEngine.getRadarsService()).getDefaultTask().updateRadars(args.getRadarsData());
-                                break;
-                            default:
-                                org.saycv.logger.Log.d(TAG, "Invalid event args.getEventType().");
-                                break;
-                        }
+                            //mEngine.getHistoryService().addEvent(event);
+                            int results;
+                            results = args.getRadarsNumber();
 
+                            //results = intent.getParcelableArrayListExtra(RadarsEventArgs.EXTRA_DATA);
+                            ((RadarsService) mEngine.getRadarsService()).getRadarsDataTask().updateRadars(results);
+                            break;
+                        case RADARS_EVENT_2:
+                            event = new RadarsHistoryEvent();
+                            results = args.getRadarsNumber();
+                            ((RadarsService) mEngine.getRadarsService()).getRadarsDataTask().updateRadars(results);
+                            break;
+                        default:
+                            Log.d(TAG, "Invalid event args.getEventType().");
+                            break;
                     }
+
                 }
             }
         };
@@ -187,7 +185,7 @@ public class ScreenRadar extends SgsFragmentActivity {
             @Override
             public void run() {
                 if(!engine.isStarted()){
-                    Log.d(TAG, "Starts the engine from the splash screen");
+                    Log.d(TAG, "Starts the engine from the Radar screen");
                     engine.start();
 //                    if(getEngine().getConfigurationService().getBoolean(SgsConfigurationEntry.NETWORK_CONNECTED,
 //                            SgsConfigurationEntry.DEFAULT_NETWORK_CONNECTED)) {
@@ -195,9 +193,10 @@ public class ScreenRadar extends SgsFragmentActivity {
 //                        SgsApplication.acquireWakeLock();
 //                        ((TetheringService)getEngine().getTetheringService()).reRegister(null);
 //                    }
-                    engine.getRadarsService().start();
-                    //((RadarsService)(engine.getRadarsService())).getRadarsDataTask().setRadarsUpdateThreadClassEnabled(true);
+
                 }
+                engine.getRadarsService().start();
+                ((RadarsService)(engine.getRadarsService())).getRadarsDataTask().setRadarsUpdateThreadClassEnabled(true);
             }
         });
         thread.setPriority(Thread.MAX_PRIORITY);

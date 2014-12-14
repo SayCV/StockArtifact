@@ -39,7 +39,7 @@ import org.saycv.sgs.utils.SgsStringUtils;
 
 
 public class MainActivity extends SgsFragmentActivity {
-    public static final String TAG = "MainActivity";
+    private final static String TAG = MainActivity.class.getCanonicalName();
 
     public static final int ACTION_NONE = 0;
 
