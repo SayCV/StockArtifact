@@ -119,7 +119,7 @@ public class NativeService extends SgsNativeService {
             }
         };
         final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(RadarsEventArgs.ACTION_RADARS_EVENT);
+        //intentFilter.addAction(RadarsEventArgs.ACTION_RADARS_EVENT);
         registerReceiver(mBroadcastReceiver, intentFilter);
 
         if (intent != null) {

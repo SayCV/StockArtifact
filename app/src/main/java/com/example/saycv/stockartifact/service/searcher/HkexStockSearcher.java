@@ -2,7 +2,7 @@ package com.example.saycv.stockartifact.service.searcher;
 
 import android.util.Log;
 
-import com.example.saycv.stockartifact.Constants;
+import com.example.saycv.utils.Constants;
 import com.example.saycv.stockartifact.model.Stock;
 import com.example.saycv.stockartifact.service.Lang;
 import com.example.saycv.stockartifact.service.exception.DownloadException;

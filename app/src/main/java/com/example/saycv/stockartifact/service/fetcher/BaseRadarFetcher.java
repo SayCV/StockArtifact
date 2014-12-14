@@ -1,6 +1,6 @@
 package com.example.saycv.stockartifact.service.fetcher;
 
-import com.example.saycv.stockartifact.Constants;
+import com.example.saycv.utils.Constants;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ClientConnectionManager;

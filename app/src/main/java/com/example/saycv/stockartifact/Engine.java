@@ -1,8 +1,13 @@
 package com.example.saycv.stockartifact;
 
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.media.RingtoneManager;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
+
+import android.support.v4.app.NotificationCompat;
 
 import com.example.saycv.stockartifact.service.IRadarsService;
 import com.example.saycv.stockartifact.service.impl.RadarsService;
@@ -27,17 +32,11 @@ public class Engine extends SgsEngine {
     private static final String SETTING_DB_PATH = "/data/data/com.android.providers.settings/databases/";
     private static final String mGlobalSetting_tether_supported = "tether_supported"; //valid setting is 1
     private static final String mGlobalSetting_tether_dun_required = "tether_dun_required"; //valid setting is 0
-    public Handler displayMessageHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            if (msg.obj != null) {
-                showAppMessage((String) msg.obj);
-            }
-            super.handleMessage(msg);
-        }
-    };
+
     //private ITetheringService mTetheringService;
     //private IScreenService mScreenService;
     protected IRadarsService mRadarsService;
+
     static {
         // See 'http://code.google.com/p/imsdroid/issues/detail?id=197' for more information
         // Load Android utils library (required to detect CPU features)
@@ -80,16 +79,57 @@ public class Engine extends SgsEngine {
         return super.stop();
     }
 
+    public Handler displayMessageHandler = new Handler(){
+        public void handleMessage(Message msg) {
+            if (msg.obj != null) {
+                showAppMessage((String) msg.obj);
+            }
+            super.handleMessage(msg);
+        }
+    };
+
     // Display Toast-Message
     public void showAppMessage(String message) {
         Toast.makeText(SgsDroid.getContext(), message, Toast.LENGTH_LONG).show();
     }
 
     private void showNotification(int notifId, int drawableId, String tickerText) {
-        if (!mStarted) {
+        if(!mStarted){
             return;
         }
+        //final Notification.Builder notificationBuilder = new Notification.Builder(SRTDroid.getContext());
+        final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(SgsDroid.getContext())
+                .setWhen(System.currentTimeMillis());
+        notificationBuilder.setSmallIcon(drawableId);
+        // Set the icon, scrolling text and timestamp
+        //final Notification notification = new Notification(drawableId, "", System.currentTimeMillis());
 
+        Intent intent = new Intent(SgsDroid.getContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP  | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        switch(notifId){
+            case NOTIF_APP_ID:
+                //notification.flags |= Notification.FLAG_ONGOING_EVENT;
+                notificationBuilder.setOngoing(true);
+                intent.putExtra("notif-type", "reg");
+                break;
+
+            default:
+
+                break;
+        }
+
+        PendingIntent contentIntent = PendingIntent.getActivity(SgsDroid.getContext(), notifId/*requestCode*/, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Set the info for the views that show in the notification panel.
+        //notification.setLatestEventInfo(SRTDroid.getContext(), CONTENT_TITLE, tickerText, contentIntent);
+        notificationBuilder.setContentTitle(CONTENT_TITLE);
+        notificationBuilder.setTicker(tickerText);
+        notificationBuilder.setContentIntent(contentIntent);
+
+        // Send the notification.
+        // We use a layout id because it is a unique number.  We use it later to cancel.
+        mNotifManager.notify(notifId, notificationBuilder.build());
     }
 
     public void showAppNotif(int drawableId, String tickerText) {

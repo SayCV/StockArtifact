@@ -1,5 +1,6 @@
 package com.example.saycv.stockartifact;
 
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -7,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.saycv.android.activities.SgsFragmentActivity;
 import com.example.saycv.stockartifact.service.fetcher.IndexesUpdateTask;
 import com.example.saycv.stockartifact.view.IndexAdapter;
 

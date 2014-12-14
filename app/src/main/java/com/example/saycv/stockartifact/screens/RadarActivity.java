@@ -1,4 +1,4 @@
-package com.example.saycv.stockartifact;
+package com.example.saycv.stockartifact.screens;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -20,6 +20,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.saycv.android.activities.SgsFragmentActivity;
+import com.example.saycv.stockartifact.Engine;
+import com.example.saycv.stockartifact.NativeService;
+import com.example.saycv.stockartifact.R;
 import com.example.saycv.stockartifact.events.RadarsEventArgs;
 import com.example.saycv.stockartifact.events.RadarsEventTypes;
 import com.example.saycv.stockartifact.model.RadarsHistoryEvent;
@@ -36,7 +39,7 @@ import org.saycv.sgs.utils.SgsDateTimeUtils;
 import org.saycv.sgs.utils.SgsStringUtils;
 
 
-public class MainActivity extends SgsFragmentActivity {
+public class RadarActivity extends SgsFragmentActivity {
     public static final String TAG = "MainActivity";
 
     public static final int ACTION_NONE = 0;
@@ -49,7 +52,7 @@ public class MainActivity extends SgsFragmentActivity {
 
     private BroadcastReceiver mBroadCastRecv;
 
-    public MainActivity() {
+    public RadarActivity() {
         super();
 
         // Sets main activity (should be done before starting services)
@@ -71,7 +74,7 @@ public class MainActivity extends SgsFragmentActivity {
         requestWindowFeature(Window.FEATURE_PROGRESS);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_screens_radar);
         mHandler = new Handler();
 
         Bundle bundle = savedInstanceState;
