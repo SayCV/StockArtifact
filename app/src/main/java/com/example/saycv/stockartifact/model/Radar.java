@@ -10,6 +10,7 @@ public class Radar implements Serializable {
     private String type;
     private String price;
     private String volume;
+    private String numbers;
 
 
     public String getTime() {
@@ -58,6 +59,14 @@ public class Radar implements Serializable {
 
     public void setVolume(String volume) {
         this.volume = volume;
+    }
+
+    public String getNumbers() {
+        return numbers;
+    }
+
+    public void setNumbers(String numbers) {
+        this.numbers = numbers;
     }
 
     /* (non-Javadoc)

@@ -1,5 +1,12 @@
 import java.util.regex.Pattern
 
+def getDevVersionCode() {
+    def version = project.devVersionCode + 1
+    project.devVersionCode = version
+    println sprintf("Returning version %d", version)
+    return version
+}
+
 task('increaseVersionCode') << {
     def manifestFile = file("src/main/AndroidManifest.xml")
     def pattern = Pattern.compile("versionCode=\"(\\d+)\"")

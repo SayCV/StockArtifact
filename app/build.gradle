@@ -1,5 +1,6 @@
 
 apply plugin: 'com.android.application'
+apply from :  '$buildDir/../../build-version.gradle'
 
 android {
     compileSdkVersion 21
@@ -29,5 +30,3 @@ dependencies {
     compile files('libs/logback-android-1.0.10-3-SNAPSHOT.jar')
     compile files('libs/slf4j-api-1.7.5.jar')
 }
-
-apply from :    '$buildDir/../../build-version.gradle'

@@ -137,5 +137,26 @@
             android:textColor="#FFFFFF"
             android:textSize="12sp"></TextView>
 
+        <TextView
+            android:id="@+id/numbers"
+            android:layout_width="30sp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/radar_item"
+            android:ellipsize="marquee"
+            android:lines="1"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:maxLines="2"
+            android:minLines="1"
+            android:shadowColor="#88444444"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:singleLine="true"
+            android:text="0"
+            android:visibility="invisible"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"></TextView>
+
     </LinearLayout>
 </RelativeLayout>

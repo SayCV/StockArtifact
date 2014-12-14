@@ -41,6 +41,7 @@ public class RadarAdapter extends ArrayAdapter<Radar> {
         TextView type = (TextView) v.findViewById(R.id.type);
         TextView price = (TextView) v.findViewById(R.id.price);
         TextView volume = (TextView) v.findViewById(R.id.volume);
+        TextView numbers = (TextView) v.findViewById(R.id.numbers);
         // set data
         Radar index = getItem(position);
         if (index != null) {
@@ -51,6 +52,8 @@ public class RadarAdapter extends ArrayAdapter<Radar> {
             type.setText(index.getType());
             price.setText(index.getPrice());
             volume.setText(index.getVolume());
+            numbers.setText(index.getNumbers());
+            numbers.setVisibility(View.VISIBLE);
 
             int rgb;
             if (index.getType().equals("大买单") || index.getType().equals("封涨停板") || index.getType().equals("快速上涨")) {

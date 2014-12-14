@@ -156,6 +156,7 @@ public class QQRadarFetcher extends BaseRadarFetcher {
             String price = stock[3];
             String type = stock[4];
             String volume = stock[5];
+            String numbers = String.valueOf(nbrStocks - nbr);
 
 
             Radar radar = new Radar();
@@ -166,6 +167,7 @@ public class QQRadarFetcher extends BaseRadarFetcher {
             radar.setPrice(price);
             radar.setType(type);
             radar.setVolume(volume);
+            radar.setNumbers(numbers);
 
             radars.add(radar);
 

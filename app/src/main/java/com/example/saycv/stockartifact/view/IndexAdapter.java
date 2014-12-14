@@ -55,6 +55,7 @@ public class IndexAdapter extends ArrayAdapter<Index> {
         if (index != null) {
             //dayVolume.setText("");
             name.setText(index.getName());
+            code.setText(index.getCode());
             dayCurrent.setText(index.getDayClose());
 
            /*if (index.getTime() != null) {
@@ -128,9 +129,10 @@ public class IndexAdapter extends ArrayAdapter<Index> {
             }
 
         } else {
-            time.setText("");
-            //dayVolume.setText("---");
             name.setText("");
+            code.setText("");
+            //dayVolume.setText("---");
+
             dayClose.setText("----");
             dayRange.setText("----");
         }
