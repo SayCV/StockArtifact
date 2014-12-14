@@ -1,10 +1,78 @@
 import java.util.regex.Pattern
 
-def getDevVersionCode() {
-    def version = project.devVersionCode + 1
-    project.devVersionCode = version
-    println sprintf("Returning version %d", version)
-    return version
+gradle.allprojects {
+    ext.getDevVersionCodeFromFileAndIncrement = {
+        println "Hello getVersionCodeFromFileAndIncrement"
+        def manifestFile = file("src/main/AndroidManifest.xml")
+        def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
+        def manifestText = manifestFile.getText()
+        def matcher = pattern.matcher(manifestText)
+        matcher.find()
+        def version = ++Integer.parseInt(matcher.group(1))
+        println sprintf("Returning version %d", version)
+        return "$version"
+    }
+
+    ext.getDevVersionCode = {
+        println "Hello getVersionCode"
+        def manifestFile = file("src/main/AndroidManifest.xml")
+        def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
+        def manifestText = manifestFile.getText()
+        def matcher = pattern.matcher(manifestText)
+        matcher.find()
+        def version = ++Integer.parseInt(matcher.group(1))
+        println sprintf("Returning version %d", version)
+        return version
+    }
+
+    // Methods to determine detailed version string
+    ext.gitDescribe = {
+        try {
+            def git = 'git describe --abbrev=7 --tags'
+
+            def proc = git.execute()
+            proc.waitFor()
+            def desc = "${proc.in.text}".trim()
+
+            if (desc.isEmpty()) {
+                git = 'git branch'
+                proc = git.execute()
+                proc.waitFor()
+                desc = "${proc.in.text}".replace('*', ' ')
+                desc = "${desc}".trim()
+                if (desc.isEmpty()) {
+                    println "ERROR gitDescribe()"
+                    return "unknown"
+                }
+            }
+            return desc
+        } catch (e) {
+            return "unknown"
+        }
+    }
+
+    ext.getDevVersionName = {
+        try {
+            // determine git-describe output
+            def version = gitDescribe()
+
+            // add on jenkins or travis build information
+            def jenkins_build = System.getenv("BUILD_NUMBER")
+            def travis_build = System.getenv("TRAVIS_BUILD_NUMBER")
+            if (jenkins_build != null) {
+                version += "-b" + jenkins_build
+            } else if (travis_build != null) {
+                version += "-trv" + travis_build
+            } else {
+                version += "-dev"
+            }
+            //println sprintf("Returning versionName %s", version)
+            return version
+        } catch (e) {
+            //println sprintf("getDevVersionName() %s", e.getMessage())
+            return "unknown-version"
+        }
+    }
 }
 
 task('increaseVersionCode') << {

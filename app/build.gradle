@@ -10,8 +10,8 @@ android {
         applicationId "com.example.saycv.stockartifact"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode getDevVersionCode()
+        versionName getDevVersionName()
     }
     buildTypes {
         release {
