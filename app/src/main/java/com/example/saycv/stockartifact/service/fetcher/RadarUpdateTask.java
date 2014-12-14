@@ -31,7 +31,7 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     private Error error;
 
     public RadarUpdateTask(Activity activity) {
-        this.activity = (MainActivity) activity;
+        this.activity = activity;
     }
 
     @Override
