@@ -4,8 +4,10 @@ import android.content.Intent;
 
 import com.example.saycv.stockartifact.SgsDroid;
 import com.example.saycv.stockartifact.events.RadarsEventArgs;
+import com.example.saycv.stockartifact.model.Index;
 import com.example.saycv.stockartifact.model.Radar;
 import com.example.saycv.stockartifact.service.IRadarsService;
+import com.example.saycv.stockartifact.service.fetcher.IndexesUpdateTask;
 import com.example.saycv.stockartifact.service.fetcher.RadarUpdateTask;
 
 import org.saycv.logger.Log;
@@ -16,6 +18,7 @@ import org.saycv.sgs.services.impl.SgsHistoryService;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class RadarsService extends SgsBaseService
         implements IRadarsService {
@@ -23,7 +26,7 @@ public class RadarsService extends SgsBaseService
 
     private RadarsHistoryService mRadarsHistoryService;
     private RadarUpdateTask mRadarUpdateTask;
-    //private RadarIndexUpdateTask mRadarUpdateTask;
+    private IndexesUpdateTask mIndexesUpdateTask;
 
     public RadarsService() {
         super();
@@ -64,20 +67,18 @@ public class RadarsService extends SgsBaseService
         return mRadarsHistoryService;
     }
 
-    public RadarUpdateTask getRadarsDataTask() {
-        return mRadarUpdateTask;
-    }
-
-    public void setDefaultTask(RadarUpdateTask task) {
+    public void setRadarUpdateTask(RadarUpdateTask task) {
         mRadarUpdateTask = task;
     }
-
-    public RadarUpdateTask getRadarsIndexTask() {
-        return mRadarUpdateTask;
+    public void setIndexesUpdateTask(IndexesUpdateTask task) {
+        mIndexesUpdateTask = task;
     }
 
-    public void setRadarsIndexTask(RadarUpdateTask task) {
-        mRadarUpdateTask = task;
+    public RadarUpdateTask getRadarUpdateTask() {
+        return mRadarUpdateTask;
+    }
+    public IndexesUpdateTask getIndexesUpdateTask() {
+        return mIndexesUpdateTask;
     }
 
     public void broadcastRadarsEvent(RadarsEventArgs args, String date) {

@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
-    public static final String TAG = "RadarUpdateTask";
+    private static final String TAG = RadarUpdateTask.class.getCanonicalName();
+    private static final String EVENT_TAG = TAG;
+
     private Activity activity;
     private List<Radar> results;
 
@@ -46,13 +48,17 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
     public void updateRadars(List<Radar> radar) {
         RadarAdapter adapter = ((ScreenRadar)activity).getRadarAdapter();
         adapter.clear();
-        for (Radar i : radar) {
-            adapter.add(i);
+        if (radar != null) {
+            for (Radar i : radar) {
+                adapter.add(i);
+            }
+            adapter.notifyDataSetChanged();
+        } else {
+            Log.d(TAG, "radars is null");
         }
-        adapter.notifyDataSetChanged();
     }
 
-    public void updateRadars(int number) {
+    public void updateRadars() {
         RadarAdapter adapter = ((ScreenRadar)activity).getRadarAdapter();
         adapter.clear();
 
@@ -66,17 +72,23 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
         }*/
         //RadarsService radarsService = (RadarsService)((Engine)Engine.getInstance()).getRadarsService();
         //RadarsHistoryService radarsHistoryService = (RadarsHistoryService)radarsService.getHistoryService();
-        List<SgsHistoryEvent> sgsHistoryEvent = ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().getEvents();
-        RadarsHistoryEvent radarsHistoryEvent = ((RadarsHistoryEvent)sgsHistoryEvent.get(sgsHistoryEvent.size()-1));
-        List<Radar> radars = radarsHistoryEvent.getRadars();
-        if ( radars!=null ) {
-            for (Radar i : radars) {
-                adapter.add(i);
+
+            List<SgsHistoryEvent> sgsHistoryEvent = ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().getEvents();
+            if (sgsHistoryEvent.size() > 0) {
+                RadarsHistoryEvent radarsHistoryEvent = ((RadarsHistoryEvent) sgsHistoryEvent.get(sgsHistoryEvent.size() -1));
+                List<Radar> radars = radarsHistoryEvent.getRadarContent();
+                if (radars != null) {
+                    for (Radar i : radars) {
+                        adapter.add(i);
+                    }
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Log.d(TAG, "radars is null");
+                }
+            } else {
+                Log.d(TAG, "Not addEvent RADARS_EVENT_2 to history");
             }
-            adapter.notifyDataSetChanged();
-        } else {
-            Log.d(TAG, "radars is null");
-        }
+
     }
 
     @Override
@@ -93,14 +105,18 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean result) {
-        activity.setProgressBarVisibility(false);
+        /*activity.setProgressBarVisibility(false);
         activity.setProgressBarIndeterminateVisibility(false);
         if (result && results != null) {
             Log.i(TAG, "update success, number of results ..." + results.size());
             updateRadars(results);
         } else {
             Log.i(TAG, "update failure");
-        }
+        }*/
+    }
+
+    enum Error {
+        ERROR_NO_NET, ERROR_DOWNLOAD, ERROR_PARSE, ERROR_UNKNOWN
     }
 
     public void setRadarsUpdateThreadClassEnabled(boolean enabled) {
@@ -115,10 +131,6 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
         }
     }
 
-    enum Error {
-        ERROR_NO_NET, ERROR_DOWNLOAD, ERROR_PARSE, ERROR_UNKNOWN
-    }
-
     class RadarsUpdateThreadClass implements Runnable {
 
         RadarsHistoryEvent event;
@@ -126,7 +138,8 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
 
         public RadarsUpdateThreadClass() {
             //event = new RadarsHistoryEvent(RadarsEventArgs.EXTRA_REMOTE_PARTY, SgsHistoryEvent.StatusType.RADARS_ALL);
-            event = new RadarsHistoryEvent(RadarsEventArgs.EXTRA_REMOTE_PARTY, "MyRadars");
+            event = new RadarsHistoryEvent(RadarsEventArgs.EXTRA_REMOTE_PARTY, EVENT_TAG);
+            //((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().deleteEvent(event);
         }
 
         //@Override
@@ -138,6 +151,9 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
                 }
 
                 Log.i(TAG, "start fetcher");
+
+                    ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().deleteEvent(event);
+
                 RadarFetcher fetcher = RadarFetcherFactory.getRadarFetcher(activity);
                 results = fetcher.fetch();
 
@@ -149,7 +165,7 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
                             */
                     //Log.d(TAG, "Traffic Count getTotalUpload = " + args.getTotalUpload());
                     //Log.d(TAG, "Traffic Count getTotalDownload = " + args.getTotalDownload());
-                    //event.setRadarsData(results);
+                    //event.setRadarContent(results);
                     //event.setStartTime(SgsDateTimeUtils.parseDate(dateString).getTime());
                             /*if (mEngine.getHistoryService().getEvents().size() != 0 && mEngine.getHistoryService().getEvents().get(0).compareTo(event) == 0) {
                                 Log.d(TAG, "Found Redundant Traffic Count Event, will avoid this");
@@ -157,15 +173,15 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
                             }*/
                     //((RadarsHistoryEvent)event).setRadarsData(results);
                     event.setStartTime(Long.parseLong(SgsDateTimeUtils.now("yyyyMMddHHmmss")));
-                    event.setContent(results);
-                    ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().addEvent(event);
+                    event.setRadarContent(results);
+
+                        ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().addEvent(event);
 
                     //Only the original thread that created a view hierarchy can touch its views
                     //updateRadars(results);
 
                     ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).broadcastRadarsEvent(
-                            new RadarsEventArgs(RadarsEventTypes.RADARS_EVENT_1,
-                                    results.size()),
+                            new RadarsEventArgs(RadarsEventTypes.RADARS_EVENT_2, null, results),
                             SgsDateTimeUtils.now()
                     );
                 }

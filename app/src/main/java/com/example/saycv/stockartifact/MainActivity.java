@@ -32,6 +32,7 @@ import com.example.saycv.stockartifact.service.impl.RadarsService;
 import com.example.saycv.stockartifact.view.IndexAdapter;
 import com.example.saycv.stockartifact.view.RadarAdapter;
 
+import org.saycv.android.ui.CustomListAdapter;
 import org.saycv.sgs.events.SgsEventArgs;
 import org.saycv.sgs.model.SgsHistoryEvent;
 import org.saycv.sgs.utils.SgsDateTimeUtils;
@@ -196,7 +197,7 @@ public class MainActivity extends SgsFragmentActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_home, container, false);
             return rootView;
         }
 

@@ -19,8 +19,19 @@
 package com.example.saycv.stockartifact.events;
 
 public enum RadarsEventTypes {
-    RADARS_EVENT_1,
-    RADARS_EVENT_2,
-    RADARS_EVENT_4,
-    RADARS_EVENT_5,
+    RADARS_EVENT_1(0),
+    RADARS_EVENT_2(1),
+    RADARS_EVENT_4(3),
+    RADARS_EVENT_5(4);
+
+    private final int value;
+
+    private RadarsEventTypes(int value) {
+        this.value = value;
+    }
+
+    // same to Override Enum.ValueOf(class, string).ordinal()
+    public int getValue() {
+        return value;
+    }
 }

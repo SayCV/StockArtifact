@@ -42,6 +42,7 @@ import com.example.saycv.stockartifact.NativeService;
 import com.example.saycv.stockartifact.R;
 import com.example.saycv.stockartifact.events.RadarsEventArgs;
 import com.example.saycv.stockartifact.events.RadarsEventTypes;
+import com.example.saycv.stockartifact.model.Index;
 import com.example.saycv.stockartifact.model.RadarsHistoryEvent;
 import com.example.saycv.stockartifact.service.IRadarsService;
 import com.example.saycv.stockartifact.service.fetcher.IndexesUpdateTask;
@@ -55,6 +56,8 @@ import org.saycv.sgs.events.SgsEventArgs;
 import org.saycv.sgs.model.SgsHistoryEvent;
 import org.saycv.sgs.utils.SgsDateTimeUtils;
 import org.saycv.sgs.utils.SgsStringUtils;
+
+import java.util.List;
 
 
 public class ScreenRadar extends SgsFragmentActivity {
@@ -129,30 +132,31 @@ public class ScreenRadar extends SgsFragmentActivity {
                     RadarsHistoryEvent event;
                     switch ((type = args.getEventType())) {
                         case RADARS_EVENT_1:
-                            event = new RadarsHistoryEvent();
+                            //event = new RadarsHistoryEvent();
+
+                            ((RadarsService) mEngine.getRadarsService()).getIndexesUpdateTask().updateIndexes(args.getIndexesData());
+                            break;
+                        case RADARS_EVENT_2:
+                            //event = new RadarsHistoryEvent();
                             /*event.setContent(new String("Start Tethering -- TotalUpload: " +
                                     Long.toString(args.getTotalUpload()) + ", TotalDownload: " + Long.toString(args.getTotalDownload())));
                             */
                             //Log.d(TAG, "Traffic Count getTotalUpload = " + args.getTotalUpload());
                             //Log.d(TAG, "Traffic Count getTotalDownload = " + args.getTotalDownload());
                             //event.setRadarsData(args.getRadarsData());
-                            event.setStartTime(SgsDateTimeUtils.parseDate(dateString).getTime());
+                            //event.setStartTime(SgsDateTimeUtils.parseDate(dateString).getTime());
                             /*if (mEngine.getHistoryService().getEvents().size() != 0 && mEngine.getHistoryService().getEvents().get(0).compareTo(event) == 0) {
                                 Log.d(TAG, "Found Redundant Traffic Count Event, will avoid this");
                                 break;
                             }*/
                             //mEngine.getHistoryService().addEvent(event);
-                            int results;
-                            results = args.getRadarsNumber();
+                            //int results;
+                            //results = args.getRadarsNumber();
 
                             //results = intent.getParcelableArrayListExtra(RadarsEventArgs.EXTRA_DATA);
-                            ((RadarsService) mEngine.getRadarsService()).getRadarsDataTask().updateRadars(results);
+                            ((RadarsService) mEngine.getRadarsService()).getRadarUpdateTask().updateRadars(args.getRadarsData());
                             break;
-                        case RADARS_EVENT_2:
-                            event = new RadarsHistoryEvent();
-                            results = args.getRadarsNumber();
-                            ((RadarsService) mEngine.getRadarsService()).getRadarsDataTask().updateRadars(results);
-                            break;
+
                         default:
                             Log.d(TAG, "Invalid event args.getEventType().");
                             break;
@@ -172,7 +176,8 @@ public class ScreenRadar extends SgsFragmentActivity {
             unregisterReceiver(mBroadCastRecv);
             //SgsApplication.releaseWakeLock();
         }
-        ((RadarsService)(mEngine.getRadarsService())).getRadarsDataTask().setRadarsUpdateThreadClassEnabled(false);
+        ((RadarsService)(mEngine.getRadarsService())).getRadarUpdateTask().setRadarsUpdateThreadClassEnabled(false);
+        ((RadarsService)(mEngine.getRadarsService())).getIndexesUpdateTask().setIndexesUpdateThreadClassEnabled(false);
         super.onDestroy();
     }
 
@@ -196,7 +201,8 @@ public class ScreenRadar extends SgsFragmentActivity {
 
                 }
                 engine.getRadarsService().start();
-                ((RadarsService)(engine.getRadarsService())).getRadarsDataTask().setRadarsUpdateThreadClassEnabled(true);
+                ((RadarsService)(engine.getRadarsService())).getRadarUpdateTask().setRadarsUpdateThreadClassEnabled(true);
+                ((RadarsService)(engine.getRadarsService())).getIndexesUpdateTask().setIndexesUpdateThreadClassEnabled(true);
             }
         });
         thread.setPriority(Thread.MAX_PRIORITY);
@@ -259,10 +265,12 @@ public class ScreenRadar extends SgsFragmentActivity {
             Log.i(TAG, "start radar activity");
             IndexesUpdateTask indexesUpdateTask = new IndexesUpdateTask((Activity)view.getContext());
             indexesUpdateTask.execute();
+            ((RadarsService) ((Engine)Engine.getInstance()).getRadarsService()).setIndexesUpdateTask(indexesUpdateTask);
+            indexesUpdateTask.setIndexesUpdateThreadClassEnabled(true);
 
             RadarUpdateTask radarUpdateTask = new RadarUpdateTask((Activity)view.getContext());
             radarUpdateTask.execute();
-            ((RadarsService) ((Engine)Engine.getInstance()).getRadarsService()).setDefaultTask(radarUpdateTask);
+            ((RadarsService) ((Engine)Engine.getInstance()).getRadarsService()).setRadarUpdateTask(radarUpdateTask);
             radarUpdateTask.setRadarsUpdateThreadClassEnabled(true);
         }
     }

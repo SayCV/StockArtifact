@@ -1,9 +1,10 @@
 package com.example.saycv.stockartifact.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-public class Index {
+public class Index implements Serializable {
     private String name;
     private String code;
     private String time;

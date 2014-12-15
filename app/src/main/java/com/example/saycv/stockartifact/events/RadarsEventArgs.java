@@ -21,6 +21,7 @@ package com.example.saycv.stockartifact.events;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.saycv.stockartifact.model.Index;
 import com.example.saycv.stockartifact.model.Radar;
 
 import org.saycv.sgs.events.SgsEventArgs;
@@ -36,8 +37,8 @@ public class RadarsEventArgs extends SgsEventArgs {
 
     private RadarsEventTypes mEventType;
     // TransactionTooLargeException
-    // private List<Radar> mRadarsData;
-    private int mRadarsNumber;
+    private List<Index> mIndexesData;
+    private  List<Radar>  mRadarsData;
 
     public static final String EXTRA_EMBEDDED = SgsEventArgs.EXTRA_EMBEDDED;
 
@@ -57,11 +58,11 @@ public class RadarsEventArgs extends SgsEventArgs {
         mEventType = type;
     }
 
-    public RadarsEventArgs(RadarsEventTypes type, int radarsNumber) {
+    public RadarsEventArgs(RadarsEventTypes type, List<Index> indexesData, List<Radar> radarsData) {
         super();
         mEventType = type;
-        //mRadarsData = radarsData;
-        mRadarsNumber = radarsNumber;
+        mIndexesData = indexesData;
+        mRadarsData = radarsData;
     }
 
     public RadarsEventArgs(Parcel in) {
@@ -80,21 +81,25 @@ public class RadarsEventArgs extends SgsEventArgs {
         return mEventType;
     }
 
-   public int getRadarsNumber() {
-        return mRadarsNumber;
+   public List<Radar> getRadarsData() {
+        return mRadarsData;
    }
+
+    public List<Index> getIndexesData() {
+        return mIndexesData;
+    }
 
     @Override
     protected void readFromParcel(Parcel in) {
         mEventType = Enum.valueOf(RadarsEventTypes.class, in.readString());
-        //mRadarsData = in.readArrayList(Radar.class.getClassLoader());
-        mRadarsNumber = in.readInt();
+        mIndexesData = in.readArrayList(Index.class.getClassLoader());
+        mRadarsData = in.readArrayList(Radar.class.getClassLoader());
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mEventType.toString());
-        //dest.writeList( mRadarsData);
-        dest.writeInt(mRadarsNumber);
+        dest.writeList( mIndexesData);
+        dest.writeList(mRadarsData);
     }
 }

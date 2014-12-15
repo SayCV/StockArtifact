@@ -134,8 +134,6 @@ public class QQRadarFetcher extends BaseRadarFetcher {
     private List<Radar> getChinaRadarFromJson(String content) throws JSONException {
         List<Radar> radars = new ArrayList<Radar>();
 
-        ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().clear();
-
         String radarData = null;
         int start = content.indexOf('{');
         while (start > 0) {

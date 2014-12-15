@@ -47,6 +47,22 @@ public class SgsHistoryList {
         mEvents.add(0, e);
     }
 
+    /*for (T object : mList) {
+        if (object instanceof Observable) {
+            ((Observable) object).deleteObserver(this);
+        }
+    }
+    mList.clear();
+    super.setChangedAndNotifyObservers(null);
+    super.setChangedAndNotifyObservers(data);*/
+    public void updateEvent(SgsHistoryEvent e) {
+        if (mEvents != null) {
+            mEvents.update(mEvents, e);
+        } else {
+            addEvent(e);
+        }
+    }
+
     public void removeEvent(SgsHistoryEvent e) {
         if (mEvents != null) {
             mEvents.remove(e);

@@ -12,9 +12,11 @@ import java.util.List;
 @Root
 public class RadarsHistoryEvent extends SgsHistoryEvent {
     @Element(data=true, required=false)
-    protected String mContent;
+    protected List<Radar> mRadarsContent;
+    @Element(data=true, required=false)
+    protected List<Index> mIndexesContent;
 
-    protected List<Radar> mRadarsData;
+    //protected List<Radar> mRadarsData;
 
     public RadarsHistoryEvent(){
         super(SgsMediaType.Radars, null);
@@ -25,28 +27,39 @@ public class RadarsHistoryEvent extends SgsHistoryEvent {
         super.setDisplayName(displayName);
     }
 
-    public void setContent(String content){
+    /*public void setContent(String content){
         this.mContent = content;
+    }*/
+
+    public List<Radar> getRadarContent(){
+        return this.mRadarsContent;
+    }
+    public List<Index> getIndexesContent(){
+        return this.mIndexesContent;
     }
 
-    public String getContent(){
-        return this.mContent;
-    }
+    public void setRadarContent(List<Radar> content){
+        this.mRadarsContent = content;
 
-    public void setContent(List<Radar> content){
-        this.mContent = new String();
-        this.mRadarsData = content;
-
-        if ( content!=null ) {
+        /*if ( content!=null ) {
             for (Radar i : content) {
-                this.mContent += i.toString();
+                this.mRadarsContent += i.toString();
             }
-        }
+        }*/
     }
 
-    public List<Radar> getRadars(){
-        return this.mRadarsData;
+    public void setIndexesContent(List<Index> content){
+        this.mIndexesContent = content;
+        /*if ( content!=null ) {
+            for (Index i : content) {
+                this.mIndexesContent += i.toString();
+            }
+        }*/
     }
+
+    /*public List<Radar> getRadars(){
+        return this.mRadarsData;
+    }*/
 
     /**
      * RadarsHistoryEventFilter

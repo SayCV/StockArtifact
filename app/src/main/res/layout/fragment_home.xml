@@ -3,10 +3,11 @@
     android:layout_height="fill_parent"
     android:background="#ff000000">
 
-    <TitleBar
+    <TextView
         android:id="@+id/home_main_head"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
 
     <ScrollView
         android:id="@+id/home_scrollview"
@@ -36,13 +37,14 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
 
-                <com.eastmoney.android.ui.PointTips
+                <TextView
                     android:id="@+id/bannerAd_pointTips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:padding="5.0dip" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -61,7 +63,7 @@
                     android:layout_marginBottom="5.0dip"
                     android:layout_marginTop="5.0dip">
 
-                    <com.eastmoney.android.ui.PointTips
+                    <TextView
                         android:id="@+id/index_pointTips"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

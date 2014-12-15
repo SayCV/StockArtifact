@@ -86,6 +86,11 @@ public class NativeService extends SgsNativeService {
                     RadarsHistoryEvent event;
                     switch ((type = args.getEventType())) {
                         case RADARS_EVENT_1:
+                            //event = new RadarsHistoryEvent();
+                            //results = args.getRadarsNumber();
+                            //((RadarsService) mEngine.getRadarsService()).getRadarsDataTask().updateRadars(results);
+                            break;
+                        case RADARS_EVENT_2:
                             event = new RadarsHistoryEvent();
                             /*event.setContent(new String("Start Tethering -- TotalUpload: " +
                                     Long.toString(args.getTotalUpload()) + ", TotalDownload: " + Long.toString(args.getTotalDownload())));
@@ -99,17 +104,13 @@ public class NativeService extends SgsNativeService {
                                 break;
                             }*/
                             //mEngine.getHistoryService().addEvent(event);
-                            int results;
-                            results = args.getRadarsNumber();
+                            //int results;
+                            //results = args.getRadarsNumber();
 
                             //results = intent.getParcelableArrayListExtra(RadarsEventArgs.EXTRA_DATA);
-                            ((RadarsService) mEngine.getRadarsService()).getRadarsDataTask().updateRadars(results);
+                            //((RadarsService) mEngine.getRadarsService()).getRadarsDataTask().updateRadars(results);
                             break;
-                        case RADARS_EVENT_2:
-                            event = new RadarsHistoryEvent();
-                            results = args.getRadarsNumber();
-                            ((RadarsService) mEngine.getRadarsService()).getRadarsDataTask().updateRadars(results);
-                            break;
+
                         default:
                             Log.d(TAG, "Invalid event args.getEventType().");
                             break;
