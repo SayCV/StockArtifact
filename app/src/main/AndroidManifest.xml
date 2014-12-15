@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="88"
-    android:versionName="rcv1.1-9-g5b33bcf"
+    android:versionCode="92"
+    android:versionName="rcv1.1-11-g2de452c"
     package="com.example.saycv.stockartifact">
 
     <application
@@ -28,7 +28,7 @@
         <activity android:name=".SettingsActivity"></activity>
         <activity
             android:name=".screens.ScreenRadar"
-            android:label="About"
+            android:label="Radar"
             android:parentActivityName="MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
