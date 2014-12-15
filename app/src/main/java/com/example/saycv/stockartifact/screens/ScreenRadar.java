@@ -43,6 +43,7 @@ import com.example.saycv.stockartifact.R;
 import com.example.saycv.stockartifact.events.RadarsEventArgs;
 import com.example.saycv.stockartifact.events.RadarsEventTypes;
 import com.example.saycv.stockartifact.model.Index;
+import com.example.saycv.stockartifact.model.Radar;
 import com.example.saycv.stockartifact.model.RadarsHistoryEvent;
 import com.example.saycv.stockartifact.service.IRadarsService;
 import com.example.saycv.stockartifact.service.fetcher.IndexesUpdateTask;
@@ -113,14 +114,14 @@ public class ScreenRadar extends SgsFragmentActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 final String action = intent.getAction();
-                Log.d(TAG, "BroadcastReceiver: " + action.toString());
+                //Log.d(TAG, "BroadcastReceiver: " + action.toString());
 
                 if (RadarsEventArgs.ACTION_RADARS_EVENT.equals(action)) {
-                    org.saycv.logger.Log.d(TAG, "RadarsEventArgs.ACTION_RADARS_EVENT.");
+
                     RadarsEventArgs args = intent.getParcelableExtra(SgsEventArgs.EXTRA_EMBEDDED);
                     final RadarsEventTypes type;
                     if (args == null) {
-                        org.saycv.logger.Log.e(TAG, "Invalid event args");
+                        Log.e(TAG, "Invalid event args");
                         return;
                     }
                     String dateString = intent.getStringExtra(RadarsEventArgs.EXTRA_DATE);
@@ -130,33 +131,23 @@ public class ScreenRadar extends SgsFragmentActivity {
                     }
                     remoteParty = "RadarsEvent";//SgsUriUtils.getUserName(remoteParty);
                     RadarsHistoryEvent event;
+                    Log.d(TAG, "BroadcastReceiver: " + args.getEventType());
                     switch ((type = args.getEventType())) {
                         case RADARS_EVENT_1:
                             //event = new RadarsHistoryEvent();
 
                             ((RadarsService) mEngine.getRadarsService()).getIndexesUpdateTask().updateIndexes(args.getIndexesData());
                             break;
-                        case RADARS_EVENT_2:
-                            //event = new RadarsHistoryEvent();
-                            /*event.setContent(new String("Start Tethering -- TotalUpload: " +
-                                    Long.toString(args.getTotalUpload()) + ", TotalDownload: " + Long.toString(args.getTotalDownload())));
-                            */
-                            //Log.d(TAG, "Traffic Count getTotalUpload = " + args.getTotalUpload());
-                            //Log.d(TAG, "Traffic Count getTotalDownload = " + args.getTotalDownload());
-                            //event.setRadarsData(args.getRadarsData());
-                            //event.setStartTime(SgsDateTimeUtils.parseDate(dateString).getTime());
-                            /*if (mEngine.getHistoryService().getEvents().size() != 0 && mEngine.getHistoryService().getEvents().get(0).compareTo(event) == 0) {
-                                Log.d(TAG, "Found Redundant Traffic Count Event, will avoid this");
-                                break;
-                            }*/
-                            //mEngine.getHistoryService().addEvent(event);
-                            //int results;
-                            //results = args.getRadarsNumber();
-
-                            //results = intent.getParcelableArrayListExtra(RadarsEventArgs.EXTRA_DATA);
-                            ((RadarsService) mEngine.getRadarsService()).getRadarUpdateTask().updateRadars(args.getRadarsData());
+                        case RADARS_EVENT_2: /* Transaction start */
+                            ((RadarsService) mEngine.getRadarsService()).getRadarUpdateTask().clearRadarData();
                             break;
-
+                        case RADARS_EVENT_3: /* Transaction doing */
+                            ((RadarsService) mEngine.getRadarsService()).getRadarUpdateTask().addRadarData(args.getRadarsData());
+                            break;
+                        case RADARS_EVENT_4: /* Transaction finish */
+                            List<Radar> results = ((RadarsService) mEngine.getRadarsService()).getRadarUpdateTask().getRadarData();
+                            ((RadarsService) mEngine.getRadarsService()).getRadarUpdateTask().updateRadars(results);
+                            break;
                         default:
                             Log.d(TAG, "Invalid event args.getEventType().");
                             break;
@@ -201,8 +192,8 @@ public class ScreenRadar extends SgsFragmentActivity {
 
                 }
                 engine.getRadarsService().start();
-                ((RadarsService)(engine.getRadarsService())).getRadarUpdateTask().setRadarsUpdateThreadClassEnabled(true);
                 ((RadarsService)(engine.getRadarsService())).getIndexesUpdateTask().setIndexesUpdateThreadClassEnabled(true);
+                ((RadarsService)(engine.getRadarsService())).getRadarUpdateTask().setRadarsUpdateThreadClassEnabled(true);
             }
         });
         thread.setPriority(Thread.MAX_PRIORITY);
@@ -266,12 +257,12 @@ public class ScreenRadar extends SgsFragmentActivity {
             IndexesUpdateTask indexesUpdateTask = new IndexesUpdateTask((Activity)view.getContext());
             indexesUpdateTask.execute();
             ((RadarsService) ((Engine)Engine.getInstance()).getRadarsService()).setIndexesUpdateTask(indexesUpdateTask);
-            indexesUpdateTask.setIndexesUpdateThreadClassEnabled(true);
+            //indexesUpdateTask.setIndexesUpdateThreadClassEnabled(true);
 
             RadarUpdateTask radarUpdateTask = new RadarUpdateTask((Activity)view.getContext());
             radarUpdateTask.execute();
             ((RadarsService) ((Engine)Engine.getInstance()).getRadarsService()).setRadarUpdateTask(radarUpdateTask);
-            radarUpdateTask.setRadarsUpdateThreadClassEnabled(true);
+            //radarUpdateTask.setRadarsUpdateThreadClassEnabled(true);
         }
     }
 }

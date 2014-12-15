@@ -31,7 +31,7 @@ public class IndexAdapter extends ArrayAdapter<Index> {
             v = (View) vi.inflate(R.layout.compositeindex_item, null);
         }
 
-        Log.d(TAG, "prepare view for indexes");
+        //Log.d(TAG, "prepare view for indexes");
         // prepare views
         TextView name = (TextView) v.findViewById(R.id.name);
         TextView code = (TextView) v.findViewById(R.id.code);

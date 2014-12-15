@@ -25,6 +25,7 @@ import org.simpleframework.xml.Root;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Observable;
 
 @Root(name = "events")
 public class SgsHistoryList {
@@ -55,11 +56,9 @@ public class SgsHistoryList {
     mList.clear();
     super.setChangedAndNotifyObservers(null);
     super.setChangedAndNotifyObservers(data);*/
-    public void updateEvent(SgsHistoryEvent e) {
+    public void updateEvent(Observable observable, SgsHistoryEvent e) {
         if (mEvents != null) {
-            mEvents.update(mEvents, e);
-        } else {
-            addEvent(e);
+            mEvents.update(observable, e);
         }
     }
 

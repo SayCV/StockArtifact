@@ -36,6 +36,22 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
         this.activity = activity;
     }
 
+    public void clearRadarData() {
+        if (this.results != null) {
+            this.results.clear();
+        } else {
+            this.results = new ArrayList<Radar>();
+        }
+    }
+
+    public void addRadarData(List<Radar> results) {
+        this.results.addAll(results);
+    }
+
+    public List<Radar> getRadarData() {
+        return results;
+    }
+
     @Override
     protected Boolean doInBackground(Void... ignored) {
         Log.i(TAG, "running Radar update in background");
@@ -152,10 +168,10 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
 
                 Log.i(TAG, "start fetcher");
 
-                    ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().deleteEvent(event);
+                    ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().clear();
 
                 RadarFetcher fetcher = RadarFetcherFactory.getRadarFetcher(activity);
-                results = fetcher.fetch();
+                List<Radar> results = fetcher.fetch();
 
                 if(results!=null && results.size() > 0) {
                     //HistoryRadarsEvent event;
@@ -174,16 +190,48 @@ public class RadarUpdateTask extends AsyncTask<Void, Integer, Boolean> {
                     //((RadarsHistoryEvent)event).setRadarsData(results);
                     event.setStartTime(Long.parseLong(SgsDateTimeUtils.now("yyyyMMddHHmmss")));
                     event.setRadarContent(results);
+                    event.setIndexesContent(null);
 
-                        ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().addEvent(event);
-
-                    //Only the original thread that created a view hierarchy can touch its views
-                    //updateRadars(results);
-
+                    //((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().addEvent(event);
+                    /* sendBroadcast when start */
                     ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).broadcastRadarsEvent(
-                            new RadarsEventArgs(RadarsEventTypes.RADARS_EVENT_2, null, results),
+                            new RadarsEventArgs(RadarsEventTypes.RADARS_EVENT_2, null,
+                                    null),
                             SgsDateTimeUtils.now()
                     );
+                    //Only the original thread that created a view hierarchy can touch its views
+                    //updateRadars(results);
+                    int avoidTransactionTooLargeExceptionSize = 1000;
+                    int oldWantTransactionSize = results.size();
+                    int transactionCounts = 1;
+                    int transactionStart = 0;
+                    int transactionEnd = 0;
+                    int transactionDone = 0;
+                    while(transactionDone==0) {
+                        if (transactionCounts * avoidTransactionTooLargeExceptionSize < oldWantTransactionSize) {
+                            transactionEnd = transactionStart + avoidTransactionTooLargeExceptionSize;
+                        } else {
+                            transactionEnd = oldWantTransactionSize;
+                            transactionDone = 1;
+                        }
+                        transactionStart = (transactionCounts - 1) * avoidTransactionTooLargeExceptionSize;
+                        ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).broadcastRadarsEvent(
+                                new RadarsEventArgs(RadarsEventTypes.RADARS_EVENT_3, null,
+                                        results.subList(transactionStart, transactionEnd)),
+                                SgsDateTimeUtils.now()
+                        );
+                        transactionCounts++;
+                    }
+                    /* sendBroadcast when finished */
+                    ((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).broadcastRadarsEvent(
+                            new RadarsEventArgs(RadarsEventTypes.RADARS_EVENT_4, null,
+                                    null),
+                            SgsDateTimeUtils.now()
+                    );
+                    /*((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).broadcastRadarsEvent(
+                            new RadarsEventArgs(RadarsEventTypes.RADARS_EVENT_2, null, results),
+                            SgsDateTimeUtils.now()
+                    );*/
                 }
                 //activity.
 

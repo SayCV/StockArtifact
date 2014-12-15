@@ -33,7 +33,7 @@ public class RadarAdapter extends ArrayAdapter<Radar> {
             }
         }
 
-        Log.d(TAG, "prepare view for Radar");
+        //Log.d(TAG, "prepare view for Radar");
         // prepare views
         TextView time = (TextView) v.findViewById(R.id.time);
         TextView code = (TextView) v.findViewById(R.id.code);

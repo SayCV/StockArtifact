@@ -162,6 +162,7 @@ public class IndexesUpdateTask extends AsyncTask<Void, Integer, Boolean> {
                     //((RadarsHistoryEvent)event).setRadarsData(results);
                     event.setStartTime(Long.parseLong(SgsDateTimeUtils.now("yyyyMMddHHmmss")));
                     event.setIndexesContent(results);
+                    event.setRadarContent(null);
 
 
                      //((RadarsService) ((Engine) Engine.getInstance()).getRadarsService()).getHistoryService().addEvent(event);
@@ -178,7 +179,7 @@ public class IndexesUpdateTask extends AsyncTask<Void, Integer, Boolean> {
 
                 // Taking a nap - 1s
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }

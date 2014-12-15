@@ -104,7 +104,7 @@ public class RadarsHistoryService extends SgsBaseService implements ISgsHistoryS
 	public void updateEvent(SgsHistoryEvent event) {
 		Log.e(TAG, "Not impleented");
 		//throw new Exception("Not implemented");
-        mEventsList.updateEvent(event);
+        mEventsList.updateEvent(getObservableEvents(), event);
         new Thread(new Runnable(){
             @Override
             public void run() {
