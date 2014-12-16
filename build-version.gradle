@@ -76,7 +76,7 @@ gradle.allprojects {
             def majorVersion = Integer.parseInt(matcherVersionNumber.group(1))
             def minorVersion = Integer.parseInt(matcherVersionNumber.group(2))
             def pointVersion = Integer.parseInt(matcherVersionNumber.group(3))
-            def mVersionName = majorVersion + "." + minorVersion + "." + pointVersion
+            def mVersionName = "v" + majorVersion + "." + minorVersion + "." + pointVersion
             /*def mNextVersionName = majorVersion + "." + minorVersion + "." + (pointVersion + 1)
             def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
             println(":incrementVersionName - current versionName=" + mVersionName);
@@ -100,7 +100,7 @@ gradle.allprojects {
             def majorVersion = Integer.parseInt(matcherVersionNumber.group(1))
             def minorVersion = Integer.parseInt(matcherVersionNumber.group(2))
             def pointVersion = Integer.parseInt(matcherVersionNumber.group(3))
-            def mVersionName = majorVersion + "." + minorVersion + "." + pointVersion
+            def mVersionName = "v" + majorVersion + "." + minorVersion + "." + pointVersion
             /*def mNextVersionName = majorVersion + "." + minorVersion + "." + (pointVersion + 1)
             def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
             println(":incrementVersionName - current versionName=" + mVersionName);
@@ -167,7 +167,7 @@ task incrementVersionName << {
         def minorVersion = Integer.parseInt(matcherVersionNumber.group(2))
         def pointVersion = Integer.parseInt(matcherVersionNumber.group(3))
         def mVersionName = majorVersion + "." + minorVersion + "." + pointVersion
-        def mNextVersionName = majorVersion + "." + minorVersion + "." + (pointVersion + 1)
+        def mNextVersionName = "v" + majorVersion + "." + minorVersion + "." + (pointVersion + 1)
         def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
         println(":incrementVersionName - current versionName=" + mVersionName);
         println(":incrementVersionName - new versionName=" + mNextVersionName);
