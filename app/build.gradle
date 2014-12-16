@@ -10,13 +10,19 @@ android {
         applicationId "com.example.saycv.stockartifact"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode getDevVersionCode()
-        versionName getDevVersionName()
+        versionCode 1//getDevVersionCode()
+        versionName "2"//getDevVersionName()
     }
+
+    signingConfigs {
+        release
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //signingConfig signingConfigs.release
         }
     }
 }
@@ -32,3 +38,4 @@ dependencies {
     compile files('libs/universal-image-loader-1.9.0.jar')
     compile 'com.android.support:support-v4:21.0.+'
 }
+

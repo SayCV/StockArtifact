@@ -1,136 +1,180 @@
 import java.util.regex.Pattern
 
 gradle.allprojects {
-    ext.getDevVersionCodeFromFileAndIncrement = {
-        println "Hello getVersionCodeFromFileAndIncrement"
-        def manifestFile = file("src/main/AndroidManifest.xml")
-        def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
-        def manifestText = manifestFile.getText()
-        def matcher = pattern.matcher(manifestText)
-        matcher.find()
-        def version = ++Integer.parseInt(matcher.group(1))
-        println sprintf("Returning version %d", version)
-        return "$version"
-    }
-
-    ext.getDevVersionCode = {
-        println "Hello getVersionCode"
-        def manifestFile = file("src/main/AndroidManifest.xml")
-        def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
-        def manifestText = manifestFile.getText()
-        def matcher = pattern.matcher(manifestText)
-        matcher.find()
-        def version = ++Integer.parseInt(matcher.group(1))
-        println sprintf("Returning version %d", version)
-        return version
-    }
+    ext.initVersionCode = 1
+    ext.initVersionName = "0.0.1"
 
     // Methods to determine detailed version string
-    ext.gitDescribe = {
+    ext.getGitDescribe = {
         try {
             def git = 'git describe --abbrev=7 --tags'
-
             def proc = git.execute()
             proc.waitFor()
             def desc = "${proc.in.text}".trim()
-
             if (desc.isEmpty()) {
+                println(":getGitDescribe - git describe --tags unavailable...")
                 git = 'git branch'
                 proc = git.execute()
                 proc.waitFor()
                 desc = "${proc.in.text}".replace('*', ' ')
                 desc = "${desc}".trim()
                 if (desc.isEmpty()) {
-                    println "ERROR gitDescribe()"
+                    println(":getGitDescribe - try git branch unavailable...")
                     return "unknown"
                 }
             }
             return desc
         } catch (e) {
+            println(":getGitDescribe - ", e.getMessage())
             return "unknown"
         }
     }
 
-    ext.getDevVersionName = {
+    ext.getGitVersionName = {
         try {
-            // determine git-describe output
-            def version = gitDescribe()
-
-            // add on jenkins or travis build information
-            def jenkins_build = System.getenv("BUILD_NUMBER")
-            def travis_build = System.getenv("TRAVIS_BUILD_NUMBER")
-            if (jenkins_build != null) {
-                version += "-b" + jenkins_build
-            } else if (travis_build != null) {
-                version += "-trv" + travis_build
+            def version = getGitDescribe()
+            def user_build = System.getenv("BUILD_NUMBER")
+            if (user_build != null) {
+                version += "-release " + user_build
             } else {
                 version += "-dev"
             }
-            //println sprintf("Returning versionName %s", version)
             return version
         } catch (e) {
-            //println sprintf("getDevVersionName() %s", e.getMessage())
             return "unknown-version"
         }
     }
-}
 
-task('increaseVersionCode') << {
-    def manifestFile = file("src/main/AndroidManifest.xml")
-    def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
-    def manifestText = manifestFile.getText()
-    def matcher = pattern.matcher(manifestText)
-    matcher.find()
-    def versionCode = Integer.parseInt(matcher.group(1))
-    android.defaultConfig.versionCode = versionCode + 1
-    println "Setting version code to ${android.defaultConfig.versionCode}"
-    def manifestContent = matcher.replaceAll("versionCode=\"" + android.defaultConfig.versionCode + "\"")
-    manifestFile.write(manifestContent)
-}
-
-task('setVersionName') << {
-
-    def git = 'git describe --abbrev=7 --tags'
-
-    def proc = git.execute()
-    proc.waitFor()
-    def desc = "${proc.in.text}".trim()
-
-    if (desc.isEmpty()) {
-        git = 'git branch'
-        proc = git.execute()
-        proc.waitFor()
-        desc = "${proc.in.text}".replace('*', ' ')
-        desc = "${desc}".trim()
-        if (desc.isEmpty()) {
-            println "ERROR setting version name"
-            return
+    ext.getDevVersionCode = {
+        println(":getDevVersionCode - Get Version Code...")
+        def manifestFile = file("src/main/AndroidManifest.xml")
+        def patternVersionCode = Pattern.compile("versionCode=\"(\\d+)\"")
+        def manifestText = manifestFile.getText()
+        def matcherVersionCode = patternVersionCode.matcher(manifestText)
+        if (matcherVersionCode.find()) {
+            def mVersionCode = Integer.parseInt(matcherVersionCode.group(1))
+            /*def mNextVersionCode = mVersionCode + 1
+            def manifestContent = matcherVersionCode.replaceAll("versionCode=\"" + mNextVersionCode + "\"")
+            println(":incrementVersionCode - current versionCode=" + mVersionCode);
+            println(":incrementVersionCode - next versionCode=" + mNextVersionCode);
+            manifestFile.write(manifestContent)*/
+            println(":getDevVersionCode - " + mVersionCode);
+            return mVersionCode
+        } else {
+            println(":getDevVersionCode - " + initVersionCode);
+            return initVersionCode
         }
     }
 
-    def manifestFile = file("src/main/AndroidManifest.xml")
-    def pattern = Pattern.compile("versionName=\"(.*)\"")
-    def manifestText = manifestFile.getText()
-    def matcher = pattern.matcher(manifestText)
-    matcher.find()
-    println "Setting version name to ${desc}"
-    def manifestContent = matcher.replaceAll("versionName=\"" + desc + "\"")
-    manifestFile.write(manifestContent)
+    ext.getDevVersionName = {
+        println(":getDevVersionName - Get Version Name...")
+        def manifestFile = file("src/main/AndroidManifest.xml")
+        def patternVersionNumber = Pattern.compile("versionName=\"(\\d+)\\.(\\d+)\\.(\\d+)\"")
+        def manifestText = manifestFile.getText()
+        def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
+        if (matcherVersionNumber.find()) {
+            def majorVersion = Integer.parseInt(matcherVersionNumber.group(1))
+            def minorVersion = Integer.parseInt(matcherVersionNumber.group(2))
+            def pointVersion = Integer.parseInt(matcherVersionNumber.group(3))
+            def mVersionName = majorVersion + "." + minorVersion + "." + pointVersion
+            /*def mNextVersionName = majorVersion + "." + minorVersion + "." + (pointVersion + 1)
+            def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
+            println(":incrementVersionName - current versionName=" + mVersionName);
+            println(":incrementVersionName - new versionName=" + mNextVersionName);
+            manifestFile.write(manifestContent)*/
+            println(":getDevVersionName - " + mVersionName);
+            return mVersionName
+        } else {
+            println(":getDevVersionName - " + initVersionName);
+            return initVersionName
+        }
+    }
+
+
 }
 
-task release << {
-    println(":release - Build and Version Increment")
+/**
+ * Takes the existing versionCode in AndroidManifest.xml and increments it for the next release
+ * Example:
+ *   1) Before the build the AndroidManfist.xml has versionCode=7
+ *   2) The AndroidManifest.xml will be modified so that versionCode=8
+ */
+
+task incrementVersionCode << {
+    println(":incrementVersionCode - Incrementing Version Code...")
+    def manifestFile = file("src/main/AndroidManifest.xml")
+    def patternVersionCode = Pattern.compile("versionCode=\"(\\d+)\"")
+    def manifestText = manifestFile.getText()
+    def matcherVersionCode = patternVersionCode.matcher(manifestText)
+    if (matcherVersionCode.find()) {
+        def mVersionCode = Integer.parseInt(matcherVersionCode.group(1))
+        def mNextVersionCode = mVersionCode + 1
+        def manifestContent = matcherVersionCode.replaceAll("versionCode=\"" + mNextVersionCode + "\"")
+        println(":incrementVersionCode - current versionCode=" + mVersionCode);
+        println(":incrementVersionCode - next versionCode=" + mNextVersionCode);
+        manifestFile.write(manifestContent)
+    } else {
+        patternVersionCode = Pattern.compile("package=\".*\"")
+        manifestText = manifestFile.getText()
+        matcherVersionCode = patternVersionCode.matcher(manifestText)
+        matcherVersionCode.find()
+        def mVersionCode = matcherVersionCode.group(0)
+        def manifestContent = matcherVersionCode.replaceAll("android:versionCode=\"" + initVersionCode + "\"" + "\n\t" +
+                mVersionCode)
+        println(":incrementVersionCode - " + initVersionCode);
+        manifestFile.write(manifestContent)
+    }
 }
- 
-task debug << {
-    println(":debug - Build")
+
+/**
+ * Takes the existing versionName in AndroidManifest.xml and increments the point number for the next release
+ * The AndroidManifest.xml file's versionName needs to be in the format [major].[minor].[point]
+ * Example:
+ *   1) Before the build the AndroidManfist.xml has versionName=1.3.6
+ *   2) TheAndroidManifest.xml will be modified so that versionName=1.3.7
+ */
+
+task incrementVersionName << {
+    println(":incrementVersionName - Incrementing Version Name...")
+    def manifestFile = file("src/main/AndroidManifest.xml")
+    def patternVersionNumber = Pattern.compile("versionName=\"(\\d+)\\.(\\d+)\\.(\\d+)\"")
+    def manifestText = manifestFile.getText()
+    def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
+    if (matcherVersionNumber.find()) {
+        def majorVersion = Integer.parseInt(matcherVersionNumber.group(1))
+        def minorVersion = Integer.parseInt(matcherVersionNumber.group(2))
+        def pointVersion = Integer.parseInt(matcherVersionNumber.group(3))
+        def mVersionName = majorVersion + "." + minorVersion + "." + pointVersion
+        def mNextVersionName = majorVersion + "." + minorVersion + "." + (pointVersion + 1)
+        def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
+        println(":incrementVersionName - current versionName=" + mVersionName);
+        println(":incrementVersionName - new versionName=" + mNextVersionName);
+        manifestFile.write(manifestContent)
+    } else {
+        patternVersionNumber = Pattern.compile("package=\".*\"")
+        manifestText = manifestFile.getText()
+        matcherVersionNumber = patternVersionNumber.matcher(manifestText)
+        matcherVersionNumber.find()
+        def mVersionName = matcherVersionNumber.group(0)
+        def gitVersionName = getGitVersionName()
+        if(gitVersionName != "unknown-version") {
+            initVersionName = gitVersionName
+        } else {
+            initVersionName += "-dev"
+        }
+        def manifestContent = matcherVersionNumber.replaceAll("android:versionName=\"" + initVersionName + "\"" + "\n\t" +
+                mVersionName)
+        println(":incrementVersionName - " + initVersionName);
+        manifestFile.write(manifestContent)
+    }
 }
+
+incrementVersionName.mustRunAfter build
+incrementVersionCode.mustRunAfter build
 
 tasks.whenTaskAdded { task ->
-    incrementVersionName.mustRunAfter build
-		incrementVersionCode.mustRunAfter build
-		
-    if (task.name == 'assembleRelease' || task.name == 'assembleDebug') {
+    if (task.name == 'assembleRelease' || task.name == 'generateDebugBuildConfig') {
+        println(":" + task.name + " - Build and Version Increment")
         task.dependsOn 'incrementVersionCode'
         task.dependsOn 'incrementVersionName'
     }

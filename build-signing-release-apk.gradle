@@ -1,0 +1,39 @@
+/**
+ * Setup release signing by reading signing.properties file, which has key/value pairs for:
+ *  KEYSTORE_FILE
+ *  KEYSTORE_PASSWORD
+ *  KEY_ALIAS
+ *  KEY_PASSWORD
+ */
+
+gradle.allprojects {
+    def Properties props = new Properties()
+    def propFile = new File("signing.properties")
+    if (propFile.canRead()) {
+        props.load(new FileInputStream(propFile))
+
+        if (props != null
+                && props.containsKey("KEYSTORE_FILE")
+                && props.containsKey("KEYSTORE_PASSWORD")
+                && props.containsKey("KEY_ALIAS")
+                && props.containsKey("KEY_PASSWORD")) {
+
+            def keystoreFile = new File(props["KEYSTORE_FILE"])
+            if (keystoreFile.canRead()) {
+                android.signingConfigs.release.storeFile = keystoreFile
+                android.signingConfigs.release.storePassword = props["KEYSTORE_PASSWORD"]
+                android.signingConfigs.release.keyAlias = props["KEY_ALIAS"]
+                android.signingConfigs.release.keyPassword = props["KEY_PASSWORD"]
+            } else {
+                println("keystore file not found: " + props["KEYSTORE_FILE"])
+                android.buildTypes.release.signingConfig = null
+            }
+        } else {
+            println("signing.properties found but some entries missing")
+            android.buildTypes.release.signingConfig = null
+        }
+    } else {
+        println("signing.properties not found")
+        android.buildTypes.release.signingConfig = null
+    }
+}

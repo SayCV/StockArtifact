@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="138"
-    android:versionName="rcv1.1-15-gff09945"
-    package="com.example.saycv.stockartifact">
+
+	android:versionCode="1"
+	android:versionName="0.0.1rcv1.1-16-g2396aaf-dev"
+	package="com.example.saycv.stockartifact">
 
     <application
         android:allowBackup="true"
