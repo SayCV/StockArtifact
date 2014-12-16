@@ -1,0 +1,87 @@
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+apply plugin: 'pmd'
+
+///////////////////////////////////////////////////
+// Checkstyle
+
+android.applicationVariants.all { variant ->
+    def name = variant.buildType.name
+    def checkstyle = project.tasks.create "checkstyle${name.capitalize()}", Checkstyle
+    checkstyle.dependsOn variant.javaCompile
+    checkstyle.source variant.javaCompile.source
+    checkstyle.classpath = project.fileTree(variant.javaCompile.destinationDir)
+    checkstyle.exclude('**/BuildConfig.java')
+    checkstyle.exclude('**/R.java')
+    checkstyle.exclude('**/*\$\$*.java') // ButterKnife, etc.
+    checkstyle.description "Run checkstyle on the ${name.capitalize()} build"
+    checkstyle.group 'verification'
+    checkstyle.reports.xml.destination project.file("${project.buildDir}/outputs/reports/checkstyle-${name}-results.xml")
+    project.tasks.getByName("check").dependsOn checkstyle
+}
+
+checkstyle {
+    configFile = file("${project.projectDir}/gradle/config/checkstyle/checkstyle.xml")
+    ignoreFailures = true
+    showViolations = false
+    toolVersion = '5.7'
+}
+
+///////////////////////////////////////////////////
+// FindBugs
+
+task findbugs(type: FindBugs) {
+
+    description 'Run FindBugs'
+    group 'verification'
+
+    classes = files("$project.buildDir/intermediates/classes")
+
+    source 'src'
+    include '**/*.java'
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        html.destination = "$project.buildDir/outputs/reports/findbugs.html"
+    }
+
+    classpath = files()
+}
+
+findbugs {
+    effort = 'max'
+    ignoreFailures = true
+    reportLevel = 'high'
+    toolVersion = '3.0.0'
+}
+
+///////////////////////////////////////////////////
+// PMD
+
+task pmd(type: Pmd) {
+
+    description 'Run pmd'
+    group 'verification'
+
+    source = fileTree('src/')
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+pmd {
+    ignoreFailures = true
+    ruleSets = [
+        'java-android',
+        'java-basic',
+        'java-braces',
+        'java-unnecessary',
+        'java-unusedcode']
+    reportsDir = file("${project.buildDir}/outputs/reports")
+    toolVersion = '5.1.2'
+}
+
+check.dependsOn 'pmd'

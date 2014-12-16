@@ -1,6 +1,23 @@
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.+'
+    }
+}
+
 apply plugin: 'com.android.application'
 apply from :  '$buildDir/../../build-version.gradle'
+apply from :  '$buildDir/../../build-signing-release-apk.gradle'
+//apply from: rootProject.file('gradle/check.gradle')
+
+def isContinuousIntegration = "true".equals(System.getenv("CI"))
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.12'
+}
 
 android {
     compileSdkVersion 21
@@ -10,20 +27,80 @@ android {
         applicationId "com.example.saycv.stockartifact"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 1//getDevVersionCode()
-        versionName "2"//getDevVersionName()
+        versionCode getDevVersionCode()
+        versionName getDevVersionName()
+    }
+
+    dexOptions {
+        // http://stackoverflow.com/questions/21125302/gradle-builds-really-slow-with-a-multi-project-structure
+        preDexLibraries = !isContinuousIntegration
     }
 
     signingConfigs {
         release
     }
 
+    if (project.hasProperty('storeFile') &&
+            project.hasProperty('storePassword') &&
+            project.hasProperty('keyAlias') &&
+            project.hasProperty('keyPassword')) {
+        android.signingConfigs.release.storeFile = file(storeFile)
+        android.signingConfigs.release.storePassword = storePassword
+        android.signingConfigs.release.keyAlias = keyAlias
+        android.signingConfigs.release.keyPassword = keyPassword
+    } else {
+        buildTypes.release.signingConfig = null
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            //signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    if (variant.name == "release") {
+                        output.outputFile = new File(output.outputFile.parent, "sayCV-release-"
+                                + defaultConfig.versionName + ".apk")
+                    }
+                }
+            }
         }
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            resources.srcDirs = ['src/main']
+            aidl.srcDirs = ['src/main']
+            renderscript.srcDirs = ['src/main']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
+        }
+
+        androidTest.setRoot('tests')
+        androidTest {
+            java.srcDirs = ['tests/src']
+            res.srcDirs = ['tests/res']
+            assets.srcDirs = ['tests/assets']
+            resources.srcDirs = ['tests/src']
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        xmlReport false
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 
@@ -39,3 +116,9 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.+'
 }
 
+if (hasProperty('xlint')) {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << '-Xlint:unchecked'
+        options.compilerArgs << '-Xlint:deprecation'
+    }
+}

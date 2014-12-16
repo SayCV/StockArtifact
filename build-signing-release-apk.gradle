@@ -6,9 +6,11 @@
  *  KEY_PASSWORD
  */
 
-gradle.allprojects {
+
+task signingReleaseAPK << {
+    println(":signingReleaseAPK - Start")
     def Properties props = new Properties()
-    def propFile = new File("signing.properties")
+    def propFile = new File("$buildDir/../../signing.properties")
     if (propFile.canRead()) {
         props.load(new FileInputStream(propFile))
 
@@ -35,5 +37,14 @@ gradle.allprojects {
     } else {
         println("signing.properties not found")
         android.buildTypes.release.signingConfig = null
+    }
+}
+
+signingReleaseAPK.mustRunAfter build
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'assembleRelease' || task.name == 'generateDebugBuildConfig') {
+        println(":" + task.name + " - Signing Release APK")
+        task.dependsOn 'signingReleaseAPK'
     }
 }

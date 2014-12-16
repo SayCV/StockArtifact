@@ -172,7 +172,7 @@ public class QQIndexesFetcher extends BaseIndexesFetcher {
         while(matcher.find())
         {
             results= matcher.group() ;
-            Log.e(TAG, results); // 使用Android的Logcat查看运行结果，直接使用e标志红色的为结果。
+            //Log.e(TAG, results); // 使用Android的Logcat查看运行结果，直接使用e标志红色的为结果。
 
         }
         return results.split("~");

@@ -57,7 +57,7 @@ public class IndexAdapter extends ArrayAdapter<Index> {
             name.setText(index.getName());
             code.setText(index.getCode());
             dayCurrent.setText(index.getDayClose());
-						dayVolume.setText(index.getDayVolume());
+            dayVolume.setText(index.getDayVolume());
 						
 						
            /*if (index.getTime() != null) {

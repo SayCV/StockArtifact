@@ -179,7 +179,7 @@ public class IndexesUpdateTask extends AsyncTask<Void, Integer, Boolean> {
 
                 // Taking a nap - 1s
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
