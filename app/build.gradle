@@ -62,13 +62,16 @@ android {
                     if (variant.name == "release") {
                         output.outputFile = new File(output.outputFile.parent, "sayCV-release-"
                                 + defaultConfig.versionName + ".apk")
+                    } else if (variant.name == "debug") {
+                        output.outputFile = new File(output.outputFile.parent, "sayCV-debug-"
+                                + defaultConfig.versionName + ".apk")
                     }
                 }
             }
         }
     }
 
-    sourceSets {
+    /*sourceSets {
         main {
             manifest.srcFile 'src/main/AndroidManifest.xml'
             java.srcDirs = ['src/main/java']
@@ -86,7 +89,7 @@ android {
             assets.srcDirs = ['tests/assets']
             resources.srcDirs = ['tests/src']
         }
-    }
+    }*/
 
     lintOptions {
         abortOnError false
