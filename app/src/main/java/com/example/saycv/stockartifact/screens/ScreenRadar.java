@@ -257,12 +257,12 @@ public class ScreenRadar extends SgsFragmentActivity {
             IndexesUpdateTask indexesUpdateTask = new IndexesUpdateTask((Activity)view.getContext());
             indexesUpdateTask.execute();
             ((RadarsService) ((Engine)Engine.getInstance()).getRadarsService()).setIndexesUpdateTask(indexesUpdateTask);
-            //indexesUpdateTask.setIndexesUpdateThreadClassEnabled(true);
+            indexesUpdateTask.setIndexesUpdateThreadClassEnabled(true);
 
             RadarUpdateTask radarUpdateTask = new RadarUpdateTask((Activity)view.getContext());
             radarUpdateTask.execute();
             ((RadarsService) ((Engine)Engine.getInstance()).getRadarsService()).setRadarUpdateTask(radarUpdateTask);
-            //radarUpdateTask.setRadarsUpdateThreadClassEnabled(true);
+            radarUpdateTask.setRadarsUpdateThreadClassEnabled(true);
         }
     }
 }

@@ -61,8 +61,23 @@
         android:shadowRadius="1"
         android:text="0000.00"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"></TextView>
-
+        android:textSize="12sp"></TextView>
+		<TextView
+        android:id="@+id/dayVolume"
+        android:layout_width="120sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dayCurrent"
+        android:layout_toRightOf="@+id/code"
+        android:lines="1"
+        android:paddingLeft="10sp"
+        android:paddingRight="5sp"
+        android:shadowColor="#88444444"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:text="0000.00"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"></TextView>
     <TextView
         android:id="@+id/dayRange"
         android:layout_width="120sp"
@@ -85,7 +100,7 @@
         android:id="@+id/dayRangePercent"
         android:layout_width="120sp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/dayCurrent"
+        android:layout_alignBottom="@+id/dayVolume"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:gravity="right"

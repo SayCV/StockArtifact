@@ -118,9 +118,20 @@ task('setVersionName') << {
     manifestFile.write(manifestContent)
 }
 
+task release << {
+    println(":release - Build and Version Increment")
+}
+ 
+task debug << {
+    println(":debug - Build")
+}
+
 tasks.whenTaskAdded { task ->
-    if (task.name == 'compileRelease' || task.name == 'generateDebugBuildConfig') {
-        task.dependsOn 'increaseVersionCode'
-        task.dependsOn 'setVersionName'
+    incrementVersionName.mustRunAfter build
+		incrementVersionCode.mustRunAfter build
+		
+    if (task.name == 'assembleRelease' || task.name == 'assembleDebug') {
+        task.dependsOn 'incrementVersionCode'
+        task.dependsOn 'incrementVersionName'
     }
 }

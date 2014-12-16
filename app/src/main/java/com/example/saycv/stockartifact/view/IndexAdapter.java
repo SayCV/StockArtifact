@@ -44,7 +44,7 @@ public class IndexAdapter extends ArrayAdapter<Index> {
         TextView dayLow = (TextView) v.findViewById(R.id.dayLow);
         //TextView dayOpen = (TextView) v.findViewById(R.id.dayOpen);
         TextView dayClose = (TextView) v.findViewById(R.id.dayClose);
-        //TextView dayVolume = (TextView) v.findViewById(R.id.dayVolume);
+        TextView dayVolume = (TextView) v.findViewById(R.id.dayVolume);
         //TextView dayMoney = (TextView) v.findViewById(R.id.dayMoney);
         TextView dayRange = (TextView) v.findViewById(R.id.dayRange);
         TextView dayRangePercent = (TextView) v.findViewById(R.id.dayRangePercent);
@@ -53,11 +53,13 @@ public class IndexAdapter extends ArrayAdapter<Index> {
         // set data
         Index index = getItem(position);
         if (index != null) {
-            //dayVolume.setText("");
+            
             name.setText(index.getName());
             code.setText(index.getCode());
             dayCurrent.setText(index.getDayClose());
-
+						dayVolume.setText(index.getDayVolume());
+						
+						
            /*if (index.getTime() != null) {
                 time.setText(index.getTime());
             } else {
