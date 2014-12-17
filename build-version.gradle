@@ -23,6 +23,7 @@ gradle.allprojects {
                     println(":getGitDescribe - try git branch unavailable...")
                     return "unknown"
                 }
+                desc += "-" + initVersionName
             }
             return desc
         } catch (e) {
@@ -269,8 +270,8 @@ task incrementVersionName << {
     }
 }
 
-incrementVersionName.mustRunAfter build
 incrementVersionCode.mustRunAfter build
+incrementVersionName.mustRunAfter build
 
 tasks.whenTaskAdded { task ->
     if (task.name == 'assembleRelease' || task.name == 'generateDebugBuildConfig') {
