@@ -20,11 +20,11 @@ ext.retPointVersionName = initPointVersionName
 ext.retPlusVersionName = initPlusVersionName
 ext.retVersionName = "v" + retMajorVersionName + "." + retMinorVersionName + "." + retPointVersionName + retPlusVersionName
 
-def saveGitVersionNameToFile() {
-    println(":saveGitVersionNameToFile - Save Version Name to temp file...")
+def setGitVersionNameToFile() {
+    println(":setGitVersionNameToFile - Save Version Name to temp file...")
     def tmpFile = rootProject.file("gitVersion.tmp")
     if(!tmpFile.canRead())
-        tmpFile = File.createTempFile("gitVersion", null/*.tmp*/, rootProject)
+        tmpFile.createNewFile() //File.createTempFile("gitVersion", null/*.tmp*/, rootProject.projectDir)
     def patternVersionNumber = Pattern.compile("versionName=\"(.+)(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
     def tmpText = tmpFile.getText()
     def matcherVersionNumber = patternVersionNumber.matcher(tmpText)
@@ -40,10 +40,39 @@ def saveGitVersionNameToFile() {
         mVersionName = "v" + majorVersionName+"." + minorVersionName + "." + pointVersionName + plusVersionName
         tmpContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
     } else {
+        println(":setGitVersionNameToFile - No match found");
         tmpContent = "versionName=\"" + mNextVersionName + "\""
     }
-    println(":saveGitVersionNameToFile - current versionName=" + mVersionName);
-    println(":saveGitVersionNameToFile - new versionName=" + mNextVersionName);
+    println(":setGitVersionNameToFile - current versionName=" + mVersionName);
+    println(":setGitVersionNameToFile - new versionName=" + mNextVersionName);
+    tmpFile.write(tmpContent)
+}
+
+def getGitVersionNameFromFile() {
+    println(":getGitVersionNameFromFile - Get Version Name from temp file...")
+    def tmpFile = rootProject.file("gitVersion.tmp")
+    if(!tmpFile.canRead())
+        tmpFile.createNewFile() //File.createTempFile("gitVersion", null/*.tmp*/, rootProject.projectDir)
+    def patternVersionNumber = Pattern.compile("versionName=\"(.+)(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
+    def tmpText = tmpFile.getText()
+    def matcherVersionNumber = patternVersionNumber.matcher(tmpText)
+    def mVersionName
+    def mNextVersionName
+    def tmpContent
+    mNextVersionName = "v" + retMajorVersionName + "." + retMinorVersionName + "." + retPointVersionName + retPlusVersionName
+    if (matcherVersionNumber.find()) {
+        def majorVersionName = Integer.parseInt(matcherVersionNumber.group(2))
+        def minorVersionName = Integer.parseInt(matcherVersionNumber.group(3))
+        def pointVersionName = Integer.parseInt(matcherVersionNumber.group(4))
+        def plusVersionName = ( matcherVersionNumber.groupCount() >=5 ) ? matcherVersionNumber.group(5) : ""
+        mVersionName = "v" + majorVersionName+"." + minorVersionName + "." + pointVersionName + plusVersionName
+        tmpContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
+    } else {
+        println(":getGitVersionNameFromFile - No match found");
+        tmpContent = "versionName=\"" + mNextVersionName + "\""
+    }
+    println(":getGitVersionNameFromFile - current versionName=" + mVersionName);
+    println(":getGitVersionNameFromFile - new versionName=" + mNextVersionName);
     tmpFile.write(tmpContent)
 }
 
@@ -251,9 +280,14 @@ task incrementVersionName << {
         setVersionNameToAndroidManifestXml()
     } else {
         println(":incrementVersionName - Used git Version Name...")
-        getVersionNameFromGit()
+        if(getGitVersionNameFromFile()){
+            if(retPointVersionName >= initIncrementStep) retMinorVersionName++
+            if(retMinorVersionName >= initIncrementStep) retMajorVersionName++
+        } else {
+            getVersionNameFromGit()
+        }
         setVersionNameToAndroidManifestXml()
-        saveGitVersionNameToFile()
+        setGitVersionNameToFile()
     }
 }
 
