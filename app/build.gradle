@@ -127,5 +127,7 @@ if (hasProperty('xlint')) {
 }
 
 tasks.withType(JavaCompile) {
-    options.encoding = "utf-8"
+    options.encoding = "GB2312"
+    //options.encoding = "UTF-8"
+    //options.encoding = "GBK"
 }

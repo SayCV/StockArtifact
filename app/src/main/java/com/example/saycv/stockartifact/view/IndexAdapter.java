@@ -1,4 +1,4 @@
-﻿package com.example.saycv.stockartifact.view;
+package com.example.saycv.stockartifact.view;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -14,6 +14,8 @@ import com.example.saycv.stockartifact.R;
 import com.example.saycv.stockartifact.model.Index;
 import com.example.saycv.utils.PriceFormatter;
 import com.example.saycv.utils.Constants;
+
+import java.math.BigDecimal;
 
 public class IndexAdapter extends ArrayAdapter<Index> {
     private static final String TAG = "IndexAdapter";
@@ -54,14 +56,14 @@ public class IndexAdapter extends ArrayAdapter<Index> {
         // set data
         Index index = getItem(position);
         if (index != null) {
-            
+
             name.setText(index.getName());
             code.setText(index.getCode());
             dayCurrent.setText(index.getDayClose());
             BigDecimal vol = new BigDecimal(index.getDayVolume());
-            dayVolume.setText(Double.toString(vol.divide(OneHundredMillion, 2)) + "亿");
-						
-						
+            dayVolume.setText(vol.divide(new BigDecimal(Constants.OneHundredMillion), 2).toString() + "yi");
+
+
            /*if (index.getTime() != null) {
                 time.setText(index.getTime());
             } else {
