@@ -1,4 +1,4 @@
-package com.example.saycv.stockartifact.view;
+ï»¿package com.example.saycv.stockartifact.view;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -59,7 +59,7 @@ public class IndexAdapter extends ArrayAdapter<Index> {
             code.setText(index.getCode());
             dayCurrent.setText(index.getDayClose());
             BigDecimal vol = new BigDecimal(index.getDayVolume());
-            dayVolume.setText(Double.toString(vol.divide(OneHundredMillion, 2)) + "ÒÚ");
+            dayVolume.setText(Double.toString(vol.divide(OneHundredMillion, 2)) + "äº¿");
 						
 						
            /*if (index.getTime() != null) {

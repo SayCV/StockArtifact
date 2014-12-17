@@ -6,7 +6,7 @@ gradle.allprojects {
     ext.useGitVersionSrc = 1
 
     // Methods to determine detailed version string
-    ext.getGitDescribe = {
+    def getGitDescribe() {
         try {
             def git = 'git describe --abbrev=7 --tags'
             def proc = git.execute()
@@ -32,7 +32,7 @@ gradle.allprojects {
         }
     }
 
-    ext.getGitVersionName = {
+    def getGitVersionName() {
         try {
             def version = getGitDescribe()
             def user_build = System.getenv("BUILD_NUMBER")
@@ -47,7 +47,60 @@ gradle.allprojects {
         }
     }
 
-    ext.getDevVersionCode = {
+		def getVersionNameFromAndroidManifestXml() {
+        println(":getVersionNameFromAndroidManifestXml - Get Version Name...")
+        def manifestFile = file("src/main/AndroidManifest.xml")
+        def patternVersionNumber = Pattern.compile("versionName=\"(\\d+)\\.(\\d+)\\.(\\d+)\"")
+        def manifestText = manifestFile.getText()
+        def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
+        if (matcherVersionNumber.find()) {
+            def majorVersion = Integer.parseInt(matcherVersionNumber.group(1))
+            def minorVersion = Integer.parseInt(matcherVersionNumber.group(2))
+            def pointVersion = Integer.parseInt(matcherVersionNumber.group(3))
+            def mVersionName = "v" + majorVersion + "." + minorVersion + "." + pointVersion
+            /*def mNextVersionName = majorVersion + "." + minorVersion + "." + (pointVersion + 1)
+            def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
+            println(":incrementVersionName - current versionName=" + mVersionName);
+            println(":incrementVersionName - new versionName=" + mNextVersionName);
+            manifestFile.write(manifestContent)*/
+            println(":getVersionNameFromAndroidManifestXml - " + mVersionName);
+            return mVersionName
+        } else {
+            println(":getVersionNameFromAndroidManifestXml - " + initVersionName);
+            return initVersionName
+        }
+    }
+    
+    def setVersionNameToAndroidManifestXml(String verName, ) {
+        println(":setVersionNameToAndroidManifestXml - Set Version Name...")
+        def manifestFile = file("src/main/AndroidManifest.xml")
+        def patternVersionNumber = Pattern.compile("versionName=\"(\\d+)\\.(\\d+)\\.(\\d+)\"")
+        def manifestText = manifestFile.getText()
+        def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
+        if (matcherVersionNumber.find()) {
+            def majorVersion = Integer.parseInt(matcherVersionNumber.group(2))
+            def minorVersion = Integer.parseInt(matcherVersionNumber.group(3))
+            def pointVersion = Integer.parseInt(matcherVersionNumber.group(4))
+            def mVersionName = majorVersion + "." + minorVersion + "." + pointVersion
+            def mNextVersionName = verName
+            def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
+            println(":setVersionNameToAndroidManifestXml - current versionName=" + mVersionName);
+            println(":setVersionNameToAndroidManifestXml - new versionName=" + mNextVersionName);
+            manifestFile.write(manifestContent)
+        } else {
+            patternVersionNumber = Pattern.compile("package=\".*\"")
+            manifestText = manifestFile.getText()
+            matcherVersionNumber = patternVersionNumber.matcher(manifestText)
+            matcherVersionNumber.find()
+            def mVersionName = matcherVersionNumber.group(0)
+            def manifestContent = matcherVersionNumber.replaceAll("android:versionName=\"" + verName + "\"" + "\n\t" +
+                    mVersionName)
+            println(":setVersionNameToAndroidManifestXml - Init versionName=" + verName);
+            manifestFile.write(manifestContent)
+        }
+    }
+    
+    ext.getDevVersionCode() = {
         println(":getDevVersionCode - Get Version Code...")
         def manifestFile = file("src/main/AndroidManifest.xml")
         def patternVersionCode = Pattern.compile("versionCode=\"(\\d+)\"")
@@ -68,7 +121,7 @@ gradle.allprojects {
         }
     }
 
-    ext.getDevVersionName = {
+    ext.getDevVersionName() = {
         def retVersionName
         def manifestFile = file("src/main/AndroidManifest.xml")
         def patternVersionNumber = Pattern.compile("versionName=\"(.+)(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
@@ -140,29 +193,7 @@ gradle.allprojects {
         return retVersionName
     }
 
-    ext.getVersionName = {
-        println(":getVersionName - Get Version Name...")
-        def manifestFile = file("src/main/AndroidManifest.xml")
-        def patternVersionNumber = Pattern.compile("versionName=\"(\\d+)\\.(\\d+)\\.(\\d+)\"")
-        def manifestText = manifestFile.getText()
-        def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
-        if (matcherVersionNumber.find()) {
-            def majorVersion = Integer.parseInt(matcherVersionNumber.group(1))
-            def minorVersion = Integer.parseInt(matcherVersionNumber.group(2))
-            def pointVersion = Integer.parseInt(matcherVersionNumber.group(3))
-            def mVersionName = "v" + majorVersion + "." + minorVersion + "." + pointVersion
-            /*def mNextVersionName = majorVersion + "." + minorVersion + "." + (pointVersion + 1)
-            def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
-            println(":incrementVersionName - current versionName=" + mVersionName);
-            println(":incrementVersionName - new versionName=" + mNextVersionName);
-            manifestFile.write(manifestContent)*/
-            println(":getVersionName - " + mVersionName);
-            return mVersionName
-        } else {
-            println(":getVersionName - " + initVersionName);
-            return initVersionName
-        }
-    }
+    
 }
 
 /**

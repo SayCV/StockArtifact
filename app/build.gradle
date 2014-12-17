@@ -125,3 +125,7 @@ if (hasProperty('xlint')) {
         options.compilerArgs << '-Xlint:deprecation'
     }
 }
+
+tasks.withType(JavaCompile) {
+    options.encoding = "utf-8"
+}

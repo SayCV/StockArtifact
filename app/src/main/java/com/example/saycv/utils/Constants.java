@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Copyright (C) 2014, sayCV.
  *
  * Copyright 2014 The sayCV's Project
@@ -25,11 +25,11 @@ public class Constants {
     public static final String DONATE_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=KWFGX7RNJ6LM8&lc=US&item_name=Donate%20SGit&item_number=sgit&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted";
     
     public static final boolean DEBUG = false;
-    public static final long TenThousand = 10 * 1000;//Íò
-		public static final long OneHundredThousand = 10 * TenThousand;//Ê®Íò
-		public static final long OneMillion = 10 * OneHundredThousand;//°ÙÍò
-		public static final long TenMillion = 10 * OneMillion;//Ç§Íò
-    public static final long OneHundredMillion  = 10 * TenMillion;//ÒÚ
-    public static final long OneBillion = 10 * OneHundredMillion;//Ê®ÒÚ
-    public static final long TenBillion = 10 * OneBillion;//°ÙÒÚ
+    public static final long TenThousand = 10 * 1000;//ä¸‡
+		public static final long OneHundredThousand = 10 * TenThousand;//åä¸‡
+		public static final long OneMillion = 10 * OneHundredThousand;//ç™¾ä¸‡
+		public static final long TenMillion = 10 * OneMillion;//åƒä¸‡
+    public static final long OneHundredMillion  = 10 * TenMillion;//äº¿
+    public static final long OneBillion = 10 * OneHundredMillion;//åäº¿
+    public static final long TenBillion = 10 * OneBillion;//ç™¾äº¿
 }
