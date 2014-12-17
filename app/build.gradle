@@ -9,7 +9,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.application'
-apply from :  '$buildDir/../../build-version.gradle'
+apply from :  rootProject.file('build-version.gradle')
 apply from :  '$buildDir/../../build-signing-release-apk.gradle'
 //apply from: rootProject.file('gradle/check.gradle')
 

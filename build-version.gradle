@@ -70,7 +70,7 @@ gradle.allprojects {
     ext.getDevVersionName = {
         def retVersionName
         def manifestFile = file("src/main/AndroidManifest.xml")
-        def patternVersionNumber = Pattern.compile("versionName=\"(.*)(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
+        def patternVersionNumber = Pattern.compile("versionName=\"(.+)(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
         def manifestText = manifestFile.getText()
         def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
         if(useGitVersionSrc!=1) {
@@ -207,7 +207,7 @@ task incrementVersionCode << {
 
 task incrementVersionName << {
     def manifestFile = file("src/main/AndroidManifest.xml")
-    def patternVersionNumber = Pattern.compile("versionName=\"(.*)(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
+    def patternVersionNumber = Pattern.compile("versionName=\"(.+)(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
     def manifestText = manifestFile.getText()
     def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
     if(useGitVersionSrc!=1) {
