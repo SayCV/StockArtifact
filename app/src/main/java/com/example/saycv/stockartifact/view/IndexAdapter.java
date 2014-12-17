@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.saycv.stockartifact.R;
 import com.example.saycv.stockartifact.model.Index;
 import com.example.saycv.utils.PriceFormatter;
+import com.example.saycv.utils.Constants;
 
 public class IndexAdapter extends ArrayAdapter<Index> {
     private static final String TAG = "IndexAdapter";
@@ -57,7 +58,8 @@ public class IndexAdapter extends ArrayAdapter<Index> {
             name.setText(index.getName());
             code.setText(index.getCode());
             dayCurrent.setText(index.getDayClose());
-            dayVolume.setText(index.getDayVolume());
+            BigDecimal vol = new BigDecimal(index.getDayVolume());
+            dayVolume.setText(Double.toString(vol.divide(OneHundredMillion, 2)) + "вк");
 						
 						
            /*if (index.getTime() != null) {
