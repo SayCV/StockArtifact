@@ -10,4 +10,9 @@
     <dimen name="about_padding">0dp</dimen>
     <dimen name="about_text_size">22dp</dimen>
 
+    <dimen name="keyboard_height">230dp</dimen>
+    <dimen name="keyboard_textsize">22dp</dimen>
+    
+    <dimen name="bottominfo_textsize">22dp</dimen> 
+
 </resources>

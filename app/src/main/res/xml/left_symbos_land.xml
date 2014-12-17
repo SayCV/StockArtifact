@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Keyboard android:keyWidth="16.66%p" android:keyHeight="15.999996%p" android:horizontalGap="0.0px" android:verticalGap="0.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <Row>
+        <Key android:keyEdgeFlags="left" android:keyOutputText="600" android:keyLabel="600" />
+        <Key android:keyEdgeFlags="right" android:keyOutputText="002" android:keyLabel="002" />
+    </Row>
+    <Row>
+        <Key android:keyEdgeFlags="left" android:keyOutputText="601" android:keyLabel="601" />
+        <Key android:keyEdgeFlags="right" android:keyOutputText="300" android:keyLabel="300" />
+    </Row>
+    <Row>
+        <Key android:keyEdgeFlags="left" android:keyOutputText="000" android:keyLabel="000" />
+        <Key android:keyEdgeFlags="right" android:keyOutputText="00" android:keyLabel="00" />
+    </Row>
+</Keyboard>

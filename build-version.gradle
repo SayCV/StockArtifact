@@ -2,6 +2,8 @@ import java.util.regex.Pattern
 
 ext.useGitVersionSrc = 1
 
+ext.initIncrementStep = 10
+
 ext.initVersionCode = 1
 
 ext.initMajorVersionName = 0
@@ -17,6 +19,33 @@ ext.retMinorVersionName = initMinorVersionName
 ext.retPointVersionName = initPointVersionName
 ext.retPlusVersionName = initPlusVersionName
 ext.retVersionName = "v" + retMajorVersionName + "." + retMinorVersionName + "." + retPointVersionName + retPlusVersionName
+
+def saveGitVersionNameToFile() {
+    println(":saveGitVersionNameToFile - Save Version Name to temp file...")
+    def tmpFile = rootProject.file("gitVersion.tmp")
+    if(!tmpFile.canRead())
+        tmpFile = File.createTempFile("gitVersion", null/*.tmp*/, rootProject)
+    def patternVersionNumber = Pattern.compile("versionName=\"(.+)(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
+    def tmpText = tmpFile.getText()
+    def matcherVersionNumber = patternVersionNumber.matcher(tmpText)
+    def mVersionName
+    def mNextVersionName
+    def tmpContent
+    mNextVersionName = "v" + retMajorVersionName + "." + retMinorVersionName + "." + retPointVersionName + retPlusVersionName
+    if (matcherVersionNumber.find()) {
+        def majorVersionName = Integer.parseInt(matcherVersionNumber.group(2))
+        def minorVersionName = Integer.parseInt(matcherVersionNumber.group(3))
+        def pointVersionName = Integer.parseInt(matcherVersionNumber.group(4))
+        def plusVersionName = ( matcherVersionNumber.groupCount() >=5 ) ? matcherVersionNumber.group(5) : ""
+        mVersionName = "v" + majorVersionName+"." + minorVersionName + "." + pointVersionName + plusVersionName
+        tmpContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
+    } else {
+        tmpContent = "versionName=\"" + mNextVersionName + "\""
+    }
+    println(":saveGitVersionNameToFile - current versionName=" + mVersionName);
+    println(":saveGitVersionNameToFile - new versionName=" + mNextVersionName);
+    tmpFile.write(tmpContent)
+}
 
 // Methods to determine detailed version string
 def getGitDescribe() {
@@ -114,15 +143,15 @@ def setVersionNameToAndroidManifestXml() {
 
 def getVersionNameFromGit() {
     println(":getVersionNameFromGit - Get Version Name...")
-    def patternVersionNumber = Pattern.compile(".+-v(\\d+)\\.(\\d+)\\.(\\d+)(.+)")
+    def patternVersionNumber = Pattern.compile("(.+-)v(\\d+)\\.(\\d+)\\.(\\d+)(.+)")
     def manifestText = getGitVersionInfo()
     def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
     println(":getVersionNameFromGit - " + manifestText);
     if (matcherVersionNumber.find()) {
-        retMajorVersionName = Integer.parseInt(matcherVersionNumber.group(1))
-        retMinorVersionName = Integer.parseInt(matcherVersionNumber.group(2))
-        retPointVersionName = Integer.parseInt(matcherVersionNumber.group(3))
-        retPlusVersionName = ( matcherVersionNumber.groupCount() >=4 ) ? matcherVersionNumber.group(4) : ""
+        retMajorVersionName = Integer.parseInt(matcherVersionNumber.group(2))
+        retMinorVersionName = Integer.parseInt(matcherVersionNumber.group(3))
+        retPointVersionName = Integer.parseInt(matcherVersionNumber.group(4))
+        retPlusVersionName = ( matcherVersionNumber.groupCount() >=5 ) ? matcherVersionNumber.group(5) : ""
         retVersionName = "v" + retMajorVersionName+"." + retMinorVersionName + "." + retPointVersionName + retPlusVersionName
     } else {
         retMajorVersionName = initMajorVersionName
@@ -216,11 +245,15 @@ task incrementVersionName << {
     println(":incrementVersionName - Incrementing Version Name...")
     if(useGitVersionSrc != 1) {
         getVersionNameFromAndroidManifestXml()
+        //retMajorVersionName retMinorVersionName retPointVersionName retPlusVersionName
+        if(retPointVersionName >= initIncrementStep) retMinorVersionName++
+        if(retMinorVersionName >= initIncrementStep) retMajorVersionName++
         setVersionNameToAndroidManifestXml()
     } else {
-        println(":incrementVersionName - Used git Version Name...Not Support")
+        println(":incrementVersionName - Used git Version Name...")
         getVersionNameFromGit()
         setVersionNameToAndroidManifestXml()
+        saveGitVersionNameToFile()
     }
 }
 

@@ -127,7 +127,8 @@ if (hasProperty('xlint')) {
 }
 
 tasks.withType(JavaCompile) {
-    options.encoding = "GB2312"
-    //options.encoding = "UTF-8"
+    //options.encoding = "GB2312"
+    //NO BOM, but Android Studio writing BOM's to UTF-8 file
+    options.encoding = "UTF-8"
     //options.encoding = "GBK"
 }
