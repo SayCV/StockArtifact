@@ -71,7 +71,7 @@ gradle.allprojects {
         }
     }
     
-    def setVersionNameToAndroidManifestXml(String verName, ) {
+    def setVersionNameToAndroidManifestXml(String verName) {
         println(":setVersionNameToAndroidManifestXml - Set Version Name...")
         def manifestFile = file("src/main/AndroidManifest.xml")
         def patternVersionNumber = Pattern.compile("versionName=\"(\\d+)\\.(\\d+)\\.(\\d+)\"")
