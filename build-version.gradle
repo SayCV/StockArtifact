@@ -261,7 +261,7 @@ gradle.allprojects {
             return getVersionNameFromAndroidManifestXml()
         } else {
             println(":getDevVersionName - Used git Version Name...")
-            return getVersionNameFromGit()
+            return getGitVersionNameFromFile()
         }
     }
 }
@@ -313,7 +313,10 @@ task incrementVersionName << {
         getVersionNameFromAndroidManifestXml()
         //retMajorVersionName retMinorVersionName retPointVersionName retPlusVersionName
         retPointVersionName++
-        if(retPointVersionName >= initIncrementStep) retMinorVersionName++
+        if(retPointVersionName >= initIncrementStep) {
+            	retPointVersionName = 0
+            	retMinorVersionName++
+        }
         if(retMinorVersionName >= initIncrementStep) {
         	retMajorVersionName++
         	retMinorVersionName = 0
@@ -326,7 +329,10 @@ task incrementVersionName << {
         println(":incrementVersionName - Used git Version Name...")
         getGitVersionNameFromFile()
         		retPointVersionName++
-            if(retPointVersionName >= initIncrementStep) retMinorVersionName++
+            if(retPointVersionName >= initIncrementStep) {
+            	retPointVersionName = 0
+            	retMinorVersionName++
+            }
             if(retMinorVersionName >= initIncrementStep) {
             	retMajorVersionName++
         			retMinorVersionName = 0

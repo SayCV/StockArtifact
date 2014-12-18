@@ -61,9 +61,9 @@ public class IndexAdapter extends ArrayAdapter<Index> {
             code.setText(index.getCode());
             dayCurrent.setText(index.getDayClose());
             BigDecimal money = new BigDecimal(index.getDayMoney()); //万
-            money = money.divide(new BigDecimal(Constants.TenThousand), 3, BigDecimal.ROUND_HALF_EVEN);
-            //dayMoney.setText(PriceFormatter.forPrice(money.doubleValue()) + "亿");
-            dayMoney.setText(money.doubleValue() + "亿");
+            money = money.divide(new BigDecimal(Constants.TenThousand), 2, BigDecimal.ROUND_HALF_EVEN);
+            dayMoney.setText(PriceFormatter.forPrice(money.doubleValue()) + "亿");
+            //dayMoney.setText(money.doubleValue() + "亿");
 
 
            /*if (index.getTime() != null) {
