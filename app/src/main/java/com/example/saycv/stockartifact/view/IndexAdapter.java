@@ -61,8 +61,9 @@ public class IndexAdapter extends ArrayAdapter<Index> {
             code.setText(index.getCode());
             dayCurrent.setText(index.getDayClose());
             BigDecimal vol = new BigDecimal(index.getDayVolume());
-            vol = vol.divide(new BigDecimal(Constants.OneHundredMillion), BigDecimal.ROUND_HALF_EVEN);
-            dayVolume.setText(PriceFormatter.forPrice(vol.doubleValue()) + "亿");
+            vol = vol.divide(new BigDecimal(Constants.TenMillion), 3, BigDecimal.ROUND_HALF_EVEN);
+            //dayVolume.setText(PriceFormatter.forPrice(vol.doubleValue()) + "亿");
+            dayVolume.setText(vol.doubleValue() + "亿");
 
 
            /*if (index.getTime() != null) {
