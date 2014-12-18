@@ -20,12 +20,85 @@ ext.retPointVersionName = initPointVersionName
 ext.retPlusVersionName = initPlusVersionName
 ext.retVersionName = "v" + retMajorVersionName + "." + retMinorVersionName + "." + retPointVersionName + retPlusVersionName
 
+// To make new git tag
+def setNewGitTag() {
+	try {
+				//retMajorVersionName retMinorVersionName retPointVersionName retPlusVersionName
+				def newGitTagName = "v" + retMajorVersionName+"." + retMinorVersionName + "." + retPointVersionName + retPlusVersionName
+        def git = 'git tag' + newGitTagName
+        println(":setNewGitTag() - " + git)
+        def proc = git.execute()
+        proc.waitFor()
+        def desc = "${proc.in.text}".trim()
+        if (desc.isEmpty()) {
+            println(":setNewGitTag() - " + newGitTagName)
+            git = 'git push --tags'
+            proc = git.execute()
+            proc.waitFor()
+            desc = "${proc.in.text}".replace('*', ' ')
+            desc = "${desc}".trim()
+            /*if (desc.isEmpty()) {
+                println(":setNewGitTag() - try git branch unavailable...")
+                return "unknown"
+            }*/
+            return 0
+        }
+        return 1
+    } catch (e) {
+        println(":setNewGitTag() - ", e.getMessage())
+        return 1
+    }
+}
+
+// Methods to determine detailed version string
+def getGitDescribe() {
+    try {
+        def git = 'git describe --abbrev=7 --tags'
+        def proc = git.execute()
+        proc.waitFor()
+        def desc = "${proc.in.text}".trim()
+        if (desc.isEmpty()) {
+            println(":getGitDescribe() - git describe --tags unavailable...")
+            git = 'git branch'
+            proc = git.execute()
+            proc.waitFor()
+            desc = "${proc.in.text}".replace('*', ' ')
+            desc = "${desc}".trim()
+            if (desc.isEmpty()) {
+                println(":getGitDescribe() - try git branch unavailable...")
+                return "unknown"
+            }
+            desc += "-" + initVersionName
+        }
+        return desc
+    } catch (e) {
+        println(":getGitDescribe() - ", e.getMessage())
+        return "unknown"
+    }
+}
+
+def getGitVersionInfo() {
+    try {
+        def version = getGitDescribe()
+        //version += "-" + getDevVersionCode()
+        def user_build = System.getenv("BUILD_NUMBER")
+        if (user_build != null) {
+            version += "-release " + user_build
+        } else {
+            version += "-dirty"
+        }
+        return version
+    } catch (e) {
+        return "git-unknown-version"
+    }
+}
+
 def setGitVersionNameToFile() {
     println(":setGitVersionNameToFile - Save Version Name to temp file...")
     def tmpFile = rootProject.file("gitVersion.tmp")
     if(!tmpFile.canRead())
         tmpFile.createNewFile() //File.createTempFile("gitVersion", null/*.tmp*/, rootProject.projectDir)
-    def patternVersionNumber = Pattern.compile("versionName=\"(.+)(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
+    def patternVersionNumber = Pattern.compile("versionName=\"(.*)v(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
     def tmpText = tmpFile.getText()
     def matcherVersionNumber = patternVersionNumber.matcher(tmpText)
     def mVersionName
@@ -53,76 +126,36 @@ def getGitVersionNameFromFile() {
     def tmpFile = rootProject.file("gitVersion.tmp")
     if(!tmpFile.canRead())
         tmpFile.createNewFile() //File.createTempFile("gitVersion", null/*.tmp*/, rootProject.projectDir)
-    def patternVersionNumber = Pattern.compile("versionName=\"(.+)(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
+    def patternVersionNumber = Pattern.compile("versionName=\"(.*)v(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
     def tmpText = tmpFile.getText()
     def matcherVersionNumber = patternVersionNumber.matcher(tmpText)
     def mVersionName
     def mNextVersionName
     def tmpContent
-    mNextVersionName = "v" + retMajorVersionName + "." + retMinorVersionName + "." + retPointVersionName + retPlusVersionName
+    //mNextVersionName = "v" + retMajorVersionName + "." + retMinorVersionName + "." + retPointVersionName + retPlusVersionName
     if (matcherVersionNumber.find()) {
-        def majorVersionName = Integer.parseInt(matcherVersionNumber.group(2))
-        def minorVersionName = Integer.parseInt(matcherVersionNumber.group(3))
-        def pointVersionName = Integer.parseInt(matcherVersionNumber.group(4))
-        def plusVersionName = ( matcherVersionNumber.groupCount() >=5 ) ? matcherVersionNumber.group(5) : ""
-        mVersionName = "v" + majorVersionName+"." + minorVersionName + "." + pointVersionName + plusVersionName
-        tmpContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
+        retMajorVersionName = Integer.parseInt(matcherVersionNumber.group(2))
+        retMinorVersionName = Integer.parseInt(matcherVersionNumber.group(3))
+        retPointVersionName = Integer.parseInt(matcherVersionNumber.group(4))
+        retPlusVersionName = ( matcherVersionNumber.groupCount() >=5 ) ? matcherVersionNumber.group(5) : ""
+        retVersionName = "v" + retMajorVersionName+"." + retMinorVersionName + "." + retPointVersionName + retPlusVersionName
+        //tmpContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
     } else {
-        println(":getGitVersionNameFromFile - No match found");
-        tmpContent = "versionName=\"" + mNextVersionName + "\""
+        /*retMajorVersionName = initMajorVersionName
+        retMinorVersionName = initMinorVersionName
+        retPointVersionName = initPointVersionName
+        retPlusVersionName = initPlusVersionName
+        retVersionName = initVersionName*/
+        getVersionNameFromGit()
     }
-    println(":getGitVersionNameFromFile - current versionName=" + mVersionName);
-    println(":getGitVersionNameFromFile - new versionName=" + mNextVersionName);
-    tmpFile.write(tmpContent)
-}
-
-// Methods to determine detailed version string
-def getGitDescribe() {
-    try {
-        def git = 'git describe --abbrev=7 --tags'
-        def proc = git.execute()
-        proc.waitFor()
-        def desc = "${proc.in.text}".trim()
-        if (desc.isEmpty()) {
-            println(":getGitDescribe - git describe --tags unavailable...")
-            git = 'git branch'
-            proc = git.execute()
-            proc.waitFor()
-            desc = "${proc.in.text}".replace('*', ' ')
-            desc = "${desc}".trim()
-            if (desc.isEmpty()) {
-                println(":getGitDescribe - try git branch unavailable...")
-                return "unknown"
-            }
-            desc += "-" + initVersionName
-        }
-        return desc
-    } catch (e) {
-        println(":getGitDescribe - ", e.getMessage())
-        return "unknown"
-    }
-}
-
-def getGitVersionInfo() {
-    try {
-        def version = getGitDescribe()
-        version += "-" + getDevVersionCode()
-        def user_build = System.getenv("BUILD_NUMBER")
-        if (user_build != null) {
-            version += "-release " + user_build
-        } else {
-            version += "-dirty"
-        }
-        return version
-    } catch (e) {
-        return "git-unknown-version"
-    }
+    println(":getGitVersionNameFromFile - " + retVersionName);
+    return retVersionName
 }
 
 def getVersionNameFromAndroidManifestXml() {
     println(":getVersionNameFromAndroidManifestXml - Get Version Name...")
     def manifestFile = file("src/main/AndroidManifest.xml")
-    def patternVersionNumber = Pattern.compile("versionName=\"(.+)(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
+    def patternVersionNumber = Pattern.compile("versionName=\"(.*)v(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
     def manifestText = manifestFile.getText()
     def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
     if (matcherVersionNumber.find()) {
@@ -132,6 +165,10 @@ def getVersionNameFromAndroidManifestXml() {
         retPlusVersionName = ( matcherVersionNumber.groupCount() >=5 ) ? matcherVersionNumber.group(5) : ""
         retVersionName = "v" + retMajorVersionName+"." + retMinorVersionName + "." + retPointVersionName + retPlusVersionName
     } else {
+        retMajorVersionName = initMajorVersionName
+        retMinorVersionName = initMinorVersionName
+        retPointVersionName = initPointVersionName
+        retPlusVersionName = initPlusVersionName
         retVersionName = initVersionName
     }
     println(":getVersionNameFromAndroidManifestXml - " + retVersionName);
@@ -141,7 +178,7 @@ def getVersionNameFromAndroidManifestXml() {
 def setVersionNameToAndroidManifestXml() {
     println(":setVersionNameToAndroidManifestXml - Set Version Name...")
     def manifestFile = file("src/main/AndroidManifest.xml")
-    def patternVersionNumber = Pattern.compile("versionName=\"(.+)(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
+    def patternVersionNumber = Pattern.compile("versionName=\"(.*)v(\\d+)\\.(\\d+)\\.(\\d+)(.*)\"")
     def manifestText = manifestFile.getText()
     def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
     def mVersionName
@@ -172,7 +209,7 @@ def setVersionNameToAndroidManifestXml() {
 
 def getVersionNameFromGit() {
     println(":getVersionNameFromGit - Get Version Name...")
-    def patternVersionNumber = Pattern.compile("(.+-)v(\\d+)\\.(\\d+)\\.(\\d+)(.+)")
+    def patternVersionNumber = Pattern.compile("(.*)v(\\d+)\\.(\\d+)\\.(\\d+)(.*)")
     def manifestText = getGitVersionInfo()
     def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
     println(":getVersionNameFromGit - " + manifestText);
@@ -224,7 +261,7 @@ gradle.allprojects {
             return getVersionNameFromAndroidManifestXml()
         } else {
             println(":getDevVersionName - Used git Version Name...")
-            return getGitVersionInfo()
+            return getVersionNameFromGit()
         }
     }
 }
@@ -275,17 +312,28 @@ task incrementVersionName << {
     if(useGitVersionSrc != 1) {
         getVersionNameFromAndroidManifestXml()
         //retMajorVersionName retMinorVersionName retPointVersionName retPlusVersionName
+        retPointVersionName++
         if(retPointVersionName >= initIncrementStep) retMinorVersionName++
-        if(retMinorVersionName >= initIncrementStep) retMajorVersionName++
+        if(retMinorVersionName >= initIncrementStep) {
+        	retMajorVersionName++
+        	retMinorVersionName = 0
+        	retPointVersionName = 0
+        	retPlusVersionName = ""
+        	setNewGitTag()
+        }
         setVersionNameToAndroidManifestXml()
     } else {
         println(":incrementVersionName - Used git Version Name...")
-        if(getGitVersionNameFromFile()){
+        getGitVersionNameFromFile()
+        		retPointVersionName++
             if(retPointVersionName >= initIncrementStep) retMinorVersionName++
-            if(retMinorVersionName >= initIncrementStep) retMajorVersionName++
-        } else {
-            getVersionNameFromGit()
-        }
+            if(retMinorVersionName >= initIncrementStep) {
+            	retMajorVersionName++
+        			retMinorVersionName = 0
+        			retPointVersionName = 0
+        			retPlusVersionName = ""
+        			setNewGitTag()
+            }
         setVersionNameToAndroidManifestXml()
         setGitVersionNameToFile()
     }

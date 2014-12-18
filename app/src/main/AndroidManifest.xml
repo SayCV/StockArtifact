@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:versionCode="73"
-	android:versionName="v0.0.1-73-dirty"
+	android:versionCode="88"
+	android:versionName="v0.0.2-13-g367463f-dirty"
 	package="com.example.saycv.stockartifact">
 
     <application
