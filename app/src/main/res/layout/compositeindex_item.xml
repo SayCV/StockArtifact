@@ -63,7 +63,7 @@
         android:textColor="#FFFFFF"
         android:textSize="12sp"></TextView>
 		<TextView
-        android:id="@+id/dayVolume"
+        android:id="@+id/dayMoney"
         android:layout_width="120sp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dayCurrent"
@@ -100,7 +100,7 @@
         android:id="@+id/dayRangePercent"
         android:layout_width="120sp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/dayVolume"
+        android:layout_alignBottom="@+id/dayMoney"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:gravity="right"

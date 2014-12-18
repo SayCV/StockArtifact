@@ -47,8 +47,8 @@ public class IndexAdapter extends ArrayAdapter<Index> {
         TextView dayLow = (TextView) v.findViewById(R.id.dayLow);
         //TextView dayOpen = (TextView) v.findViewById(R.id.dayOpen);
         TextView dayClose = (TextView) v.findViewById(R.id.dayClose);
-        TextView dayVolume = (TextView) v.findViewById(R.id.dayVolume);
-        //TextView dayMoney = (TextView) v.findViewById(R.id.dayMoney);
+        //TextView dayVolume = (TextView) v.findViewById(R.id.dayVolume);
+        TextView dayMoney = (TextView) v.findViewById(R.id.dayMoney);
         TextView dayRange = (TextView) v.findViewById(R.id.dayRange);
         TextView dayRangePercent = (TextView) v.findViewById(R.id.dayRangePercent);
         TextView daySwing = (TextView) v.findViewById(R.id.daySwing);
@@ -60,10 +60,10 @@ public class IndexAdapter extends ArrayAdapter<Index> {
             name.setText(index.getName());
             code.setText(index.getCode());
             dayCurrent.setText(index.getDayClose());
-            BigDecimal vol = new BigDecimal(index.getDayVolume());
-            vol = vol.divide(new BigDecimal(Constants.TenMillion), 3, BigDecimal.ROUND_HALF_EVEN);
-            //dayVolume.setText(PriceFormatter.forPrice(vol.doubleValue()) + "亿");
-            dayVolume.setText(vol.doubleValue() + "亿");
+            BigDecimal money = new BigDecimal(index.getDayMoney()); //万
+            money = money.divide(new BigDecimal(Constants.TenThousand), 3, BigDecimal.ROUND_HALF_EVEN);
+            //dayMoney.setText(PriceFormatter.forPrice(money.doubleValue()) + "亿");
+            dayMoney.setText(money.doubleValue() + "亿");
 
 
            /*if (index.getTime() != null) {
